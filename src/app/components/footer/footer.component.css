@@ -1,0 +1,155 @@
+/* Custom styles for the modern footer component */
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Enhanced hover effects for links */
+.footer-link:hover {
+  transform: translateY(-2px);
+}
+
+/* Social media icon animations */
+.social-icon {
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-4px) scale(1.1);
+  color: #A78BFA !important;
+}
+
+/* Contact info hover effects */
+.contact-item:hover {
+  transform: translateX(4px);
+}
+
+.contact-item {
+  transition: transform 0.2s ease;
+}
+
+/* Enhanced shadow effects */
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Custom animations for the footer */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.footer-content {
+  animation: slideInUp 0.6s ease-out;
+}
+
+/* Enhanced focus styles for accessibility */
+a:focus,
+button:focus {
+  outline: 2px solid #A78BFA;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Custom scrollbar for the footer */
+footer::-webkit-scrollbar {
+  width: 8px;
+}
+
+footer::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+footer::-webkit-scrollbar-thumb {
+  background: #6B7280;
+  border-radius: 4px;
+}
+
+footer::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+/* Enhanced border effects */
+.border-gray-700 {
+  border-color: #374151;
+}
+
+.border-gray-700:hover {
+  border-color: #A78BFA;
+}
+
+/* Text gradient effects */
+.gradient-text {
+  background: linear-gradient(135deg, #4B8CFF, #34D399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Enhanced spacing utilities */
+.space-y-3 > * + * {
+  margin-top: 0.75rem;
+}
+
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-content {
+    text-align: center;
+  }
+  
+  .contact-item {
+    justify-content: center;
+  }
+  
+  .social-icons {
+    justify-content: center;
+  }
+}
+
+/* Print styles */
+@media print {
+  footer {
+    display: none !important;
+  }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  .bg-gray-800 {
+    background-color: #1F2937;
+  }
+  
+  .text-gray-300 {
+    color: #D1D5DB;
+  }
+  
+  .text-gray-400 {
+    color: #9CA3AF;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .text-gray-300 {
+    color: #FFFFFF;
+  }
+  
+  .text-gray-400 {
+    color: #E5E7EB;
+  }
+  
+  .border-gray-700 {
+    border-color: #FFFFFF;
+  }
+}

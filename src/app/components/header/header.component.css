@@ -1,0 +1,162 @@
+/* Custom styles for the modern header component */
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Custom dropdown animations */
+.dropdown-menu {
+  transform-origin: top right;
+  animation: dropdownSlideIn 0.2s ease-out;
+}
+
+@keyframes dropdownSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Enhanced mobile menu animations */
+.nav-links {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-links.show-mobile-menu {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom focus styles for accessibility */
+.nav-link:focus,
+button:focus {
+  outline: 2px solid #4B8CFF;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Enhanced button hover effects */
+.btn-login:hover,
+.btn-register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Logo animation on hover */
+.header-brand:hover .logo-section {
+  transform: scale(1.05);
+}
+
+.logo-section {
+  transition: transform 0.3s ease;
+}
+
+/* User menu hover effects */
+.user-menu:hover .dropdown-toggle {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+}
+
+/* Dropdown item hover effects */
+.dropdown-item:hover {
+  background-color: #f8fafc;
+  transform: translateX(4px);
+}
+
+.dropdown-item {
+  transition: all 0.2s ease;
+}
+
+/* Mobile menu button animation */
+.navbar-toggler:hover {
+  transform: scale(1.1);
+}
+
+.navbar-toggler {
+  transition: transform 0.2s ease;
+}
+
+/* Custom scrollbar for the header */
+.header-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.header-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.header-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.header-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Glass morphism effect for mobile menu */
+.nav-links.show-mobile-menu {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Enhanced shadow effects */
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom animations for the header */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header-container {
+  animation: fadeInDown 0.5s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .header-container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    padding: 0 0.75rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  header {
+    display: none !important;
+  }
+}

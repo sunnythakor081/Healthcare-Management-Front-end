@@ -1,0 +1,104 @@
+<app-header></app-header>
+
+<div class="appointments-hero">
+  <h1 class="appointments-title">Manage Your Appointments</h1>
+  <p class="appointments-subtitle">Schedule, view, or cancel appointments seamlessly with just a few clicks.</p>
+  <div class="appointments-actions">
+    <a class="action-btn primary" [routerLink]="['/bookappointment']">
+      <i class="fa fa-calendar-plus-o"></i>
+      Schedule New
+    </a>
+    <a class="action-btn secondary" [routerLink]="['/checkslots']">
+      <i class="fa fa-clock-o"></i>
+      Check Slots
+    </a>
+  </div>
+</div>
+
+<div class="appointments-container">
+  <div class="appointments-header">
+    <h2>Today's Appointments</h2>
+    <p class="appointments-note">All patient details have been verified</p>
+  </div>
+
+  <div class="appointments-grid">
+    <div *ngFor="let patient of appointments | async" class="appointment-card">
+      <div class="appointment-avatar">
+        <img *ngIf="patient.gender === 'Male' || patient.gender === 'male'" src="assets/img/maleuser.png" alt="Patient" />
+        <img *ngIf="patient.gender === 'Female' || patient.gender === 'female'" src="assets/img/femaleuser.png" alt="Patient" />
+      </div>
+      
+      <div class="appointment-details">
+        <div class="patient-info">
+          <h3>{{patient.patientname}}</h3>
+          <p class="patient-id">ID: {{patient.patientid}}</p>
+          <p class="patient-email">{{patient.email}}</p>
+        </div>
+        
+        <div class="appointment-info">
+          <div class="info-row">
+            <span class="label">Age:</span>
+            <span class="value">{{patient.age}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Gender:</span>
+            <span class="value">{{patient.gender}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Problem:</span>
+            <span class="value">{{patient.problem}}</span>
+          </div>
+        </div>
+
+        <div class="slot-info" *ngFor="let slot of slots | async">
+          <div *ngIf="patient.slot === 'AM slot' && slot.amstatus === 'booked' && patient.date === slot.date">
+            <span class="label">Time:</span>
+            <span class="value slot-time">{{slot.amslot}}</span>
+          </div>
+          <div *ngIf="patient.slot === 'Noon slot' && slot.noonstatus === 'booked' && patient.date === slot.date">
+            <span class="label">Time:</span>
+            <span class="value slot-time">{{slot.noonslot}}</span>
+          </div>
+          <div *ngIf="patient.slot === 'PM slot' && slot.pmstatus === 'booked' && patient.date === slot.date">
+            <span class="label">Time:</span>
+            <span class="value slot-time">{{slot.pmslot}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="appointment-status">
+        <div *ngIf="patient.admissionstatus === 'false'" class="status-badge pending">
+          <i class="fa fa-clock-o"></i>
+          Admission Pending
+        </div>
+        
+        <div *ngIf="patient.appointmentstatus === 'accept' && (currRole === 'doctor' || currRole === 'DOCTOR')" class="status-badge accepted">
+          <i class="fa fa-check"></i>
+          Accepted
+        </div>
+        
+        <div *ngIf="patient.appointmentstatus === 'reject' && (currRole === 'doctor' || currRole === 'DOCTOR')" class="status-badge rejected">
+          <i class="fa fa-times"></i>
+          Rejected
+        </div>
+        
+        <div *ngIf="patient.appointmentstatus === 'false' && (currRole === 'doctor' || currRole === 'DOCTOR')" class="status-badge pending">
+          <i class="fa fa-clock-o"></i>
+          Approval Pending
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!(appointments | async)?.length" class="no-appointments">
+    <i class="fa fa-calendar-o"></i>
+    <h3>No appointments today</h3>
+    <p>You have no scheduled appointments for today.</p>
+    <a class="action-btn primary" [routerLink]="['/bookappointment']">
+      <i class="fa fa-calendar-plus-o"></i>
+      Schedule Your First Appointment
+    </a>
+  </div>
+</div>
+
+<app-footer></app-footer>

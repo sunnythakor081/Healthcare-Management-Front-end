@@ -1,0 +1,333 @@
+<app-header></app-header>
+
+<!-- Navigation Bar -->
+<nav class="topnav">
+  <div class="nav-container">
+    <a class="logo" href="#">HealthCare MS</a>
+    <div class="nav-links">
+      <a href="#" class="active">Home</a>
+      <a href="#" (click)="showLogin()">Login</a>
+      <a href="#" (click)="showRegister()">Register</a>
+      <a href="#">Patients</a>
+      <a href="#">Appointments</a>
+      <a href="#">Doctors</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="relative min-h-screen bg-gradient-to-br from-blue-500 via-blue-600 to-green-500 flex items-center justify-center overflow-hidden" *ngIf="showHome">
+  <!-- Background Pattern -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-0 left-0 w-72 h-72 bg-white rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+    <div class="absolute top-0 right-0 w-72 h-72 bg-green-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
+    <div class="absolute bottom-0 left-0 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
+  </div>
+  
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight">
+        HealthCare Management System
+      </h1>
+      <p class="text-xl sm:text-2xl lg:text-3xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">
+        Manage your hospital efficiently – Anytime, Anywhere
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a routerLink="/registration" 
+           class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold text-lg rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300 hover:shadow-3xl transform">
+          Get Started
+          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
+        </a>
+        <a routerLink="/login" 
+           class="inline-flex items-center px-8 py-4 bg-white bg-opacity-20 backdrop-blur-sm text-white font-semibold text-lg rounded-2xl border-2 border-white border-opacity-30 hover:bg-white hover:bg-opacity-30 transition-all duration-300">
+          Login
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+    </svg>
+  </div>
+</section>
+
+<!-- Features Section -->
+<div class="features" *ngIf="showHome">
+  <div class="feature-card">
+    <i class="fas fa-user-md"></i>
+    <h3>Patient Management</h3>
+    <p>Efficiently manage patient records and history</p>
+  </div>
+  <div class="feature-card">
+    <i class="fas fa-calendar-check"></i>
+    <h3>Appointment Scheduling</h3>
+    <p>Easy scheduling and reminders</p>
+  </div>
+  <div class="feature-card">
+    <i class="fas fa-hospital-user"></i>
+    <h3>Doctor Directory</h3>
+    <p>Find and connect with healthcare providers</p>
+  </div>
+  <div class="feature-card">
+    <i class="fas fa-shield-alt"></i>
+    <h3>Secure Records</h3>
+    <p>Protected and encrypted medical data</p>
+  </div>
+</div>
+
+<!-- Login Form -->
+<div class="auth-container" *ngIf="showLoginForm">
+  <div class="auth-card">
+    <h2>Login</h2>
+    <form (ngSubmit)="onLogin()">
+      <input type="email" placeholder="Email" [(ngModel)]="loginData.email" name="email" required>
+      <input type="password" placeholder="Password" [(ngModel)]="loginData.password" name="password" required>
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="#" (click)="showRegister()">Register here</a></p>
+  </div>
+</div>
+
+<!-- Registration Form -->
+<div class="auth-container" *ngIf="showRegisterForm">
+  <div class="auth-card">
+    <h2>Register</h2>
+    <form (ngSubmit)="onRegister()">
+      <input type="text" placeholder="Full Name" [(ngModel)]="registerData.fullName" name="fullName" required>
+      <input type="email" placeholder="Email" [(ngModel)]="registerData.email" name="email" required>
+      <input type="password" placeholder="Password" [(ngModel)]="registerData.password" name="password" required>
+      <input type="tel" placeholder="Phone" [(ngModel)]="registerData.phone" name="phone" required>
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="#" (click)="showLogin()">Login here</a></p>
+  </div>
+</div>
+
+<!-- Role Cards Section -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+        Choose Your Role
+      </h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        Access the system based on your role and responsibilities
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Admin Card -->
+      <div class="group relative">
+        <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 transform">
+          <div class="text-center">
+            <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span class="text-4xl">🔭</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-4">Admin Mode</h3>
+            <p class="text-blue-100 mb-6 leading-relaxed">
+              Manage hospital operations, staff, and resources. Monitor system performance and generate comprehensive reports.
+            </p>
+            <button class="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 group-hover:scale-105">
+              Explore
+              <svg class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doctor Card -->
+      <div class="group relative">
+        <div class="bg-gradient-to-br from-green-500 to-blue-600 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 transform">
+          <div class="text-center">
+            <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span class="text-4xl">❤️</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-4">Doctor Mode</h3>
+            <p class="text-green-100 mb-6 leading-relaxed">
+              Access patient records, manage appointments, and update treatment plans with ease and efficiency.
+            </p>
+            <button class="inline-flex items-center px-6 py-3 bg-white text-green-600 font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 group-hover:scale-105">
+              Explore
+              <svg class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Card -->
+      <div class="group relative">
+        <div class="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 transform">
+          <div class="text-center">
+            <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span class="text-4xl">😄</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-4">User Mode</h3>
+            <p class="text-purple-100 mb-6 leading-relaxed">
+              Book appointments, view medical history, and communicate with healthcare providers seamlessly.
+            </p>
+            <button class="inline-flex items-center px-6 py-3 bg-white text-purple-600 font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 group-hover:scale-105">
+              Explore
+              <svg class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Meet Our Specialists Section -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+        Meet Our Specialists
+      </h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        Experienced healthcare professionals ready to assist you with expert care
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Doctor Cards (Dynamic) -->
+      <div class="group" *ngFor="let doctor of doctors">
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 transform overflow-hidden border border-gray-100">
+          <div class="relative">
+            <img [src]="doctor.image" [alt]="doctor.name" loading="lazy" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300">
+            <div class="absolute top-4 right-4" *ngIf="doctor.online">
+              <div class="flex items-center space-x-2 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                <span>Online Now</span>
+              </div>
+            </div>
+            <div class="absolute bottom-4 left-4">
+              <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                {{doctor.specialty}}
+              </span>
+            </div>
+          </div>
+          
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-2">{{doctor.name}}</h3>
+            <p class="text-gray-600 mb-4">{{doctor.description}}</p>
+            
+            <div class="space-y-2 mb-6">
+              <div class="flex items-center text-sm text-gray-500">
+                <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span>{{doctor.availableToday ? 'Available Today' : 'Available Tomorrow'}}</span>
+              </div>
+              <div class="flex items-center text-sm text-gray-500">
+                <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>{{doctor.hours}}</span>
+              </div>
+            </div>
+            
+            <button class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-4 rounded-xl hover:shadow-lg transition-all duration-200 hover:scale-105 transform" 
+                    (click)="bookAppointment(doctor.id)">
+              <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              Book Appointment
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-12">
+      <a routerLink="/doctorlist" 
+         class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-green-500 text-white font-semibold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 transform">
+        View All Specialists
+        <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+        Our Services
+      </h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        Comprehensive healthcare solutions for all your medical needs
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Feature Cards (Dynamic) -->
+      <div class="group" *ngFor="let service of services">
+        <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 transform border border-gray-100">
+          <div class="text-center">
+            <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+              <img [src]="service.image" [alt]="service.title" loading="lazy" class="w-12 h-12 object-contain">
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-4">{{service.title}}</h3>
+            <p class="text-gray-600 leading-relaxed">{{service.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+        Patient Testimonials
+      </h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        What our patients say about their healthcare experience
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Testimonial Cards (Dynamic) -->
+      <div class="group" *ngFor="let testimonial of testimonials">
+        <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 transform border border-blue-100">
+          <div class="mb-6">
+            <div class="flex items-center mb-4">
+              <ng-container *ngFor="let star of getStarArray(testimonial.rating)">
+                <svg class="w-5 h-5 text-yellow-400" [class]="star === 1 ? 'fill-current' : 'fill-current opacity-50'" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                </svg>
+              </ng-container>
+            </div>
+            <p class="text-gray-700 italic text-lg leading-relaxed">"{{testimonial.text}}"</p>
+          </div>
+          
+          <div class="flex items-center">
+            <img [src]="testimonial.image" [alt]="testimonial.name" loading="lazy" class="w-12 h-12 rounded-full object-cover mr-4">
+            <div>
+              <h4 class="font-semibold text-gray-900">{{testimonial.name}}</h4>
+              <p class="text-gray-600 text-sm">{{testimonial.info}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

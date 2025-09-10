@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background -->
+  <circle cx="100" cy="100" r="100" fill="#f0f8ff"/>
+  
+  <!-- Patient's Head -->
+  <circle cx="100" cy="80" r="40" fill="#f5d0a9"/>
+  
+  <!-- Patient's Hair -->
+  <path d="M60 70 Q 100 20 140 70" fill="#d2b48c"/>
+  <path d="M60 70 Q 80 50 100 70" fill="#d2b48c"/>
+  
+  <!-- Patient's Face -->
+  <circle cx="85" cy="75" r="5" fill="#000"/> <!-- Left Eye -->
+  <circle cx="115" cy="75" r="5" fill="#000"/> <!-- Right Eye -->
+  <path d="M90 95 Q 100 105 110 95" fill="none" stroke="#000" stroke-width="2"/> <!-- Smile -->
+  
+  <!-- Patient's Body -->
+  <path d="M70 120 Q 100 140 130 120 L 130 180 L 70 180 Z" fill="#90ee90"/>
+  
+  <!-- Patient's Neck -->
+  <rect x="90" y="110" width="20" height="15" fill="#f5d0a9"/>
+  
+  <!-- Patient's Arms -->
+  <rect x="50" y="120" width="20" height="60" fill="#f5d0a9" rx="10"/>
+  <rect x="130" y="120" width="20" height="60" fill="#f5d0a9" rx="10"/>
+  
+  <!-- Necklace -->
+  <path d="M90 125 Q 100 135 110 125" fill="none" stroke="#FFD700" stroke-width="3"/>
+  <circle cx="100" cy="135" r="5" fill="#FFD700"/>
+  
+  <!-- Headband -->
+  <path d="M60 60 Q 100 50 140 60" fill="none" stroke="#ff69b4" stroke-width="5"/>
+</svg>

@@ -1,0 +1,126 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8f9fa;
+  color: #333;
+}
+
+.doctordashboard-hero {
+  text-align: center;
+  margin: 40px 0 32px 0;
+}
+
+.doctordashboard-avatar img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  border-radius: 50%;
+  box-shadow: 0 4px 24px rgba(102, 126, 234, 0.10);
+  margin-bottom: 16px;
+}
+
+.doctordashboard-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.doctordashboard-subtitle {
+  color: #666;
+  font-size: 1.15rem;
+  margin-bottom: 0;
+}
+
+.doctordashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+  margin: 0 auto 48px auto;
+  max-width: 900px;
+}
+
+.dashboard-action-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.10);
+  padding: 32px 28px 24px 28px;
+  width: 220px;
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.dashboard-action-card:hover, .dashboard-action-card:focus {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9eafc 100%);
+  box-shadow: 0 12px 36px rgba(102, 126, 234, 0.18);
+  transform: translateY(-4px) scale(1.03);
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+.action-icon {
+  font-size: 2.5rem;
+  color: #667eea;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.action-desc {
+  color: #666;
+  font-size: 0.98rem;
+}
+
+@media (max-width: 900px) {
+  .doctordashboard-actions {
+    gap: 18px;
+    max-width: 98vw;
+  }
+  .dashboard-action-card {
+    width: 44vw;
+    min-width: 180px;
+    padding: 22px 8px 16px 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .doctordashboard-hero {
+    margin: 18px 0 12px 0;
+  }
+  .doctordashboard-title {
+    font-size: 1.3rem;
+  }
+  .doctordashboard-subtitle {
+    font-size: 1rem;
+  }
+  .doctordashboard-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .dashboard-action-card {
+    width: 95vw;
+    min-width: 0;
+    padding: 16px 4vw 12px 4vw;
+  }
+  .action-icon {
+    font-size: 2rem;
+  }
+}

@@ -1,0 +1,263 @@
+<div class="login-hero">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-logo">
+          <img src="assets/img/healthcaresystem.png" alt="Healthcare Logo" class="logo-img">
+        </div>
+        <h1 class="login-title">Secure Access to Smarter Healthcare</h1>
+        <p class="login-subtitle">Choose your role: Patient, Doctor, or Admin</p>
+      </div>
+
+      <!-- Role Selection Tabs -->
+      <div class="role-tabs">
+        <button class="role-tab" [class.active]="activeRole === 'patient'" (click)="selectRole('patient')">
+          <i class="fa fa-user"></i>
+          <span>Patient</span>
+        </button>
+        <button class="role-tab" [class.active]="activeRole === 'doctor'" (click)="selectRole('doctor')">
+          <i class="fa fa-user-md"></i>
+          <span>Doctor</span>
+        </button>
+        <button class="role-tab" [class.active]="activeRole === 'admin'" (click)="selectRole('admin')">
+          <i class="fa fa-shield"></i>
+          <span>Admin</span>
+        </button>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="msg" class="error-message">
+        <i class="fa fa-exclamation-triangle"></i>
+        <span>{{msg}}</span>
+      </div>
+
+      <!-- Patient Login Form -->
+      <div *ngIf="activeRole === 'patient'" class="login-form" [@fadeIn]>
+        <h2 class="form-title">Patient Login</h2>
+        <form #userloginform="ngForm" (ngSubmit)="loginUser()">
+          <div class="form-group">
+            <label for="userEmail">Email Address</label>
+            <div class="input-group">
+              <i class="fa fa-envelope input-icon"></i>
+              <input 
+                type="email" 
+                id="userEmail"
+                class="form-control" 
+                placeholder="Enter your email" 
+                name="email" 
+                [(ngModel)]="user.email" 
+                required 
+                pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+                #email="ngModel"
+                [class.is-invalid]="email.invalid && email.touched">
+            </div>
+            <div *ngIf="email.errors && email.invalid && email.touched" class="error-text">
+              <span *ngIf="email.errors['required']">Email is required</span>
+              <span *ngIf="email.errors['pattern']">Please enter a valid email</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="userPassword">Password</label>
+            <div class="input-group">
+              <i class="fa fa-lock input-icon"></i>
+              <input 
+                type="password" 
+                id="userPassword"
+                class="form-control" 
+                placeholder="Enter your password" 
+                name="pwd" 
+                [(ngModel)]="user.password" 
+                required 
+                #password="ngModel"
+                [class.is-invalid]="password.invalid && password.touched">
+              <button type="button" class="password-toggle" (click)="togglePassword('userPassword')">
+                <i class="fa fa-eye"></i>
+              </button>
+            </div>
+            <div *ngIf="password.errors && password.invalid && password.touched" class="error-text">
+              <span *ngIf="password.errors['required']">Password is required</span>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-label">
+              <input type="checkbox" name="remember">
+              <span class="checkmark"></span>
+              Remember me
+            </label>
+            <a href="#" class="forgot-link">Forgot Password?</a>
+          </div>
+
+          <button 
+            [disabled]="userloginform.form.invalid || isLoading" 
+            type="submit" 
+            class="login-btn"
+            [class.loading]="isLoading">
+            <span *ngIf="!isLoading">Sign In</span>
+            <span *ngIf="isLoading">Signing In...</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Doctor Login Form -->
+      <div *ngIf="activeRole === 'doctor'" class="login-form" [@fadeIn]>
+        <h2 class="form-title">Doctor Login</h2>
+        <form #doctorloginform="ngForm" (ngSubmit)="loginDoctor()">
+          <div class="form-group">
+            <label for="doctorEmail">Email Address</label>
+            <div class="input-group">
+              <i class="fa fa-envelope input-icon"></i>
+              <input 
+                type="email" 
+                id="doctorEmail"
+                class="form-control" 
+                placeholder="Enter your email" 
+                name="doctoremail" 
+                [(ngModel)]="doctor.email" 
+                required 
+                pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+                #doctoremail="ngModel"
+                [class.is-invalid]="doctoremail.invalid && doctoremail.touched">
+            </div>
+            <div *ngIf="doctoremail.errors && doctoremail.invalid && doctoremail.touched" class="error-text">
+              <span *ngIf="doctoremail.errors['required']">Email is required</span>
+              <span *ngIf="doctoremail.errors['pattern']">Please enter a valid email</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="doctorPassword">Password</label>
+            <div class="input-group">
+              <i class="fa fa-lock input-icon"></i>
+              <input 
+                type="password" 
+                id="doctorPassword"
+                class="form-control" 
+                placeholder="Enter your password" 
+                name="pwd" 
+                [(ngModel)]="doctor.password" 
+                required 
+                #doctorpassword="ngModel"
+                [class.is-invalid]="doctorpassword.invalid && doctorpassword.touched">
+              <button type="button" class="password-toggle" (click)="togglePassword('doctorPassword')">
+                <i class="fa fa-eye"></i>
+              </button>
+            </div>
+            <div *ngIf="doctorpassword.errors && doctorpassword.invalid && doctorpassword.touched" class="error-text">
+              <span *ngIf="doctorpassword.errors['required']">Password is required</span>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-label">
+              <input type="checkbox" name="remember">
+              <span class="checkmark"></span>
+              Remember me
+            </label>
+            <a href="#" class="forgot-link">Forgot Password?</a>
+          </div>
+
+          <button 
+            [disabled]="doctorloginform.form.invalid || isLoading" 
+            type="submit" 
+            class="login-btn"
+            [class.loading]="isLoading">
+            <span *ngIf="!isLoading">Sign In</span>
+            <span *ngIf="isLoading">Signing In...</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Admin Login Form -->
+      <div *ngIf="activeRole === 'admin'" class="login-form" [@fadeIn]>
+        <h2 class="form-title">Admin Login</h2>
+        <form #adminloginform="ngForm" (ngSubmit)="adminLogin()">
+          <div class="form-group">
+            <label for="adminEmail">Email Address</label>
+            <div class="input-group">
+              <i class="fa fa-envelope input-icon"></i>
+              <input 
+                type="email" 
+                id="adminEmail"
+                class="form-control" 
+                placeholder="Enter admin email" 
+                name="email" 
+                [(ngModel)]="adminEmail" 
+                required 
+                pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+                #adminemail="ngModel"
+                [class.is-invalid]="adminemail.invalid && adminemail.touched">
+            </div>
+            <div *ngIf="adminemail.errors && adminemail.invalid && adminemail.touched" class="error-text">
+              <span *ngIf="adminemail.errors['required']">Email is required</span>
+              <span *ngIf="adminemail.errors['pattern']">Please enter a valid email</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="adminPassword">Password</label>
+            <div class="input-group">
+              <i class="fa fa-lock input-icon"></i>
+              <input 
+                type="password" 
+                id="adminPassword"
+                class="form-control" 
+                placeholder="Enter admin password" 
+                name="pwd" 
+                [(ngModel)]="adminPassword" 
+                required 
+                #adminpassword="ngModel"
+                [class.is-invalid]="adminpassword.invalid && adminpassword.touched">
+              <button type="button" class="password-toggle" (click)="togglePassword('adminPassword')">
+                <i class="fa fa-eye"></i>
+              </button>
+            </div>
+            <div *ngIf="adminpassword.errors && adminpassword.invalid && adminpassword.touched" class="error-text">
+              <span *ngIf="adminpassword.errors['required']">Password is required</span>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <a href="#" class="forgot-link">Forgot Password?</a>
+          </div>
+
+          <button 
+            [disabled]="adminloginform.form.invalid || isLoading" 
+            type="submit" 
+            class="login-btn"
+            [class.loading]="isLoading">
+            <span *ngIf="!isLoading">Sign In</span>
+            <span *ngIf="isLoading">Signing In...</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Social Login -->
+      <div class="social-login">
+        <div class="divider">
+          <span>or continue with</span>
+        </div>
+        <div class="social-buttons">
+          <button class="social-btn google">
+            <i class="fa fa-google"></i>
+          </button>
+          <button class="social-btn linkedin">
+            <i class="fa fa-linkedin"></i>
+          </button>
+          <button class="social-btn twitter">
+            <i class="fa fa-twitter"></i>
+          </button>
+          <button class="social-btn github">
+            <i class="fa fa-github"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Registration Link -->
+      <div class="registration-link">
+        <p>Don't have an Account? <a [routerLink]="['/registration']" class="register-link">Create One</a></p>
+      </div>
+    </div>
+  </div>
+</div>

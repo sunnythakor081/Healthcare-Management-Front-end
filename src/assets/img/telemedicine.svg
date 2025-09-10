@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#f0f8ff" rx="10" ry="10"/>
+  
+  <!-- Computer/Laptop -->
+  <rect x="30" y="80" width="60" height="40" fill="#ffffff" stroke="#000" stroke-width="2"/>
+  <rect x="30" y="120" width="60" height="10" fill="#000"/>
+  <rect x="55" y="120" width="10" height="5" fill="#808080"/>
+  
+  <!-- Screen with Doctor -->
+  <rect x="35" y="85" width="50" height="30" fill="#add8e6"/>
+  <circle cx="60" cy="95" r="10" fill="#e6c6a0"/> <!-- Doctor's Head -->
+  <rect x="50" y="105" width="20" height="10" fill="#ffffff"/> <!-- Doctor's Coat -->
+  
+  <!-- Doctor's Face -->
+  <circle cx="57" cy="93" r="2" fill="#000"/> <!-- Left Eye -->
+  <circle cx="63" cy="93" r="2" fill="#000"/> <!-- Right Eye -->
+  <path d="M57 98 Q 60 100 63 98" fill="none" stroke="#000" stroke-width="1"/> <!-- Smile -->
+  
+  <!-- Patient at Home -->
+  <rect x="120" y="70" width="50" height="60" fill="#ffe4c4" stroke="#8b4513" stroke-width="2"/> <!-- House/Room -->
+  <rect x="140" y="110" width="15" height="20" fill="#8b4513"/> <!-- Door -->
+  <circle cx="142" cy="120" r="2" fill="#ffd700"/> <!-- Doorknob -->
+  
+  <!-- Window -->
+  <rect x="130" y="80" width="15" height="15" fill="#87ceeb" stroke="#000" stroke-width="1"/>
+  <line x1="137.5" y1="80" x2="137.5" y2="95" stroke="#000" stroke-width="1"/>
+  <line x1="130" y1="87.5" x2="145" y2="87.5" stroke="#000" stroke-width="1"/>
+  
+  <!-- Patient -->
+  <circle cx="160" cy="90" r="10" fill="#f5d0a9"/> <!-- Head -->
+  <rect x="155" y="100" width="10" height="15" fill="#ff69b4"/> <!-- Body -->
+  
+  <!-- Patient's Face -->
+  <circle cx="157" cy="88" r="2" fill="#000"/> <!-- Left Eye -->
+  <circle cx="163" cy="88" r="2" fill="#000"/> <!-- Right Eye -->
+  <path d="M157 93 Q 160 95 163 93" fill="none" stroke="#000" stroke-width="1"/> <!-- Smile -->
+  
+  <!-- Connection Between Doctor and Patient -->
+  <path d="M85 100 Q 110 80 120 100" fill="none" stroke="#4682B4" stroke-width="2" stroke-dasharray="5,5"/>
+  <polygon points="85,100 90,95 90,105" fill="#4682B4"/>
+  <polygon points="120,100 115,95 115,105" fill="#4682B4"/>
+  
+  <!-- Medical Symbols -->
+  <circle cx="100" cy="40" r="15" fill="#ff0000" opacity="0.7"/>
+  <rect x="95" y="30" width="10" height="20" fill="#ffffff"/>
+  <rect x="90" y="35" width="20" height="10" fill="#ffffff"/>
+  
+  <!-- Digital Elements -->
+  <circle cx="30" cy="40" r="10" fill="#90ee90"/>
+  <text x="27" y="44" font-family="Arial" font-size="12" fill="#ffffff">✓</text>
+  
+  <circle cx="170" cy="40" r="10" fill="#ff6347"/>
+  <text x="167" y="44" font-family="Arial" font-size="12" fill="#ffffff">!</text>
+  
+  <!-- WiFi Symbol -->
+  <path d="M100 150 Q 120 130 140 150" fill="none" stroke="#000" stroke-width="2"/>
+  <path d="M105 145 Q 120 130 135 145" fill="none" stroke="#000" stroke-width="2"/>
+  <path d="M110 140 Q 120 130 130 140" fill="none" stroke="#000" stroke-width="2"/>
+  <circle cx="120" cy="155" r="3" fill="#000"/>
+</svg>

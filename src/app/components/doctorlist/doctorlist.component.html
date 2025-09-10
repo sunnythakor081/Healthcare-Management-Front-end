@@ -1,0 +1,170 @@
+<app-header></app-header>
+
+<!-- Hero Section -->
+<div class="doctorlist-hero">
+  <div class="hero-content">
+    <h1 class="hero-title">Our Medical Team</h1>
+    <p class="hero-subtitle">Meet our qualified and experienced healthcare professionals dedicated to your well-being</p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-number">{{ (doctors | async)?.length || 0 }}</span>
+        <span class="stat-label">Total Doctors</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">{{ getApprovedDoctorsCount() }}</span>
+        <span class="stat-label">Approved</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">{{ getSpecializationsCount() }}</span>
+        <span class="stat-label">Specializations</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Search and Filter Section -->
+<div class="search-filter-section">
+  <div class="container">
+    <div class="search-filter-content">
+      <div class="search-box">
+        <i class="fa fa-search search-icon"></i>
+        <input 
+          type="text" 
+          placeholder="Search doctors by name, specialization, or experience..." 
+          [(ngModel)]="searchTerm"
+          (input)="filterDoctors()"
+          class="search-input">
+      </div>
+      
+      <div class="filter-options">
+        <select [(ngModel)]="selectedSpecialization" (change)="filterDoctors()" class="filter-select">
+          <option value="">All Specializations</option>
+          <option *ngFor="let spec of specializations" [value]="spec">{{ spec }}</option>
+        </select>
+        
+        <select [(ngModel)]="selectedStatus" (change)="filterDoctors()" class="filter-select">
+          <option value="">All Status</option>
+          <option value="accept">Approved</option>
+          <option value="false">Pending</option>
+          <option value="reject">Rejected</option>
+        </select>
+        
+        <select [(ngModel)]="selectedGender" (change)="filterDoctors()" class="filter-select">
+          <option value="">All Genders</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Doctors Grid Section -->
+<div class="doctors-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Available Doctors</h2>
+      <p class="section-subtitle">Only approved doctors are recommended by our management for your safety and care</p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Loading doctors...</p>
+    </div>
+
+    <!-- No Results State -->
+    <div *ngIf="!isLoading && filteredDoctors.length === 0" class="no-results">
+      <i class="fa fa-search no-results-icon"></i>
+      <h3>No doctors found</h3>
+      <p>Try adjusting your search criteria or filters</p>
+    </div>
+
+    <!-- Doctors Grid -->
+    <div *ngIf="!isLoading && filteredDoctors.length > 0" class="doctors-grid">
+      <div *ngFor="let doctor of getPaginatedDoctors()" class="doctor-card">
+        <div class="card-header">
+          <div class="doctor-avatar">
+            <img 
+              *ngIf="doctor.gender === 'Male' || doctor.gender === 'male'" 
+              [src]="'assets/img/maledoctor.png'" 
+              [alt]="doctor.doctorname"
+              class="avatar-img">
+            <img 
+              *ngIf="doctor.gender === 'Female' || doctor.gender === 'female'" 
+              [src]="'assets/img/femaledoctor.png'" 
+              [alt]="doctor.doctorname"
+              class="avatar-img">
+          </div>
+          <div class="status-badge" [class]="getStatusClass(doctor.status)">
+            <i class="fa" [class]="getStatusIcon(doctor.status)"></i>
+            {{ getStatusText(doctor.status) }}
+          </div>
+        </div>
+
+        <div class="card-body">
+          <h3 class="doctor-name">{{ doctor.doctorname }}</h3>
+          <p class="doctor-specialization">
+            <i class="fa fa-stethoscope"></i>
+            {{ doctor.specialization }}
+          </p>
+          
+          <div class="doctor-details">
+            <div class="detail-item">
+              <i class="fa fa-graduation-cap"></i>
+              <span>{{ doctor.experience }} years experience</span>
+            </div>
+            <div class="detail-item">
+              <i class="fa fa-user"></i>
+              <span>{{ doctor.gender }}</span>
+            </div>
+            <div class="detail-item">
+              <i class="fa fa-envelope"></i>
+              <span>{{ doctor.email }}</span>
+            </div>
+            <div class="detail-item">
+              <i class="fa fa-phone"></i>
+              <span>{{ doctor.mobile }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <button class="action-btn primary" [routerLink]="['/bookappointment']">
+            <i class="fa fa-calendar-plus-o"></i>
+            Book Appointment
+          </button>
+          <button class="action-btn secondary" (click)="viewDoctorProfile(doctor)">
+            <i class="fa fa-user-md"></i>
+            View Profile
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="filteredDoctors.length > 0" class="pagination">
+      <button 
+        class="pagination-btn" 
+        [disabled]="currentPage === 1"
+        (click)="previousPage()">
+        <i class="fa fa-chevron-left"></i>
+        Previous
+      </button>
+      
+      <div class="page-numbers">
+        <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+      </div>
+      
+      <button 
+        class="pagination-btn" 
+        [disabled]="currentPage === totalPages"
+        (click)="nextPage()">
+        Next
+        <i class="fa fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

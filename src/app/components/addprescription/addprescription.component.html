@@ -1,0 +1,175 @@
+<app-header></app-header>
+
+<div class="message" id="messagecard" *ngIf="message" [class.success]="message.includes('Success')">
+  <i class="fa" [class.fa-check-circle]="message.includes('Success')" [class.fa-exclamation-triangle]="!message.includes('Success')"></i>
+  <span>{{message}}</span>
+</div>
+
+<div class="container" id="prescriptionform">
+  <div class="form-header">
+    <h2 class="textual">
+      <i class="fa fa-sticky-note"></i>
+      <span>Add New Prescription</span>
+    </h2>
+    <p class="subtitle">Hello Doctor, please fill in the prescription details for your patient</p>
+  </div>
+
+  <form #addprescriptionform="ngForm" (ngSubmit)="addPrescription()" class="prescription-form">
+    
+    <!-- Patient Information Section -->
+    <div class="form-section">
+      <h3><i class="fa fa-user"></i> Patient Information</h3>
+      
+      <div class="form-group">
+        <label for="patientname">
+          Patient Name <span class="required">*</span>
+          <small>Choose from the dropdown</small>
+        </label>
+        <select 
+          class="form-control" 
+          name="patientname" 
+          [(ngModel)]="prescriptionobj.patientname"
+          required
+          #patientname="ngModel"
+          [class.is-invalid]="patientname.invalid && patientname.touched">
+          <option value="">Select Patient</option>
+          <option *ngFor="let patient of appointment | async" [value]="patient.patientname">
+            {{patient.patientname}}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="patientname.invalid && patientname.touched">
+          <span *ngIf="patientname.errors?.['required']">Patient selection is required</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="age">
+            Patient Age <span class="required">*</span>
+            <small>Enter patient's age</small>
+          </label>
+          <input 
+            type="number" 
+            class="form-control" 
+            placeholder="Enter age" 
+            name="age" 
+            [(ngModel)]="prescriptionobj.age" 
+            required 
+            min="0" 
+            max="150"
+            #age="ngModel"
+            [class.is-invalid]="age.invalid && age.touched">
+          <div class="error-message" *ngIf="age.invalid && age.touched">
+            <span *ngIf="age.errors?.['required']">Age is required</span>
+            <span *ngIf="age.errors?.['min'] || age.errors?.['max']">Please enter a valid age</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="gender">
+            Patient Gender <span class="required">*</span>
+            <small>Select patient's gender</small>
+          </label>
+          <select 
+            class="form-control" 
+            name="gender" 
+            [(ngModel)]="prescriptionobj.gender"
+            required
+            #gender="ngModel"
+            [class.is-invalid]="gender.invalid && gender.touched">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+          <div class="error-message" *ngIf="gender.invalid && gender.touched">
+            <span *ngIf="gender.errors?.['required']">Gender is required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medical Information Section -->
+    <div class="form-section">
+      <h3><i class="fa fa-stethoscope"></i> Medical Information</h3>
+      
+      <div class="form-group">
+        <label for="disease">
+          Patient's Disease <span class="required">*</span>
+          <small>Enter the diagnosed disease or condition</small>
+        </label>
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Enter patient disease" 
+          name="disease" 
+          [(ngModel)]="prescriptionobj.disease" 
+          required 
+          #disease="ngModel"
+          [class.is-invalid]="disease.invalid && disease.touched">
+        <div class="error-message" *ngIf="disease.invalid && disease.touched">
+          <span *ngIf="disease.errors?.['required']">Disease information is required</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="prescription">
+          Prescription <span class="required">*</span>
+          <small>Enter detailed prescription including medications, dosage, and instructions</small>
+        </label>
+        <textarea 
+          class="form-control" 
+          rows="6" 
+          placeholder="Enter your prescription here including medications, dosage, frequency, and special instructions..." 
+          name="prescription" 
+          [(ngModel)]="prescriptionobj.prescription" 
+          required 
+          #prescription="ngModel"
+          [class.is-invalid]="prescription.invalid && prescription.touched"></textarea>
+        <div class="error-message" *ngIf="prescription.invalid && prescription.touched">
+          <span *ngIf="prescription.errors?.['required']">Prescription details are required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Doctor Information Section -->
+    <div class="form-section">
+      <h3><i class="fa fa-user-md"></i> Doctor Information</h3>
+      
+      <div class="form-group">
+        <label for="doctorname">
+          Doctor Name <span class="required">*</span>
+          <small>Please enter your name here</small>
+        </label>
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Enter your name" 
+          name="doctorname" 
+          [(ngModel)]="prescriptionobj.doctorname" 
+          required 
+          #doctorname="ngModel"
+          [class.is-invalid]="doctorname.invalid && doctorname.touched">
+        <div class="error-message" *ngIf="doctorname.invalid && doctorname.touched">
+          <span *ngIf="doctorname.errors?.['required']">Doctor name is required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        class="btn submit-btn" 
+        [disabled]="addprescriptionform.form.invalid || isSubmitting"
+        [class.loading]="isSubmitting">
+        <i class="fa fa-plus" *ngIf="!isSubmitting"></i>
+        <span *ngIf="!isSubmitting">Add Prescription</span>
+        <span *ngIf="isSubmitting">Adding Prescription...</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<br><br>
+<app-footer></app-footer>

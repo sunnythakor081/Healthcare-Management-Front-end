@@ -1,0 +1,271 @@
+<app-header></app-header>
+
+<div class="message" id="messagecard" *ngIf="showMessage" [class.success]="message.includes('Success')">
+  <i class="fa" [class.fa-check-circle]="message.includes('Success')" [class.fa-exclamation-triangle]="!message.includes('Success')"></i>
+  <span>{{message}}</span>
+</div>
+
+<div class="container" id="appointmentform" *ngIf="showForm">
+  <div class="form-header">
+    <h2 class="textual">
+      <i class="fa fa-calendar-plus"></i>
+      <span>Book Your New Appointment</span>
+    </h2>
+    <p class="subtitle">Please check doctor's availability before booking your respective slot</p>
+  </div>
+
+  <form #bookappointmentform="ngForm" (ngSubmit)="bookAppointment()" class="appointment-form">
+    
+    <!-- Patient Information Section -->
+    <div class="form-section">
+      <h3><i class="fa fa-user"></i> Patient Information</h3>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="patientname">
+            Patient Name <span class="required">*</span>
+            <small>Enter full name with initial</small>
+          </label>
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Enter patient's full name" 
+            name="patientname" 
+            [(ngModel)]="appointment.patientname" 
+            required 
+            #patientname="ngModel"
+            [class.is-invalid]="patientname.invalid && patientname.touched">
+          <div class="error-message" *ngIf="patientname.invalid && patientname.touched">
+            <span *ngIf="patientname.errors?.['required']">Patient name is required</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">
+            Email Address <span class="required">*</span>
+            <small>Enter a valid email address</small>
+          </label>
+          <input 
+            type="email" 
+            class="form-control" 
+            placeholder="Enter email address" 
+            name="email" 
+            [(ngModel)]="appointment.email" 
+            required 
+            pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+            #email="ngModel"
+            [class.is-invalid]="email.invalid && email.touched">
+          <div class="error-message" *ngIf="email.invalid && email.touched">
+            <span *ngIf="email.errors?.['required']">Email is required</span>
+            <span *ngIf="email.errors?.['pattern']">Please enter a valid email address</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="age">
+            Patient Age <span class="required">*</span>
+            <small>Enter patient's age</small>
+          </label>
+          <input 
+            type="number" 
+            class="form-control" 
+            placeholder="Enter age" 
+            name="age" 
+            [(ngModel)]="appointment.age" 
+            required 
+            min="0" 
+            max="150"
+            #age="ngModel"
+            [class.is-invalid]="age.invalid && age.touched">
+          <div class="error-message" *ngIf="age.invalid && age.touched">
+            <span *ngIf="age.errors?.['required']">Age is required</span>
+            <span *ngIf="age.errors?.['min'] || age.errors?.['max']">Please enter a valid age</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="gender">
+            Patient Gender <span class="required">*</span>
+            <small>Select patient's gender</small>
+          </label>
+          <select 
+            class="form-control" 
+            name="gender" 
+            [(ngModel)]="appointment.gender"
+            required
+            #gender="ngModel"
+            [class.is-invalid]="gender.invalid && gender.touched">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+          <div class="error-message" *ngIf="gender.invalid && gender.touched">
+            <span *ngIf="gender.errors?.['required']">Gender is required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medical Information Section -->
+    <div class="form-section">
+      <h3><i class="fa fa-stethoscope"></i> Medical Information</h3>
+      
+      <div class="form-group">
+        <label for="problem">
+          Patient's Problem <span class="required">*</span>
+          <small>Describe the medical issue</small>
+        </label>
+        <textarea 
+          class="form-control" 
+          placeholder="Describe the patient's problem or symptoms" 
+          name="problem" 
+          [(ngModel)]="appointment.problem" 
+          required 
+          rows="3"
+          #problem="ngModel"
+          [class.is-invalid]="problem.invalid && problem.touched"></textarea>
+        <div class="error-message" *ngIf="problem.invalid && problem.touched">
+          <span *ngIf="problem.errors?.['required']">Problem description is required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Doctor & Specialization Section -->
+    <div class="form-section">
+      <h3><i class="fa fa-user-md"></i> Doctor & Specialization</h3>
+      
+      <div class="form-group">
+        <label for="specialization">
+          Specialization <span class="required">*</span>
+          <small>Choose from available specializations</small>
+        </label>
+        <select 
+          class="form-control" 
+          name="specialization" 
+          [(ngModel)]="appointment.specialization"
+          required
+          (change)="onSpecializationChange()"
+          #specialization="ngModel"
+          [class.is-invalid]="specialization.invalid && specialization.touched">
+          <option value="">Select Specialization</option>
+          <option value="General Physician">General Physician</option>
+          <option value="Cardiologist (Heart Specialist)">Cardiologist (Heart Specialist)</option>
+          <option value="Neurologist (Brain & Nervous System)">Neurologist (Brain & Nervous System)</option>
+          <option value="Orthopedic Surgeon (Bones & Joints)">Orthopedic Surgeon (Bones & Joints)</option>
+          <option value="Pediatrician (Child Specialist)">Pediatrician (Child Specialist)</option>
+          <option value="Dermatologist (Skin Specialist)">Dermatologist (Skin Specialist)</option>
+          <option value="Gynecologist / Obstetrician (Women's Health)">Gynecologist / Obstetrician (Women's Health)</option>
+          <option value="ENT Specialist (Ear, Nose, Throat)">ENT Specialist (Ear, Nose, Throat)</option>
+          <option value="Psychiatrist (Mental Health)">Psychiatrist (Mental Health)</option>
+          <option value="Ophthalmologist (Eye Specialist)">Ophthalmologist (Eye Specialist)</option>
+          <option value="Oncologist (Cancer Specialist)">Oncologist (Cancer Specialist)</option>
+          <option value="Pulmonologist (Lungs & Respiratory)">Pulmonologist (Lungs & Respiratory)</option>
+          <option value="Gastroenterologist (Digestive System)">Gastroenterologist (Digestive System)</option>
+          <option value="Urologist (Urinary & Male Reproductive)">Urologist (Urinary & Male Reproductive)</option>
+          <option value="Endocrinologist (Hormone Specialist)">Endocrinologist (Hormone Specialist)</option>
+          <option value="Nephrologist (Kidney Specialist)">Nephrologist (Kidney Specialist)</option>
+          <option value="Rheumatologist (Joint & Autoimmune Diseases)">Rheumatologist (Joint & Autoimmune Diseases)</option>
+          <option value="Anesthesiologist (Surgery Support)">Anesthesiologist (Surgery Support)</option>
+          <option value="Radiologist (Imaging & Scans)">Radiologist (Imaging & Scans)</option>
+          <option value="Dentist">Dentist</option>
+        </select>
+        <div class="error-message" *ngIf="specialization.invalid && specialization.touched">
+          <span *ngIf="specialization.errors?.['required']">Specialization is required</span>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="appointment.specialization && appointment.specialization !== ''">
+        <label for="doctorname">
+          Choose Doctor <span class="required">*</span>
+          <small>Select from available doctors</small>
+        </label>
+        <select 
+          class="form-control" 
+          name="doctorname" 
+          [(ngModel)]="appointment.doctorname"
+          required
+          #doctorname="ngModel"
+          [class.is-invalid]="doctorname.invalid && doctorname.touched">
+          <option value="">Select Doctor</option>
+          <option *ngFor="let doctor of doctors | async" [value]="doctor.doctorname">
+            {{doctor.doctorname}}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="doctorname.invalid && doctorname.touched">
+          <span *ngIf="doctorname.errors?.['required']">Doctor selection is required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Appointment Details Section -->
+    <div class="form-section">
+      <h3><i class="fa fa-calendar-check"></i> Appointment Details</h3>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="date">
+            Appointment Date <span class="required">*</span>
+            <small>Choose available date</small>
+          </label>
+          <input 
+            type="date" 
+            class="form-control" 
+            name="date" 
+            [(ngModel)]="appointment.date" 
+            required 
+            [min]="getMinDate()"
+            #date="ngModel"
+            [class.is-invalid]="date.invalid && date.touched">
+          <div class="error-message" *ngIf="date.invalid && date.touched">
+            <span *ngIf="date.errors?.['required']">Appointment date is required</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="slot">
+            Appointment Slot <span class="required">*</span>
+            <small>Choose preferred time slot</small>
+          </label>
+          <select 
+            class="form-control" 
+            name="slot" 
+            [(ngModel)]="appointment.slot"
+            required
+            #slot="ngModel"
+            [class.is-invalid]="slot.invalid && slot.touched">
+            <option value="">Select Slot</option>
+            <option value="AM slot">Morning (9:00 AM - 12:00 PM)</option>
+            <option value="Noon slot">Afternoon (12:00 PM - 3:00 PM)</option>
+            <option value="PM slot">Evening (3:00 PM - 6:00 PM)</option>
+          </select>
+          <div class="error-message" *ngIf="slot.invalid && slot.touched">
+            <span *ngIf="slot.errors?.['required']">Time slot is required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden Fields for Backend -->
+    <input type="hidden" name="appointmentstatus" [(ngModel)]="appointment.appointmentstatus">
+    <input type="hidden" name="admissionstatus" [(ngModel)]="appointment.admissionstatus">
+
+    <!-- Submit Button -->
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        class="btn submit-btn" 
+        [disabled]="bookappointmentform.form.invalid || isSubmitting"
+        [class.loading]="isSubmitting">
+        <i class="fa fa-calendar-plus" *ngIf="!isSubmitting"></i>
+        <span *ngIf="!isSubmitting">Book Your Appointment</span>
+        <span *ngIf="isSubmitting">Booking Appointment...</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<br><br>
+<app-footer></app-footer>

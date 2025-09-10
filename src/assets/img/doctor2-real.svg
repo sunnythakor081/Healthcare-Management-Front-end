@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300" viewBox="0 0 300 300">
+  <!-- Professional female doctor with stethoscope -->
+  <defs>
+    <linearGradient id="skin-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f1c27d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0ac69;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="coat-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="300" height="300" fill="#ffffff" />
+  
+  <!-- Lab coat -->
+  <path d="M75,120 L75,290 L225,290 L225,120 C200,140 175,130 150,120 C125,130 100,140 75,120 Z" fill="url(#coat-gradient)" stroke="#dee2e6" stroke-width="1" />
+  <path d="M110,120 L110,180 L140,180 L150,120 Z" fill="url(#coat-gradient)" stroke="#dee2e6" stroke-width="1" />
+  <path d="M190,120 L190,180 L160,180 L150,120 Z" fill="url(#coat-gradient)" stroke="#dee2e6" stroke-width="1" />
+  
+  <!-- Shirt collar -->
+  <path d="M130,130 L150,170 L170,130 Z" fill="#ff9e9e" stroke="#ff7096" stroke-width="1" />
+  
+  <!-- Face -->
+  <ellipse cx="150" cy="80" rx="45" ry="55" fill="url(#skin-gradient)" stroke="#e0ac69" stroke-width="1" />
+  
+  <!-- Hair -->
+  <path d="M105,80 C105,30 195,30 195,80 C195,20 105,20 105,80 Z" fill="#6c757d" stroke="#495057" stroke-width="1" />
+  <path d="M105,80 C105,60 115,60 115,80 Z" fill="#6c757d" stroke="#495057" stroke-width="1" />
+  <path d="M195,80 C195,60 185,60 185,80 Z" fill="#6c757d" stroke="#495057" stroke-width="1" />
+  
+  <!-- Eyes -->
+  <ellipse cx="130" cy="75" rx="5" ry="3" fill="#212529" />
+  <ellipse cx="170" cy="75" rx="5" ry="3" fill="#212529" />
+  
+  <!-- Eyebrows -->
+  <path d="M125,68 C125,65 135,65 135,68" fill="none" stroke="#212529" stroke-width="1.5" />
+  <path d="M165,68 C165,65 175,65 175,68" fill="none" stroke="#212529" stroke-width="1.5" />
+  
+  <!-- Nose -->
+  <path d="M150,75 L147,90 L153,90 Z" fill="url(#skin-gradient)" stroke="#e0ac69" stroke-width="0.5" />
+  
+  <!-- Mouth -->
+  <path d="M135,100 C135,110 165,110 165,100" fill="none" stroke="#212529" stroke-width="1.5" />
+  <path d="M135,100 C135,105 165,105 165,100" fill="#ff7096" stroke="#ff7096" stroke-width="0.5" />
+  
+  <!-- Stethoscope -->
+  <path d="M130,180 C120,200 100,190 90,210 C85,220 95,230 105,225 C115,220 125,230 130,220" fill="none" stroke="#212529" stroke-width="3" />
+  <circle cx="105" cy="225" r="8" fill="#ff7096" stroke="#212529" stroke-width="1" />
+  
+  <!-- Name tag -->
+  <rect x="130" y="190" width="40" height="20" rx="2" ry="2" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" />
+  <line x1="135" y1="195" x2="165" y2="195" stroke="#212529" stroke-width="1" />
+  <line x1="135" y1="200" x2="155" y2="200" stroke="#212529" stroke-width="1" />
+  <line x1="135" y1="205" x2="160" y2="205" stroke="#212529" stroke-width="1" />
+  
+  <!-- Professional details - more realistic facial features -->
+  <path d="M140,85 C140,83 160,83 160,85" fill="none" stroke="#e0ac69" stroke-width="1" />
+  
+  <!-- Earrings -->
+  <circle cx="105" cy="85" r="2" fill="#ffd700" stroke="#ffc107" stroke-width="0.5" />
+  <circle cx="195" cy="85" r="2" fill="#ffd700" stroke="#ffc107" stroke-width="0.5" />
+</svg>

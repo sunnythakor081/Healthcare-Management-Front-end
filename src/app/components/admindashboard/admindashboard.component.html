@@ -1,0 +1,309 @@
+<div class="admin-dashboard">
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-5 rounded-lg shadow-lg text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600 mx-auto"></div>
+      <p class="mt-3 text-gray-700">{{loadingMessage || 'Loading...'}}</p>
+    </div>
+  </div>
+
+  <!-- Error Alert -->
+  <div *ngIf="showError" class="fixed top-4 right-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md z-50" role="alert">
+    <div class="flex">
+      <div class="py-1"><i class="fa fa-exclamation-circle text-xl text-red-500"></i></div>
+      <div class="ml-3">
+        <p>{{errorMessage}}</p>
+      </div>
+      <button (click)="showError = false" class="ml-auto -mx-1.5 -my-1.5 bg-red-100 text-red-500 rounded-lg p-1.5 hover:bg-red-200 inline-flex h-8 w-8">
+        <i class="fa fa-times m-auto"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Success Alert -->
+  <div *ngIf="showSuccess" class="fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-md z-50" role="alert">
+    <div class="flex">
+      <div class="py-1"><i class="fa fa-check-circle text-xl text-green-500"></i></div>
+      <div class="ml-3">
+        <p>{{successMessage}}</p>
+      </div>
+      <button (click)="showSuccess = false" class="ml-auto -mx-1.5 -my-1.5 bg-green-100 text-green-500 rounded-lg p-1.5 hover:bg-green-200 inline-flex h-8 w-8">
+        <i class="fa fa-times m-auto"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Header with title and logout button -->
+  <header class="bg-white shadow-soft sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+      <div class="flex items-center">
+        <img src="assets/img/healthcaresystem.png" alt="Healthcare Logo" class="h-8 w-auto mr-3">
+        <h1 class="text-xl font-semibold text-gray-800">Hospital Management System</h1>
+      </div>
+      <button (click)="logout()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
+        <i class="fa fa-sign-out mr-2"></i>
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Admin welcome section -->
+    <div class="mb-8 text-center">
+      <div class="inline-block p-2 rounded-full bg-primary-100 mb-3">
+        <img src="assets/img/admin.png" alt="Admin" class="h-16 w-16 rounded-full object-cover border-2 border-primary-500">
+      </div>
+      <h1 class="text-3xl font-bold text-gray-900">Welcome, {{name}}</h1>
+      <p class="mt-1 text-lg text-gray-500">Hospital Management Admin Dashboard</p>
+    </div>
+
+    <!-- Stats Overview Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Total Users Card -->
+      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 p-3 rounded-xl bg-blue-100 text-blue-600">
+            <i class="fa fa-users text-xl"></i>
+          </div>
+          <div class="ml-5">
+            <h3 class="text-lg font-medium text-gray-900">Total Users</h3>
+            <div class="mt-1 flex items-baseline">
+              <p class="text-2xl font-semibold text-gray-900">{{ (users | async)?.length || 0 }}</p>
+              <p class="ml-2 text-sm text-gray-500">accounts</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Doctors Card -->
+      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 p-3 rounded-xl bg-green-100 text-green-600">
+            <i class="fa fa-user-md text-xl"></i>
+          </div>
+          <div class="ml-5">
+            <h3 class="text-lg font-medium text-gray-900">Total Doctors</h3>
+            <div class="mt-1 flex items-baseline">
+              <p class="text-2xl font-semibold text-gray-900">{{ (doctors | async)?.length || 0 }}</p>
+              <p class="ml-2 text-sm text-gray-500">specialists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Appointments Card -->
+      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 p-3 rounded-xl bg-purple-100 text-purple-600">
+            <i class="fa fa-calendar-check-o text-xl"></i>
+          </div>
+          <div class="ml-5">
+            <h3 class="text-lg font-medium text-gray-900">Appointments</h3>
+            <div class="mt-1 flex items-baseline">
+              <p class="text-2xl font-semibold text-gray-900">{{ (appointments | async)?.length || 0 }}</p>
+              <p class="ml-2 text-sm text-gray-500">scheduled</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prescriptions Card -->
+      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 p-3 rounded-xl bg-indigo-100 text-indigo-600">
+            <i class="fa fa-file-text-o text-xl"></i>
+          </div>
+          <div class="ml-5">
+            <h3 class="text-lg font-medium text-gray-900">Prescriptions</h3>
+            <div class="mt-1 flex items-baseline">
+              <p class="text-2xl font-semibold text-gray-900">{{ (prescriptions | async)?.length || 0 }}</p>
+              <p class="ml-2 text-sm text-gray-500">issued</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Slots Card -->
+      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 p-3 rounded-xl bg-yellow-100 text-yellow-600">
+            <i class="fa fa-clock-o text-xl"></i>
+          </div>
+          <div class="ml-5">
+            <h3 class="text-lg font-medium text-gray-900">Total Slots</h3>
+            <div class="mt-1 flex items-baseline">
+              <p class="text-2xl font-semibold text-gray-900">{{ (slots | async)?.length || 0 }}</p>
+              <p class="ml-2 text-sm text-gray-500">available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Patients Card -->
+      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 p-3 rounded-xl bg-red-100 text-red-600">
+            <i class="fa fa-user-o text-xl"></i>
+          </div>
+          <div class="ml-5">
+            <h3 class="text-lg font-medium text-gray-900">Patients</h3>
+            <div class="mt-1 flex items-baseline">
+              <p class="text-2xl font-semibold text-gray-900">{{ (patients | async)?.length || 0 }}</p>
+              <p class="ml-2 text-sm text-gray-500">registered</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Management Tables Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <!-- Doctors Management -->
+      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold text-gray-900">Doctors Management</h2>
+          <a [routerLink]="['/doctorlist']" class="text-primary-600 hover:text-primary-800 text-sm font-medium">View All</a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Specialty</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr *ngFor="let doctor of (doctors | async)?.slice(0, 3)">
+                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{doctor?.name || 'Dr. Name'}}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{{doctor?.speciality || 'Specialty'}}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm">
+                  <span [ngClass]="doctor?.status === 'Approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'" class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full">
+                    {{doctor?.status || 'Pending'}}
+                  </span>
+                </td>
+                <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
+                  <button (click)="approveDoctor(doctor?.id)" class="text-green-600 hover:text-green-900 mr-3">Accept</button>
+                  <button (click)="rejectDoctor(doctor?.id)" class="text-red-600 hover:text-red-900">Reject</button>
+                </td>
+              </tr>
+              <tr *ngIf="(doctors | async)?.length === 0">
+                <td colspan="4" class="px-4 py-4 text-center text-sm text-gray-500">No doctors found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Patients/Users Management -->
+      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold text-gray-900">Patients Management</h2>
+          <a [routerLink]="['/patientlist']" class="text-primary-600 hover:text-primary-800 text-sm font-medium">View All</a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr *ngFor="let patient of (patients | async)?.slice(0, 3)">
+                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{patient?.name || 'Patient Name'}}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{{patient?.email || 'patient@example.com'}}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
+                  <button class="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
+                  <button class="text-red-600 hover:text-red-900" (click)="deleteUser(patient?.id)">Delete</button>
+                </td>
+              </tr>
+              <tr *ngIf="(patients | async)?.length === 0">
+                <td colspan="3" class="px-4 py-4 text-center text-sm text-gray-500">No patients found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Doctor Slots Availability -->
+    <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-gray-900">Doctor Slots Availability</h2>
+        <a [routerLink]="['/slots']" class="text-primary-600 hover:text-primary-800 text-sm font-medium">Manage Slots</a>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Doctor</th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <tr *ngFor="let slot of (slots | async)?.slice(0, 5)">
+              <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{slot?.doctorName || 'Dr. Name'}}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{{slot?.date || '2023-10-15'}}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{{slot?.time || '10:00 AM'}}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm">
+                <span [ngClass]="slot?.status === 'Available' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'" class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full">
+                  {{slot?.status || 'Available'}}
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="(slots | async)?.length === 0">
+              <td colspan="4" class="px-4 py-4 text-center text-sm text-gray-500">No slots available</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Quick Action Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <a [routerLink]="['/addDoctor']" class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300 flex flex-col items-center justify-center text-center">
+        <div class="p-3 rounded-full bg-primary-100 text-primary-600 mb-4">
+          <i class="fa fa-user-plus text-xl"></i>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-1">Add Doctor</h3>
+        <p class="text-sm text-gray-500">Register a new doctor</p>
+      </a>
+
+      <a [routerLink]="['/approvedoctors']" class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300 flex flex-col items-center justify-center text-center">
+        <div class="p-3 rounded-full bg-green-100 text-green-600 mb-4">
+          <i class="fa fa-check-circle text-xl"></i>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-1">Approve Doctors</h3>
+        <p class="text-sm text-gray-500">Review pending applications</p>
+      </a>
+
+      <a [routerLink]="['/departments']" class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300 flex flex-col items-center justify-center text-center">
+        <div class="p-3 rounded-full bg-blue-100 text-blue-600 mb-4">
+          <i class="fa fa-hospital-o text-xl"></i>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-1">Departments</h3>
+        <p class="text-sm text-gray-500">Manage hospital departments</p>
+      </a>
+
+      <a [routerLink]="['/reports']" class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300 flex flex-col items-center justify-center text-center">
+        <div class="p-3 rounded-full bg-purple-100 text-purple-600 mb-4">
+          <i class="fa fa-bar-chart text-xl"></i>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-1">Reports</h3>
+        <p class="text-sm text-gray-500">View analytics and reports</p>
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-gray-200 mt-8">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <p class="text-center text-sm text-gray-500">&copy; 2023 Hospital Management System. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
