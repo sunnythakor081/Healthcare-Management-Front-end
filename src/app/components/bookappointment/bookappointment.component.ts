@@ -31,6 +31,9 @@ export class BookappointmentComponent implements OnInit {
   isSubmitting = false;
   showMessage = false;
   showForm = true;
+  selectedDate = '';
+  availableSlots: string[] = [];
+  selectedDoctor: any = null;
   
   constructor(private _service : DoctorService, private _router: Router, private userService : UserService) { }
 
@@ -96,28 +99,89 @@ export class BookappointmentComponent implements OnInit {
     });
   }
   
-  bookAppointment()
-  {
+  onDoctorSelect() {
+    if (this.appointment.doctorname && this.appointment.date) {
+      // Reset slots when doctor changes
+      this.appointment.slot = '';
+      this.checkSlotAvailability();
+    }
+  }
+
+  onDateChange() {
+    if (this.appointment.doctorname && this.appointment.date) {
+      // Reset slots when date changes
+      this.appointment.slot = '';
+      this.checkSlotAvailability();
+    }
+  }
+
+  checkSlotAvailability() {
+    // Get all slots for the selected doctor on the selected date
+    this._service.getSlotList().subscribe(slots => {
+      const doctorSlots = slots.find((slot: Slots) => 
+        slot.doctorname === this.appointment.doctorname && 
+        slot.date === this.appointment.date
+      );
+
+      this.availableSlots = [];
+      
+      if (doctorSlots) {
+        // Check AM slot
+        if (doctorSlots.amstatus === 'unbooked' && doctorSlots.amslot === 'empty') {
+          this.availableSlots.push('AM slot');
+        }
+        
+        // Check Noon slot
+        if (doctorSlots.noonstatus === 'unbooked' && doctorSlots.noonslot === 'empty') {
+          this.availableSlots.push('Noon slot');
+        }
+        
+        // Check PM slot
+        if (doctorSlots.pmstatus === 'unbooked' && doctorSlots.pmslot === 'empty') {
+          this.availableSlots.push('PM slot');
+        }
+      } else {
+        // If no slots found for the date, all slots are available
+        this.availableSlots = ['AM slot', 'Noon slot', 'PM slot'];
+      }
+    });
+  }
+
+  generatePatientId(): string {
+    const timestamp = new Date().getTime();
+    const random = Math.floor(Math.random() * 1000);
+    return `PAT${timestamp}${random}`;
+  }
+
+  bookAppointment() {
     this.isSubmitting = true;
     
     // Set default values for backend fields
     this.appointment.appointmentstatus = 'false';
     this.appointment.admissionstatus = 'false';
     
+    // Generate patient ID
+    this.appointment.patientid = this.generatePatientId();
+
     this.userService.addBookingAppointments(this.appointment).subscribe(
       data => {
         console.log("appointment booked Successfully");
         this.isSubmitting = false;
-        this._router.navigate(['/userdashboard']);
+        this.showForm = false;
+        this.showMessage = true;
+        this.message = "Your appointment has been booked successfully! Appointment ID: " + this.appointment.patientid;
+        setTimeout(() => {
+          this._router.navigate(['/userdashboard']);
+        }, 3000);
       },
       error => {
         console.log("process Failed");
         this.isSubmitting = false;
-        this.showForm = false;
+        this.showForm = true;
         this.showMessage = true;
         this.message = "There is a problem in Booking Your Appointment, Please check slot availability and try again !!!";
         console.log(error.error);
       }
-    )
+    );
   }
 }

@@ -411,6 +411,48 @@ input[type="hidden"] {
   display: none;
 }
 
+/* Doctor Info Styles */
+.doctor-info {
+  margin-top: 16px;
+  padding: 16px;
+  background: #f1f5f9;
+  border-radius: 12px;
+  animation: slideIn 0.3s ease;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  color: #475569;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-item i {
+  color: #667eea;
+  font-size: 1.1rem;
+}
+
+.info-item span {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Success Animation */
 @keyframes successPulse {
   0% { transform: scale(1); }

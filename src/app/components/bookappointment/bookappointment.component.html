@@ -1,7 +1,32 @@
 <app-header></app-header>
 
 <div class="message" id="messagecard" *ngIf="showMessage" [class.success]="message.includes('Success')">
-  <i class="fa" [class.fa-check-circle]="message.includes('Success')" [class.fa-exclamation-triangle]="!message.includes('Success')"></i>
+  <i class="fa" [class.fa-check-circle]="message.inc          <select
+          class="form-control" 
+          name="doctorname" 
+          [(ngModel)]="appointment.doctorname"
+          (change)="onDoctorSelect()"
+          required
+          #doctorname="ngModel"
+          [class.is-invalid]="doctorname.invalid && doctorname.touched">
+          <option value="">Select Doctor</option>
+          <option *ngFor="let doctor of doctors | async" [value]="doctor.doctorname">
+            {{doctor.doctorname}}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="doctorname.invalid && doctorname.touched">
+          <span *ngIf="doctorname.errors?.['required']">Doctor selection is required</span>
+        </div>
+        <div class="doctor-info" *ngIf="appointment.doctorname && doctors">
+          <div class="info-item">
+            <i class="fa fa-user-md"></i>
+            <span>Doctor: {{appointment.doctorname}}</span>
+          </div>
+          <div class="info-item">
+            <i class="fa fa-stethoscope"></i>
+            <span>Specialization: {{appointment.specialization}}</span>
+          </div>
+        </div>)" [class.fa-exclamation-triangle]="!message.includes('Success')"></i>
   <span>{{message}}</span>
 </div>
 
@@ -186,6 +211,7 @@
           class="form-control" 
           name="doctorname" 
           [(ngModel)]="appointment.doctorname"
+          (change)="onDoctorSelect()"
           required
           #doctorname="ngModel"
           [class.is-invalid]="doctorname.invalid && doctorname.touched">
@@ -196,6 +222,16 @@
         </select>
         <div class="error-message" *ngIf="doctorname.invalid && doctorname.touched">
           <span *ngIf="doctorname.errors?.['required']">Doctor selection is required</span>
+        </div>
+        <div class="doctor-info" *ngIf="appointment.doctorname">
+          <div class="info-item">
+            <i class="fa fa-user-md"></i>
+            <span>Selected Doctor: {{appointment.doctorname}}</span>
+          </div>
+          <div class="info-item">
+            <i class="fa fa-stethoscope"></i>
+            <span>Specialization: {{appointment.specialization}}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -217,6 +253,7 @@
             [(ngModel)]="appointment.date" 
             required 
             [min]="getMinDate()"
+            (change)="onDateChange()"
             #date="ngModel"
             [class.is-invalid]="date.invalid && date.touched">
           <div class="error-message" *ngIf="date.invalid && date.touched">
@@ -224,10 +261,10 @@
           </div>
         </div>
 
-        <div class="form-group">
+                  <div class="form-group">
           <label for="slot">
             Appointment Slot <span class="required">*</span>
-            <small>Choose preferred time slot</small>
+            <small>Choose available time slot</small>
           </label>
           <select 
             class="form-control" 
@@ -237,12 +274,17 @@
             #slot="ngModel"
             [class.is-invalid]="slot.invalid && slot.touched">
             <option value="">Select Slot</option>
-            <option value="AM slot">Morning (9:00 AM - 12:00 PM)</option>
-            <option value="Noon slot">Afternoon (12:00 PM - 3:00 PM)</option>
-            <option value="PM slot">Evening (3:00 PM - 6:00 PM)</option>
+            <option *ngFor="let availableSlot of availableSlots" [value]="availableSlot">
+              {{availableSlot === 'AM slot' ? 'Morning (9:00 AM - 12:00 PM)' : 
+                availableSlot === 'Noon slot' ? 'Afternoon (12:00 PM - 3:00 PM)' : 
+                'Evening (3:00 PM - 6:00 PM)'}}
+            </option>
           </select>
           <div class="error-message" *ngIf="slot.invalid && slot.touched">
             <span *ngIf="slot.errors?.['required']">Time slot is required</span>
+          </div>
+          <div *ngIf="availableSlots.length === 0 && appointment.date && appointment.doctorname" class="error-message">
+            No slots available for the selected date and doctor.
           </div>
         </div>
       </div>
