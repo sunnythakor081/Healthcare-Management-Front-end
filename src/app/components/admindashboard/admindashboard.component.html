@@ -34,16 +34,24 @@
   </div>
 
   <!-- Header with title and logout button -->
-  <header class="bg-white shadow-soft sticky top-0 z-10">
+  <header [class.scrolled]="isHeaderScrolled">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
       <div class="flex items-center">
-        <img src="assets/img/healthcaresystem.png" alt="Healthcare Logo" class="h-8 w-auto mr-3">
-        <h1 class="text-xl font-semibold text-gray-800">Hospital Management System</h1>
+        <div class="logo-container">
+          <img src="assets/img/healthcaresystem.png" alt="Healthcare Logo" class="h-8 w-auto mr-3">
+          <h1 class="text-xl font-semibold">Hospital Management System</h1>
+        </div>
       </div>
-      <button (click)="logout()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
-        <i class="fa fa-sign-out mr-2"></i>
-        Logout
-      </button>
+      <div class="flex items-center space-x-4">
+        <span class="admin-info">
+          <i class="fa fa-user-circle mr-2"></i>
+          {{loggedUser}}
+        </span>
+        <button (click)="logout()" class="admin-action-button">
+          <i class="fa fa-sign-out"></i>
+          Logout
+        </button>
+      </div>
     </div>
   </header>
 

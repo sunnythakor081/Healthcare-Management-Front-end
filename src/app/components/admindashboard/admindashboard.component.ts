@@ -28,6 +28,7 @@ export class AdmindashboardComponent implements OnInit {
   slots: Observable<any[]> | undefined;
   appointments: Observable<any[]> | undefined;
   prescriptions: Observable<any[]> | undefined;
+  isHeaderScrolled = false;
   
   // Loading states
   isLoading = false;
@@ -52,7 +53,19 @@ export class AdmindashboardComponent implements OnInit {
     private _route: Router, 
     private _service: UserService,
     private doctorService: DoctorService
-  ) { }
+  ) {
+    // Add scroll event listener
+    window.addEventListener('scroll', this.onScroll.bind(this));
+  }
+
+  ngOnDestroy() {
+    // Remove scroll event listener
+    window.removeEventListener('scroll', this.onScroll.bind(this));
+  }
+
+  onScroll() {
+    this.isHeaderScrolled = window.scrollY > 20;
+  }
 
   ngOnInit(): void 
   {
