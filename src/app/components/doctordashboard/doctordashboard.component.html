@@ -1,4 +1,8 @@
-<app-header></app-header>
+<div class="top-nav">
+  <a [routerLink]="['/']" class="home-link">Home</a>
+  <div class="doctor-info">Dr. {{name}}</div>
+</div>
+
 <div class="doctordashboard-hero">
   <div class="doctordashboard-avatar">
     <img *ngIf="gender === 'male' || gender === 'Male'" src="assets/img/maledoctor.png" alt="Doctor" />

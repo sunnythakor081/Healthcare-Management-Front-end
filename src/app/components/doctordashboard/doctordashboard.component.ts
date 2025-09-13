@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserService } from '../../services/user.service';
-import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -12,7 +11,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './doctordashboard.component.html',
   styleUrls: ['./doctordashboard.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule, HeaderComponent, FooterComponent]
+  imports: [CommonModule, RouterModule, FooterComponent]
 })
 export class DoctordashboardComponent implements OnInit {
 

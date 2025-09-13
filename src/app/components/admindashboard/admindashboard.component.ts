@@ -8,13 +8,14 @@ import { Doctor } from '../../models/doctor';
 import { User } from '../../models/user';
 import { DoctorService } from '../../services/doctor.service';
 import { Department } from '../../models/department';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-admindashboard',
   templateUrl: './admindashboard.component.html',
   styleUrls: ['./admindashboard.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, HeaderComponent]
 })
 export class AdmindashboardComponent implements OnInit {
 
@@ -44,6 +45,10 @@ export class AdmindashboardComponent implements OnInit {
   
   // Stats
   systemStats: any = {};
+  
+  // UI states
+  isMobileMenuOpen = false;
+  isDropdownOpen = false;
   
   // Department management
   departments: Observable<Department[]> | undefined;
@@ -274,6 +279,23 @@ export class AdmindashboardComponent implements OnInit {
     setTimeout(() => {
       this.showError = false;
     }, 5000);
+  }
+
+  /**
+   * Toggle mobile menu for responsive design
+   */
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    if (this.isMobileMenuOpen) {
+      this.isDropdownOpen = false;
+    }
+  }
+
+  /**
+   * Toggle dropdown menu
+   */
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 
   /**

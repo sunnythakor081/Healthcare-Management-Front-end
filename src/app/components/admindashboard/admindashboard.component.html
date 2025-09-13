@@ -1,8 +1,8 @@
-<div class="admin-dashboard">
+<div class="min-h-screen bg-gray-100">
   <!-- Loading Spinner -->
   <div *ngIf="isLoading" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white p-5 rounded-lg shadow-lg text-center">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600 mx-auto"></div>
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto"></div>
       <p class="mt-3 text-gray-700">{{loadingMessage || 'Loading...'}}</p>
     </div>
   </div>
@@ -10,12 +10,12 @@
   <!-- Error Alert -->
   <div *ngIf="showError" class="fixed top-4 right-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md z-50" role="alert">
     <div class="flex">
-      <div class="py-1"><i class="fa fa-exclamation-circle text-xl text-red-500"></i></div>
+      <div class="py-1"><i class="fas fa-exclamation-circle text-xl text-red-500"></i></div>
       <div class="ml-3">
         <p>{{errorMessage}}</p>
       </div>
       <button (click)="showError = false" class="ml-auto -mx-1.5 -my-1.5 bg-red-100 text-red-500 rounded-lg p-1.5 hover:bg-red-200 inline-flex h-8 w-8">
-        <i class="fa fa-times m-auto"></i>
+        <i class="fas fa-times m-auto"></i>
       </button>
     </div>
   </div>
@@ -23,47 +23,329 @@
   <!-- Success Alert -->
   <div *ngIf="showSuccess" class="fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-md z-50" role="alert">
     <div class="flex">
-      <div class="py-1"><i class="fa fa-check-circle text-xl text-green-500"></i></div>
+      <div class="py-1"><i class="fas fa-check-circle text-xl text-green-500"></i></div>
       <div class="ml-3">
         <p>{{successMessage}}</p>
       </div>
       <button (click)="showSuccess = false" class="ml-auto -mx-1.5 -my-1.5 bg-green-100 text-green-500 rounded-lg p-1.5 hover:bg-green-200 inline-flex h-8 w-8">
-        <i class="fa fa-times m-auto"></i>
+        <i class="fas fa-times m-auto"></i>
       </button>
     </div>
   </div>
 
-  <!-- Header with title and logout button -->
-  <header [class.scrolled]="isHeaderScrolled">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
-      <div class="flex items-center">
-        <div class="logo-container">
-          <img src="assets/img/healthcaresystem.png" alt="Healthcare Logo" class="h-8 w-auto mr-3">
-          <h1 class="text-xl font-semibold">Hospital Management System</h1>
+  <!-- Sidebar -->
+  <aside class="fixed inset-y-0 left-0 bg-blue-600 text-white w-64 transform transition-transform duration-200 ease-in-out z-30"
+         [class.translate-x-0]="!isMobileMenuOpen"
+         [class.-translate-x-full]="isMobileMenuOpen"
+         [class.lg:translate-x-0]="true">
+    <div class="flex flex-col h-full">
+      <!-- Logo section -->
+      <div class="flex items-center justify-between p-4 border-b border-blue-500">
+        <div class="flex items-center space-x-3">
+          <img src="assets/img/medicinelogo.png" class="h-8 w-8" alt="MediCare Logo">
+          <span class="text-xl font-semibold">MediCare</span>
         </div>
+        <button class="lg:hidden text-white hover:text-blue-100 focus:outline-none"
+                (click)="toggleMobileMenu()">
+          <i class="fas fa-times text-xl"></i>
+        </button>
       </div>
-      <div class="flex items-center space-x-4">
-        <span class="admin-info">
-          <i class="fa fa-user-circle mr-2"></i>
-          {{loggedUser}}
-        </span>
-        <button (click)="logout()" class="admin-action-button">
-          <i class="fa fa-sign-out"></i>
-          Logout
+
+      <!-- Navigation Links -->
+      <nav class="flex-1 overflow-y-auto py-4">
+        <div class="px-4 space-y-2">
+          <a routerLink="/admindashboard" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-tachometer-alt w-5"></i>
+            <span>Dashboard</span>
+          </a>
+          <a routerLink="/doctorlist" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-user-md w-5"></i>
+            <span>Manage Doctors</span>
+          </a>
+          <a routerLink="/userlist" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-users w-5"></i>
+            <span>Manage Users</span>
+          </a>
+          <a routerLink="/patientlist" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-hospital-user w-5"></i>
+            <span>Manage Patients</span>
+          </a>
+          <a routerLink="/slots" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-calendar-alt w-5"></i>
+            <span>Manage Slots</span>
+          </a>
+          <a routerLink="/reports" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-chart-bar w-5"></i>
+            <span>Reports</span>
+          </a>
+        </div>
+      </nav>
+
+      <!-- User Profile Section -->
+      <div class="p-4 border-t border-blue-500">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+            <i class="fas fa-user"></i>
+          </div>
+          <div>
+            <p class="text-sm font-medium">{{loggedUser}}</p>
+            <p class="text-xs text-blue-200">Administrator</p>
+          </div>
+        </div>
+        <button (click)="logout()" 
+                class="mt-4 w-full flex items-center justify-center space-x-2 px-4 py-2 text-sm font-medium text-blue-600 bg-white rounded-lg hover:bg-blue-50 transition-colors">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
         </button>
       </div>
     </div>
-  </header>
+  </aside>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Admin welcome section -->
-    <div class="mb-8 text-center">
-      <div class="inline-block p-2 rounded-full bg-primary-100 mb-3">
-        <img src="assets/img/admin.png" alt="Admin" class="h-16 w-16 rounded-full object-cover border-2 border-primary-500">
-      </div>
-      <h1 class="text-3xl font-bold text-gray-900">Welcome, {{name}}</h1>
-      <p class="mt-1 text-lg text-gray-500">Hospital Management Admin Dashboard</p>
+  <!-- Main Content -->
+  <div class="lg:pl-64">
+    <!-- Header -->
+  <app-header></app-header>
+
+  <!-- Main Content Area -->
+  <main class="px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Welcome Section -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold text-gray-900">Welcome back, {{name}}!</h2>
+      <p class="mt-1 text-gray-500">Here's what's happening in your hospital today.</p>
     </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Total Users -->
+      <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-lg font-medium text-gray-600">Total Users</p>
+            <p class="text-3xl font-bold text-gray-900 mt-2">{{ (users | async)?.length || 0 }}</p>
+          </div>
+          <div class="p-3 bg-blue-100 rounded-lg">
+            <i class="fas fa-users text-blue-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center text-sm text-gray-500">
+          <i class="fas fa-chart-line mr-2"></i>
+          <span>Active Accounts</span>
+        </div>
+      </div>
+
+      <!-- Total Doctors -->
+      <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-lg font-medium text-gray-600">Total Doctors</p>
+            <p class="text-3xl font-bold text-gray-900 mt-2">{{ (doctors | async)?.length || 0 }}</p>
+          </div>
+          <div class="p-3 bg-green-100 rounded-lg">
+            <i class="fas fa-user-md text-green-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center text-sm text-gray-500">
+          <i class="fas fa-check-circle mr-2"></i>
+          <span>Available Specialists</span>
+        </div>
+      </div>
+
+      <!-- Total Appointments -->
+      <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-lg font-medium text-gray-600">Appointments</p>
+            <p class="text-3xl font-bold text-gray-900 mt-2">{{ (appointments | async)?.length || 0 }}</p>
+          </div>
+          <div class="p-3 bg-purple-100 rounded-lg">
+            <i class="fas fa-calendar-check text-purple-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center text-sm text-gray-500">
+          <i class="fas fa-clock mr-2"></i>
+          <span>Today's Schedule</span>
+        </div>
+      </div>
+
+      <!-- Total Patients -->
+      <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-lg font-medium text-gray-600">Total Patients</p>
+            <p class="text-3xl font-bold text-gray-900 mt-2">{{ (patients | async)?.length || 0 }}</p>
+          </div>
+          <div class="p-3 bg-yellow-100 rounded-lg">
+            <i class="fas fa-hospital-user text-yellow-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center text-sm text-gray-500">
+          <i class="fas fa-user-plus mr-2"></i>
+          <span>Registered Patients</span>
+        </div>
+      </div>
+
+      <!-- Available Slots -->
+      <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-lg font-medium text-gray-600">Available Slots</p>
+            <p class="text-3xl font-bold text-gray-900 mt-2">{{ (slots | async)?.length || 0 }}</p>
+          </div>
+          <div class="p-3 bg-indigo-100 rounded-lg">
+            <i class="fas fa-clock text-indigo-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center text-sm text-gray-500">
+          <i class="fas fa-calendar-alt mr-2"></i>
+          <span>Open Time Slots</span>
+        </div>
+      </div>
+
+      <!-- Total Prescriptions -->
+      <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-lg font-medium text-gray-600">Prescriptions</p>
+            <p class="text-3xl font-bold text-gray-900 mt-2">{{ (prescriptions | async)?.length || 0 }}</p>
+          </div>
+          <div class="p-3 bg-red-100 rounded-lg">
+            <i class="fas fa-file-medical text-red-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center text-sm text-gray-500">
+          <i class="fas fa-pills mr-2"></i>
+          <span>Active Prescriptions</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Doctor Approvals Section -->
+    <div class="mb-8">
+      <div class="bg-white rounded-lg shadow-sm">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h3 class="text-lg font-medium text-gray-900">Pending Doctor Approvals</h3>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Doctor</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Speciality</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let doctor of (doctors | async)">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <img [src]="doctor.gender === 'male' ? 'assets/img/maledoctor.png' : 'assets/img/femaledoctor.png'" 
+                           class="h-10 w-10 rounded-full" alt="Doctor">
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-medium text-gray-900">Dr. {{doctor.name}}</div>
+                      <div class="text-sm text-gray-500">{{doctor.email}}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-900">{{doctor.speciality}}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                        [ngClass]="{'bg-yellow-100 text-yellow-800': doctor.status === 'Pending',
+                                  'bg-green-100 text-green-800': doctor.status === 'Approved',
+                                  'bg-red-100 text-red-800': doctor.status === 'Rejected'}">
+                    {{doctor.status}}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button (click)="approveDoctor(doctor.id)" 
+                          class="text-green-600 hover:text-green-900 mx-2">
+                    <i class="fas fa-check"></i> Approve
+                  </button>
+                  <button (click)="rejectDoctor(doctor.id)"
+                          class="text-red-600 hover:text-red-900">
+                    <i class="fas fa-times"></i> Reject
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="(doctors | async)?.length === 0">
+                <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
+                  No pending doctor approvals
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <a routerLink="/doctorlist" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group">
+        <div class="flex items-center space-x-4">
+          <div class="p-3 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
+            <i class="fas fa-user-md text-blue-600 text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-medium text-gray-900">Manage Doctors</h3>
+            <p class="text-sm text-gray-500">View and manage doctor profiles</p>
+          </div>
+        </div>
+      </a>
+
+      <a routerLink="/userlist" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group">
+        <div class="flex items-center space-x-4">
+          <div class="p-3 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
+            <i class="fas fa-users text-green-600 text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-medium text-gray-900">Manage Users</h3>
+            <p class="text-sm text-gray-500">Handle user accounts</p>
+          </div>
+        </div>
+      </a>
+
+      <a routerLink="/slots" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group">
+        <div class="flex items-center space-x-4">
+          <div class="p-3 bg-purple-100 rounded-lg group-hover:bg-purple-200 transition-colors">
+            <i class="fas fa-calendar-alt text-purple-600 text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-medium text-gray-900">Manage Slots</h3>
+            <p class="text-sm text-gray-500">Configure appointment slots</p>
+          </div>
+        </div>
+      </a>
+
+      <a routerLink="/reports" class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group">
+        <div class="flex items-center space-x-4">
+          <div class="p-3 bg-yellow-100 rounded-lg group-hover:bg-yellow-200 transition-colors">
+            <i class="fas fa-chart-line text-yellow-600 text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-medium text-gray-900">Reports</h3>
+            <p class="text-sm text-gray-500">View analytics and reports</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-auto bg-white border-t border-gray-200">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <p class="text-center text-sm text-gray-500">&copy; 2023 MediCare Healthcare System. All rights reserved.</p>
+    </div>
+  </footer>
 
     <!-- Stats Overview Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">

@@ -34,6 +34,9 @@ export class BookappointmentComponent implements OnInit {
   selectedDate = '';
   availableSlots: string[] = [];
   selectedDoctor: any = null;
+  doctorname: any; // Added for template reference
+  private retryCount = 0;
+  private maxRetries = 3;
   
   constructor(private _service : DoctorService, private _router: Router, private userService : UserService) { }
 
@@ -115,6 +118,26 @@ export class BookappointmentComponent implements OnInit {
     }
   }
 
+  checkFinalSlotAvailability(slots: any[]): boolean {
+    const doctorSlots = slots.find((slot: Slots) => 
+      slot.doctorname === this.appointment.doctorname && 
+      slot.date === this.appointment.date
+    );
+
+    if (!doctorSlots) return true; // New slot can be created
+
+    switch(this.appointment.slot) {
+      case 'AM slot':
+        return doctorSlots.amstatus === 'unbooked' && doctorSlots.amslot === 'empty';
+      case 'Noon slot':
+        return doctorSlots.noonstatus === 'unbooked' && doctorSlots.noonslot === 'empty';
+      case 'PM slot':
+        return doctorSlots.pmstatus === 'unbooked' && doctorSlots.pmslot === 'empty';
+      default:
+        return false;
+    }
+  }
+
   checkSlotAvailability() {
     // Get all slots for the selected doctor on the selected date
     this._service.getSlotList().subscribe(slots => {
@@ -153,35 +176,125 @@ export class BookappointmentComponent implements OnInit {
     return `PAT${timestamp}${random}`;
   }
 
+  validateAppointment(): { isValid: boolean, message: string } {
+    if (!this.appointment.patientname?.trim()) {
+      return { isValid: false, message: "Patient name is required" };
+    }
+    if (!this.appointment.email?.trim()) {
+      return { isValid: false, message: "Email is required" };
+    }
+    if (!this.appointment.doctorname?.trim()) {
+      return { isValid: false, message: "Doctor name is required" };
+    }
+    if (!this.appointment.specialization?.trim()) {
+      return { isValid: false, message: "Specialization is required" };
+    }
+    if (!this.appointment.date?.trim()) {
+      return { isValid: false, message: "Date is required" };
+    }
+    if (!this.appointment.age?.trim() || isNaN(Number(this.appointment.age))) {
+      return { isValid: false, message: "Valid age is required" };
+    }
+    if (!this.appointment.gender?.trim()) {
+      return { isValid: false, message: "Gender is required" };
+    }
+    if (!this.appointment.problem?.trim()) {
+      return { isValid: false, message: "Problem description is required" };
+    }
+    if (!this.appointment.slot?.trim()) {
+      return { isValid: false, message: "Time slot is required" };
+    }
+    return { isValid: true, message: "" };
+  }
+
+  private handleBookingError(error: any) {
+    console.error("Booking failed:", error);
+    this.isSubmitting = false;
+    this.showForm = true;
+    this.showMessage = true;
+    
+    if (error.status === 409) {
+      this.message = "This slot has already been booked. Please select another slot.";
+      this.checkSlotAvailability(); // Refresh available slots
+    } else if (error.status === 400) {
+      this.message = "Invalid appointment details. Please check all fields and try again.";
+    } else {
+      this.message = "There was a problem booking your appointment. Please try again later.";
+    }
+  }
+
+  private retryBooking() {
+    if (this.retryCount < this.maxRetries) {
+      this.retryCount++;
+      console.log(`Retrying booking attempt ${this.retryCount}`);
+      setTimeout(() => {
+        this.bookAppointment();
+      }, 1000); // Wait 1 second before retrying
+    } else {
+      this.handleBookingError({ status: 500, message: "Maximum retry attempts reached" });
+    }
+  }
+
   bookAppointment() {
     this.isSubmitting = true;
+    this.showMessage = false;
     
-    // Set default values for backend fields
-    this.appointment.appointmentstatus = 'false';
-    this.appointment.admissionstatus = 'false';
-    
-    // Generate patient ID
-    this.appointment.patientid = this.generatePatientId();
+    // Validate all required fields
+    const validation = this.validateAppointment();
+    if (!validation.isValid) {
+      this.isSubmitting = false;
+      this.showMessage = true;
+      this.message = validation.message;
+      return;
+    }
 
-    this.userService.addBookingAppointments(this.appointment).subscribe(
-      data => {
-        console.log("appointment booked Successfully");
-        this.isSubmitting = false;
-        this.showForm = false;
-        this.showMessage = true;
-        this.message = "Your appointment has been booked successfully! Appointment ID: " + this.appointment.patientid;
-        setTimeout(() => {
-          this._router.navigate(['/userdashboard']);
-        }, 3000);
+    // Check slot availability one final time before booking
+    this._service.getSlotList().subscribe({
+      next: (slots) => {
+        const slotAvailable = this.checkFinalSlotAvailability(slots);
+        if (!slotAvailable) {
+          this.isSubmitting = false;
+          this.showMessage = true;
+          this.message = "Sorry, this slot is no longer available. Please select another slot.";
+          this.checkSlotAvailability(); // Refresh available slots
+          return;
+        }
+
+        // Prepare appointment data
+        const appointmentData = {
+          ...this.appointment,
+          appointmentstatus: 'false',
+          admissionstatus: 'false',
+          patientid: this.generatePatientId()
+        };
+
+        // Attempt to book the appointment
+        this.userService.addBookingAppointments(appointmentData).subscribe({
+          next: (data) => {
+            console.log("Appointment booked successfully");
+            this.isSubmitting = false;
+            this.showForm = false;
+            this.showMessage = true;
+            this.message = "Your appointment has been booked successfully! Appointment ID: " + appointmentData.patientid;
+            this.retryCount = 0; // Reset retry counter
+            
+            setTimeout(() => {
+              this._router.navigate(['/userdashboard']);
+            }, 3000);
+          },
+          error: (error) => {
+            if (error.status === 409 && this.retryCount < this.maxRetries) {
+              // Retry on conflict (race condition)
+              this.retryBooking();
+            } else {
+              this.handleBookingError(error);
+            }
+          }
+        });
       },
-      error => {
-        console.log("process Failed");
-        this.isSubmitting = false;
-        this.showForm = true;
-        this.showMessage = true;
-        this.message = "There is a problem in Booking Your Appointment, Please check slot availability and try again !!!";
-        console.log(error.error);
+      error: (error) => {
+        this.handleBookingError(error);
       }
-    );
+    });
   }
 }

@@ -30,9 +30,9 @@ export class DoctorService {
     return this._http.get<any>(`${NAV_URL}/doctorlist`);
   }
 
-  getSlotList() : Observable<any>
+  getSlotList() : Observable<Slots[]>
   {
-    return this._http.get<any>(`${NAV_URL}/slotDetails`);
+    return this._http.get<Slots[]>(`${NAV_URL}/admin/slotlist`);
   }
 
   getSlotListWithUniqueDoctors() : Observable<any>
