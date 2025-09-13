@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Doctor } from '../models/doctor';
 import { Prescription } from '../models/prescription';
@@ -45,9 +45,19 @@ export class DoctorService {
     return this._http.get<any>(`${NAV_URL}/slotDetailsWithUniqueSpecializations`);
   }
 
-  getSlotDetails(loggedUser : string) : Observable<any>
-  {
-    return this._http.get<any>(`${NAV_URL}/slotDetails/`+loggedUser);
+  getSlotDetails(email: string): Observable<Slots[]> {
+    // Using the admin endpoint for better type safety and consistent naming
+    return this._http.get<Slots[]>(`${NAV_URL}/admin/doctorSlots/${email}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error fetching slot details:', error);
+        if (error.status === 404) {
+          // Fallback to legacy endpoint if admin endpoint not found
+          return this._http.get<Slots[]>(`${NAV_URL}/slotDetails/${email}`);
+        }
+        // Return empty array if both endpoints fail
+        return of([]);
+      })
+    );
   }
 
   getDoctorListByEmail(loggedUser : string) : Observable<any>
@@ -97,9 +107,13 @@ export class DoctorService {
     return this._http.get<any>(`${NAV_URL}/rejectpatient/`+slot);
   }
 
-  public addBookingSlots(slot : Slots) : Observable<any>
-  {
-    return this._http.post<any>(`${NAV_URL}/addBookingSlots`,slot);
+  public addBookingSlots(slot : Slots) : Observable<any> {
+    // Set default status for new slots
+    slot.amstatus = 'unbooked';
+    slot.noonstatus = 'unbooked';
+    slot.pmstatus = 'unbooked';
+    
+    return this._http.post<any>(`${NAV_URL}/admin/addBookingSlots`, slot);
   }
 
   public addPrescriptions(prescription : Prescription) : Observable<any>

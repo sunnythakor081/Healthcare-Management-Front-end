@@ -16,44 +16,167 @@ import { FooterComponent } from '../footer/footer.component';
   imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent]
 })
 export class ScheduleslotsComponent implements OnInit {
-
   currRole = '';
   loggedUser = '';
   slot = new Slots();
-  slots : Observable<Slots[]> | undefined;
+  slots: Slots[] = [];
+  isLoading = false;
+  error: string | null = null;
+  showForm = false;
+  successMessage: string | null = null;
   
-  constructor(private _service : DoctorService, private _router : Router) { }
+  constructor(private _service: DoctorService, private _router: Router) { }
 
-  ngOnInit(): void 
-  {
-    $("#slotform").hide();
-
-    $(".add-slot-btn").click(function(){
-      $("#slotform").show();
-      $("#slot-preview").hide();
-    });
-
-    this.loggedUser = JSON.stringify(sessionStorage.getItem('loggedUser')|| '{}');
-    this.loggedUser = this.loggedUser.replace(/"/g, '');
-
-    this.currRole = JSON.stringify(sessionStorage.getItem('ROLE')|| '{}'); 
-    this.currRole = this.currRole.replace(/"/g, '');
-
-    this.slots = this._service.getSlotDetails(this.loggedUser);
+  ngOnInit(): void {
+    this.initializeUserData();
+    this.loadDoctorSlots();
   }
 
-  addSlot()
-  {
-    this._service.addBookingSlots(this.slot).subscribe(
-      data => {
-        console.log("Slots added Successfully");
-        this._router.navigate(['/doctordashboard']);
+  getMinDate(): string {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  }
+
+  private initializeUserData() {
+    const loggedUserStr = sessionStorage.getItem('loggedUser');
+    this.loggedUser = loggedUserStr ? loggedUserStr.replace(/"/g, '') : '';
+
+    const roleStr = sessionStorage.getItem('ROLE');
+    this.currRole = roleStr ? roleStr.replace(/"/g, '') : '';
+
+    if (!this.loggedUser) {
+      this._router.navigate(['/login']);
+      return;
+    }
+
+    this.slot = new Slots(); // Reset slot data
+    this.slot.email = this.loggedUser;
+
+    // Pre-fill doctor information
+    this._service.getProfileDetails(this.loggedUser).subscribe({
+      next: (profile) => {
+        this.slot.doctorname = profile.username;
+        this.slot.specialization = profile.specialization;
       },
-      error => {
-        console.log("process Failed");
-        console.log(error.error);
+      error: (error) => {
+        console.error('Error loading profile:', error);
+        this.error = 'Failed to load doctor profile. Please try again.';
       }
-    )
+    });
+  }
+
+  private loadDoctorSlots() {
+    this.isLoading = true;
+    this.error = null;
+
+    this._service.getSlotDetails(this.loggedUser).subscribe({
+      next: (data) => {
+        this.slots = data || [];
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading slots:', error);
+        this.error = 'Failed to load slots. Please try again.';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  toggleForm() {
+    this.showForm = !this.showForm;
+    if (this.showForm) {
+      this.error = null; // Clear any errors when showing form
+      // Re-initialize slot data
+      this.slot = new Slots();
+      this.slot.email = this.loggedUser;
+      this._service.getProfileDetails(this.loggedUser).subscribe({
+        next: (profile) => {
+          this.slot.doctorname = profile.username;
+          this.slot.specialization = profile.specialization;
+        }
+      });
+    }
+  }
+
+  validateSlot(): { isValid: boolean, message: string } {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time part for date comparison
+    const selectedDate = new Date(this.slot.date);
+    selectedDate.setHours(0, 0, 0, 0);
+    
+    if (!this.slot.doctorname?.trim()) {
+      return { isValid: false, message: 'Doctor name is required' };
+    }
+    if (!this.slot.email?.trim()) {
+      return { isValid: false, message: 'Email is required' };
+    }
+    if (!this.slot.specialization?.trim()) {
+      return { isValid: false, message: 'Specialization is required' };
+    }
+    if (!this.slot.date) {
+      return { isValid: false, message: 'Date is required' };
+    }
+    if (selectedDate < today) {
+      return { isValid: false, message: 'Cannot schedule slots for past dates' };
+    }
+    if (!this.slot.patienttype) {
+      return { isValid: false, message: 'Patient type is required' };
+    }
+
+    // Check for existing slots on the same date
+    const existingSlot = this.slots.find(s => {
+      const slotDate = new Date(s.date);
+      slotDate.setHours(0, 0, 0, 0);
+      return slotDate.getTime() === selectedDate.getTime();
+    });
+
+    if (existingSlot) {
+      return { isValid: false, message: 'You already have slots scheduled for this date' };
+    }
+
+    return { isValid: true, message: '' };
+  }
+
+  addSlot() {
+    const validation = this.validateSlot();
+    if (!validation.isValid) {
+      this.error = validation.message;
+      return;
+    }
+
+    this.isLoading = true;
+    this.error = null;
+    this.successMessage = null;
+
+    // Set default status for new slots
+    this.slot.amstatus = 'unbooked';
+    this.slot.noonstatus = 'unbooked';
+    this.slot.pmstatus = 'unbooked';
+
+    // Format the date to match the expected format
+    const date = new Date(this.slot.date);
+    this.slot.date = date.toISOString().split('T')[0];
+
+    this._service.addBookingSlots(this.slot).subscribe({
+      next: () => {
+        this.successMessage = 'Slots added successfully!';
+        this.isLoading = false;
+        this.loadDoctorSlots(); // Refresh the slots list
+        this.showForm = false;
+        this.slot = new Slots(); // Reset form
+
+        // Auto-hide success message after 3 seconds
+        setTimeout(() => {
+          this.successMessage = null;
+          this._router.navigate(['/doctordashboard']);
+        }, 3000);
+      },
+      error: (error) => {
+        console.error('Error adding slots:', error);
+        this.isLoading = false;
+        this.error = error.error?.message || 'Failed to add slots. Please try again.';
+      }
+    });
   }
 
 }
