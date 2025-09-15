@@ -192,7 +192,7 @@ export class BookappointmentComponent implements OnInit {
     if (!this.appointment.date?.trim()) {
       return { isValid: false, message: "Date is required" };
     }
-    if (!this.appointment.age?.trim() || isNaN(Number(this.appointment.age))) {
+    if (!(typeof this.appointment.age === 'string' && this.appointment.age.trim() !== "") || isNaN(Number(this.appointment.age))) {
       return { isValid: false, message: "Valid age is required" };
     }
     if (!this.appointment.gender?.trim()) {
