@@ -55,7 +55,7 @@
             name="email" 
             [(ngModel)]="appointment.email" 
             required 
-            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+            [pattern]="'^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$'"
             #email="ngModel"
             [class.is-invalid]="email.invalid && email.touched">
           <div class="error-message" *ngIf="email.invalid && email.touched">

@@ -30,6 +30,7 @@ export class AdmindashboardComponent implements OnInit {
   appointments: Observable<any[]> | undefined;
   prescriptions: Observable<any[]> | undefined;
   isHeaderScrolled = false;
+
   
   // Loading states
   isLoading = false;
@@ -189,7 +190,7 @@ export class AdmindashboardComponent implements OnInit {
     sessionStorage.clear();
     // Navigate to login page
     this._route.navigate(['/login']);
-  }
+  }   
 
   /**
    * Approve a doctor application

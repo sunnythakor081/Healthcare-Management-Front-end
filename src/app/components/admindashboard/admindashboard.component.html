@@ -56,8 +56,13 @@
         <div class="px-4 space-y-2">
           <a routerLink="/admindashboard" routerLinkActive="bg-blue-700"
              class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="fas fa-tachometer-alt w-5"></i>
+            <!-- <i class="fas fa-user-plus text-xl w-5"></i> -->
             <span>Dashboard</span>
+          </a>
+          <a routerLink="/addDoctor" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fa fa-user-plus text-xl"></i>
+            <span>Add Doctor</span>
           </a>
           <a routerLink="/doctorlist" routerLinkActive="bg-blue-700"
              class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
@@ -74,7 +79,12 @@
             <i class="fas fa-hospital-user w-5"></i>
             <span>Manage Patients</span>
           </a>
-          <a routerLink="/slots" routerLinkActive="bg-blue-700"
+          <a routerLink="/approvedoctors" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+           <i class="fa fa-check-circle text-xl"></i>
+            <span>Approve Doctors</span>
+          </a>
+          <a routerLink="/checkslots" routerLinkActive="bg-blue-700"
              class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
             <i class="fas fa-calendar-alt w-5"></i>
             <span>Manage Slots</span>
@@ -340,111 +350,7 @@
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="mt-auto bg-white border-t border-gray-200">
-    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-      <p class="text-center text-sm text-gray-500">&copy; 2023 MediCare Healthcare System. All rights reserved.</p>
-    </div>
-  </footer>
 
-    <!-- Stats Overview Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-      <!-- Total Users Card -->
-      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 p-3 rounded-xl bg-blue-100 text-blue-600">
-            <i class="fa fa-users text-xl"></i>
-          </div>
-          <div class="ml-5">
-            <h3 class="text-lg font-medium text-gray-900">Total Users</h3>
-            <div class="mt-1 flex items-baseline">
-              <p class="text-2xl font-semibold text-gray-900">{{ (users | async)?.length || 0 }}</p>
-              <p class="ml-2 text-sm text-gray-500">accounts</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Total Doctors Card -->
-      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 p-3 rounded-xl bg-green-100 text-green-600">
-            <i class="fa fa-user-md text-xl"></i>
-          </div>
-          <div class="ml-5">
-            <h3 class="text-lg font-medium text-gray-900">Total Doctors</h3>
-            <div class="mt-1 flex items-baseline">
-              <p class="text-2xl font-semibold text-gray-900">{{ (doctors | async)?.length || 0 }}</p>
-              <p class="ml-2 text-sm text-gray-500">specialists</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Appointments Card -->
-      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 p-3 rounded-xl bg-purple-100 text-purple-600">
-            <i class="fa fa-calendar-check-o text-xl"></i>
-          </div>
-          <div class="ml-5">
-            <h3 class="text-lg font-medium text-gray-900">Appointments</h3>
-            <div class="mt-1 flex items-baseline">
-              <p class="text-2xl font-semibold text-gray-900">{{ (appointments | async)?.length || 0 }}</p>
-              <p class="ml-2 text-sm text-gray-500">scheduled</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Prescriptions Card -->
-      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 p-3 rounded-xl bg-indigo-100 text-indigo-600">
-            <i class="fa fa-file-text-o text-xl"></i>
-          </div>
-          <div class="ml-5">
-            <h3 class="text-lg font-medium text-gray-900">Prescriptions</h3>
-            <div class="mt-1 flex items-baseline">
-              <p class="text-2xl font-semibold text-gray-900">{{ (prescriptions | async)?.length || 0 }}</p>
-              <p class="ml-2 text-sm text-gray-500">issued</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Total Slots Card -->
-      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 p-3 rounded-xl bg-yellow-100 text-yellow-600">
-            <i class="fa fa-clock-o text-xl"></i>
-          </div>
-          <div class="ml-5">
-            <h3 class="text-lg font-medium text-gray-900">Total Slots</h3>
-            <div class="mt-1 flex items-baseline">
-              <p class="text-2xl font-semibold text-gray-900">{{ (slots | async)?.length || 0 }}</p>
-              <p class="ml-2 text-sm text-gray-500">available</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Patients Card -->
-      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 p-3 rounded-xl bg-red-100 text-red-600">
-            <i class="fa fa-user-o text-xl"></i>
-          </div>
-          <div class="ml-5">
-            <h3 class="text-lg font-medium text-gray-900">Patients</h3>
-            <div class="mt-1 flex items-baseline">
-              <p class="text-2xl font-semibold text-gray-900">{{ (patients | async)?.length || 0 }}</p>
-              <p class="ml-2 text-sm text-gray-500">registered</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Management Tables Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
@@ -487,7 +393,7 @@
       </div>
 
       <!-- Patients/Users Management -->
-      <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100">
+      <!-- <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-semibold text-gray-900">Patients Management</h2>
           <a [routerLink]="['/patientlist']" class="text-primary-600 hover:text-primary-800 text-sm font-medium">View All</a>
@@ -517,7 +423,7 @@
           </table>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Doctor Slots Availability -->
     <div class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 mb-8">
@@ -556,23 +462,23 @@
 
     <!-- Quick Action Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      <a [routerLink]="['/addDoctor']" class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300 flex flex-col items-center justify-center text-center">
+      <!-- <a [routerLink]="['/addDoctor']" class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300 flex flex-col items-center justify-center text-center">
         <div class="p-3 rounded-full bg-primary-100 text-primary-600 mb-4">
           <i class="fa fa-user-plus text-xl"></i>
         </div>
         <h3 class="text-lg font-medium text-gray-900 mb-1">Add Doctor</h3>
         <p class="text-sm text-gray-500">Register a new doctor</p>
-      </a>
+      </a> -->
 
-      <a [routerLink]="['/approvedoctors']" class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300 flex flex-col items-center justify-center text-center">
+      <!-- <a [routerLink]="['/approvedoctors']" class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300 flex flex-col items-center justify-center text-center">
         <div class="p-3 rounded-full bg-green-100 text-green-600 mb-4">
           <i class="fa fa-check-circle text-xl"></i>
         </div>
         <h3 class="text-lg font-medium text-gray-900 mb-1">Approve Doctors</h3>
         <p class="text-sm text-gray-500">Review pending applications</p>
-      </a>
+      </a> -->
 
-      <a [routerLink]="['/departments']" class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300 flex flex-col items-center justify-center text-center">
+      <!-- <a [routerLink]="['/departments']" class="bg-white rounded-2xl shadow-soft p-6 border border-gray-100 hover:shadow-hover transition-shadow duration-300 flex flex-col items-center justify-center text-center">
         <div class="p-3 rounded-full bg-blue-100 text-blue-600 mb-4">
           <i class="fa fa-hospital-o text-xl"></i>
         </div>
@@ -586,14 +492,14 @@
         </div>
         <h3 class="text-lg font-medium text-gray-900 mb-1">Reports</h3>
         <p class="text-sm text-gray-500">View analytics and reports</p>
-      </a>
+      </a> -->
     </div>
   </div>
 
   <!-- Footer -->
   <footer class="bg-white border-t border-gray-200 mt-8">
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-      <p class="text-center text-sm text-gray-500">&copy; 2023 Hospital Management System. All rights reserved.</p>
+      <p class="text-center text-sm text-gray-500">&copy; 2025 Hospital Management System. All rights reserved.</p>
     </div>
   </footer>
 </div>

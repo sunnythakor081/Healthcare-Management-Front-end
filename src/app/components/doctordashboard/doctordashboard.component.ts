@@ -27,6 +27,13 @@ export class DoctordashboardComponent implements OnInit {
   
   constructor(private _route : Router, private _service : UserService) { }
 
+   logout(): void {
+    // Clear all session storage items
+    sessionStorage.clear();
+    // Navigate to login page
+    this._route.navigate(['/login']);
+  }  
+
   ngOnInit(): void 
   {
     this.name = JSON.stringify(sessionStorage.getItem('doctorname')|| '{}');
@@ -46,12 +53,20 @@ export class DoctordashboardComponent implements OnInit {
     this.doctors = this._service.getTotalDoctors();
     this.slots = this._service.getTotalSlots();
     this.prescriptions = this._service.getTotalPrescriptions();
-    
-    $('.menuToggle').on('click',function(){
-      $(this).toggleClass('menuToggle_open');
-      $(".menu").toggleClass('hideMenu');
-    
-    });
+
+    setTimeout(() => {
+      $('.menuToggle').on('click', function() {
+        $(this).toggleClass('menuToggle_open');
+        $(".menu").toggleClass('hideMenu');
+      });
+    }, 500);
   }
+    
+  //   $('.menuToggle').on('click',function(){
+  //     $(this).toggleClass('menuToggle_open');
+  //     $(".menu").toggleClass('hideMenu');
+    
+  //   });
+  // }
 
 }

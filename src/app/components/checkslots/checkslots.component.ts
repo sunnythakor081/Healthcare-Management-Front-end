@@ -37,15 +37,53 @@ export class CheckslotsComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
 
-    this._service.getSlotList().subscribe({
+    // Try unique doctors endpoint first, fall back to general slot list
+    this._service.getSlotListWithUniqueDoctors().subscribe({
       next: (data) => {
-        this.slots = data;
-        this.isLoading = false;
+        if (data && Array.isArray(data) && data.length > 0) {
+          this.slots = data;
+          this.isLoading = false;
+        } else {
+          // If no data from unique doctors endpoint, try general slot list
+          this._service.getSlotList().subscribe({
+            next: (slots) => {
+              this.slots = slots;
+              this.isLoading = false;
+            },
+            error: (err) => {
+              console.error('Error loading general slots:', err);
+              if (err.status === 404) {
+                this.error = 'No slots are currently available.';
+              } else if (err.status === 0) {
+                this.error = 'Unable to connect to server. Please check your connection.';
+              } else {
+                this.error = `Error loading slots: ${err.message || 'Unknown error'}`;
+              }
+              this.isLoading = false;
+            }
+          });
+        }
       },
       error: (error) => {
-        console.error('Error loading slots:', error);
-        this.error = 'Failed to load slots. Please try again later.';
-        this.isLoading = false;
+        console.error('Error loading slots with unique doctors:', error);
+        // Fall back to general slot list on error
+        this._service.getSlotList().subscribe({
+          next: (slots) => {
+            this.slots = slots;
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.error('Error loading general slots:', err);
+            if (err.status === 404) {
+              this.error = 'No slots are currently available.';
+            } else if (err.status === 0) {
+              this.error = 'Unable to connect to server. Please check your connection.';
+            } else {
+              this.error = `Error loading slots: ${err.message || 'Unknown error'}`;
+            }
+            this.isLoading = false;
+          }
+        });
       }
     });
   }
@@ -54,11 +92,11 @@ export class CheckslotsComponent implements OnInit {
   isSlotAvailable(slot: Slots, timeSlot: 'am' | 'noon' | 'pm'): boolean {
     switch(timeSlot) {
       case 'am':
-        return slot.amstatus === 'unbooked' && slot.amslot === 'empty';
+        return slot.amstatus === 'unbooked' && slot.amslot !== 'empty';
       case 'noon':
-        return slot.noonstatus === 'unbooked' && slot.noonslot === 'empty';
+        return slot.noonstatus === 'unbooked' && slot.noonslot !== 'empty';
       case 'pm':
-        return slot.pmstatus === 'unbooked' && slot.pmslot === 'empty';
+        return slot.pmstatus === 'unbooked' && slot.pmslot !== 'empty';
     }
   }
 

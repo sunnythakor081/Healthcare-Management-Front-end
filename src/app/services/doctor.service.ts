@@ -14,6 +14,7 @@ const NAV_URL = environment.apiURL;
   providedIn: 'root'
 })
 export class DoctorService {
+  
 
   user = new User();
   doctor = new Doctor();

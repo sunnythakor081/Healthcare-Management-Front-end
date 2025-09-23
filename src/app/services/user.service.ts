@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry, timeout } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Appointment } from '../models/appointment';
 import { Doctor } from '../models/doctor';
-import { User } from '../models/user';
+import { User } from '../models/user';  
 
 const NAV_URL = environment.apiURL;
 
@@ -35,9 +36,36 @@ export class UserService {
     return this._http.get(`${NAV_URL}/profileDetails/`+loggedUser);
   }
   
-  public UpdateUserProfile(user:any):Observable<any>
-  {
-    return this._http.put<any>(`${NAV_URL}/updateuser`,user);
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'An error occurred';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = error.error.message;
+    } else {
+      // Server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    console.error(errorMessage);
+    return throwError(() => new Error(errorMessage));
+  }
+
+  private getHttpOptions() {
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }),
+      timeout: 30000 // 30 seconds timeout
+    };
+  }
+
+  public UpdateUserProfile(user: any): Observable<any> {
+    return this._http.put<any>(`${NAV_URL}/updateuser`, user, this.getHttpOptions())
+      .pipe(
+        retry(3), // Retry failed requests up to 3 times
+        timeout(30000), // 30 seconds timeout
+        catchError(this.handleError)
+      );
   }
 
   public getTotalPatients() : Observable<any>

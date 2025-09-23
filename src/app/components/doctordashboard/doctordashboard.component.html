@@ -1,7 +1,27 @@
-<div class="top-nav">
+<!-- <div class="top-nav">
   <a [routerLink]="['/']" class="home-link">Home</a>
   <div class="doctor-info">Dr. {{name}}</div>
-</div>
+</div> -->
+
+
+  <!-- User Profile Section -->
+<div class="p-4 border-t border-blue-500">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+            <i class="fas fa-user"></i>
+          </div>
+          <div>
+            <p class="text-sm font-medium">{{loggedUser}}</p>
+            <p class="text-xs text-blue-200">Docter</p>
+          </div>
+        </div>
+        <button (click)="logout()" 
+                class="mt-4 w-full flex items-center justify-center space-x-2 px-4 py-2 text-sm font-medium text-blue-600 bg-white rounded-lg hover:bg-blue-50 transition-colors">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+
 
 <div class="doctordashboard-hero">
   <div class="doctordashboard-avatar">
@@ -12,6 +32,51 @@
   <p class="doctordashboard-subtitle">Manage your upcoming appointments, access patient details, and update prescriptions with ease.</p>
 </div>
 
+  
+
+ <!-- Navigation Links
+      <nav class="flex-1 overflow-y-auto py-4">
+        <div class="px-4 space-y-2">
+         
+          <a routerLink="/editdoctorprofile" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fa fa-user-md"></i>
+            <span>Edit Profile</span>
+          </a>
+          <a routerLink="/doctorlist" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-user-md w-5"></i>
+            <span>Manage Doctors</span>
+          </a>
+          <a routerLink="/userlist" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-users w-5"></i>
+            <span>Manage Users</span>
+          </a>
+          <a routerLink="/patientlist" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-hospital-user w-5"></i>
+            <span>Manage Patients</span>
+          </a>
+          <a routerLink="/patientlist" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+           <i class="fa fa-user-o"></i>
+            <span>Patients</span>
+          </a>
+          <a routerLink="/appointments" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fa fa-calendar"></i>
+            <span>Appointments</span>
+          </a>
+          <a routerLink="/reports" routerLinkActive="bg-blue-700"
+             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-chart-bar w-5"></i>
+            <span>Reports</span>
+          </a>
+        </div>
+      </nav> -->
+
+      
 <div class="doctordashboard-actions">
   <a [routerLink]="['/appointments']" class="dashboard-action-card">
     <div class="action-icon"><i class="fa fa-calendar"></i></div>
