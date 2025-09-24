@@ -1,4 +1,6 @@
 <div class="main-container">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <!-- Navigation Bar -->
   <nav class="navbar" [ngClass]="{'scrolled': isScrolled}">
     <div class="navbar-container">
@@ -55,7 +57,7 @@
           </div>
         </div>
         <div class="hero-buttons">
-          <button class="btn btn-primary" (click)="navigateToAppointment()" [@pulse]="pulseState">Book Appointment</button>
+          <button class="btn btn-primary" (click)="navigateToLogin()" [@pulse]="pulseState">Login</button>
           <button class="btn btn-outline" (click)="navigateToRegister()">Register Now</button>
         </div>
       </div>
@@ -64,13 +66,16 @@
           <img src="https://img.freepik.com/free-photo/doctor-with-his-arms-crossed-white-background_1368-5790.jpg" alt="Expert Doctor" class="doctor-img">
           <img src="https://img.freepik.com/free-photo/woman-doctor-wearing-lab-coat-with-stethoscope-isolated_1303-29791.jpg" alt="Professional Doctor" class="doctor-img">
           <img src="https://img.freepik.com/free-photo/pleased-young-female-doctor-wearing-medical-robe-stethoscope-around-neck-standing-with-closed-posture_409827-254.jpg" alt="Healthcare Professional" class="doctor-img">
-          <img src="https://img.freepik.com/free-photo/medical-workers-covid-19-vaccination-concept-confident-professional-doctor-female-nurse-blue-scrubs-stethoscope-cross-arms-chest-ready-help-patients_1258-58852.jpg" alt="Medical Professional" class="doctor-img">
+          <img src="https://img.freepik.com/free-photo/portrait-smiling-doctor-with-crossed-arms_23-2147896187.jpg" alt="Friendly Doctor" class="doctor-img">
+       
+          
+       
         </div>
-        <div class="floating-badge online-status">
-          <i class="fas fa-circle text-success"></i>
-          <span>10+ Doctors Online</span>
-        </div>
-      </div>
+        <!-- <div class="floating-badge online-status">
+          <i class="fa-solid fa-circle text-success"></i>
+        <span>10+ Doctors Online</span>
+        </div> -->
+      </div>  
     </div>
   </section>
 
@@ -87,7 +92,7 @@
         </div>
         <h3>Cardiology</h3>
         <p>Expert heart care with state-of-the-art diagnostics and treatment</p>
-        <button class="btn-book" (click)="navigateToAppointment()">Book Now</button>
+        <!-- <button class="btn-book" (click)="navigateToAppointment()">Book Now</button> -->
       </div>
       <div class="service-card" [@slideInUp]>
         <div class="service-icon">
@@ -95,7 +100,7 @@
         </div>
         <h3>Neurology</h3>
         <p>Specialized care for neurological conditions and disorders</p>
-        <button class="btn-book" (click)="navigateToAppointment()">Book Now</button>
+        <!-- <button class="btn-book" (click)="navigateToAppointment()">Book Now</button> -->
       </div>
       <div class="service-card" [@slideInUp]>
         <div class="service-icon">
@@ -103,16 +108,147 @@
         </div>
         <h3>Pediatrics</h3>
         <p>Compassionate care for children of all ages</p>
-        <button class="btn-book" (click)="navigateToAppointment()">Book Now</button>
+        <!-- <button class="btn-book" (click)="navigateToAppointment()">Book Now</button> -->
       </div>
-      <div class="service-card" [@slideInUp]>
+      <!-- <div class="service-card" [@slideInUp]>
         <div class="service-icon">
           <img src="https://img.freepik.com/free-vector/online-doctor-concept-illustration_114360-5565.jpg" alt="Online Consultation">
         </div>
         <h3>Telemedicine</h3>
-        <p>Virtual consultations with experienced doctors</p>
-        <button class="btn-book" (click)="navigateToAppointment()">Book Now</button>
-      </div>
+        <p>Virtual consultations with experienced doctors</p> -->
+        <!-- <button class="btn-book" (click)="navigateToAppointment()">Book Now</button> -->
+      <!-- </div> -->
+
+
+
+       <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/bone-fracture-illustration_23-2148697090.jpg" alt="Orthopedic">
+    </div>
+    <h3>Orthopedic</h3>
+    <p>Comprehensive bone, joint, and muscle care</p>
+  </div>
+
+  <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/dermatology-concept-illustration_114360-9032.jpg" alt="Dermatology">
+    </div>
+    <h3>Dermatology</h3>
+    <p>Advanced skincare and treatment of skin disorders</p>
+  </div>
+
+  <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/dental-care-concept-illustration_114360-8828.jpg" alt="Dentistry">
+    </div>
+    <h3>Dentistry</h3>
+    <p>Complete oral and dental health services</p>
+  </div>
+
+  <!-- <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/x-ray-examination-concept-illustration_114360-7088.jpg" alt="Radiology">
+    </div>
+    <h3>Radiology</h3>
+    <p>Accurate imaging and diagnostic radiology services</p>
+  </div> -->
+
+  <!-- <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/anesthesia-concept-illustration_114360-9051.jpg" alt="Anesthesiology">
+    </div>
+    <h3>Anesthesiology</h3>
+    <p>Safe and effective anesthesia for surgical care</p>
+  </div> -->
+
+  <!-- <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/joint-pain-concept-illustration_114360-9067.jpg" alt="Rheumatology">
+    </div>
+    <h3>Rheumatology</h3>
+    <p>Expert care for arthritis and autoimmune diseases</p>
+  </div> -->
+
+  <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/kidney-disease-concept-illustration_114360-8870.jpg" alt="Nephrology">
+    </div>
+    <h3>Nephrology</h3>
+    <p>Advanced treatment for kidney-related disorders</p>
+  </div>
+
+  <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/endocrinology-concept-illustration_114360-9040.jpg" alt="Endocrinology">
+    </div>
+    <h3>Endocrinology</h3>
+    <p>Hormonal disorder diagnosis and treatment</p>
+  </div>
+
+  <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/urology-concept-illustration_114360-9055.jpg" alt="Urology">
+    </div>
+    <h3>Urology</h3>
+    <p>Specialized care for urinary tract and male health</p>
+  </div>
+
+  <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/stomach-pain-concept-illustration_114360-8897.jpg" alt="Gastroenterology">
+    </div>
+    <h3>Gastroenterology</h3>
+    <p>Digestive system health and treatment</p>
+  </div>
+
+  <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/lung-disease-concept-illustration_114360-9027.jpg" alt="Pulmonology">
+    </div>
+    <h3>Pulmonology</h3>
+    <p>Comprehensive care for lung and respiratory disorders</p>
+  </div>
+
+  <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/cancer-awareness-concept-illustration_114360-6853.jpg" alt="Oncology">
+    </div>
+    <h3>Oncology</h3>
+    <p>Cancer diagnosis, treatment, and care</p>
+  </div>
+
+  <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/ophthalmology-concept-illustration_114360-9035.jpg" alt="Ophthalmology">
+    </div>
+    <h3>Ophthalmology</h3>
+    <p>Advanced eye care and vision treatment</p>
+  </div>
+
+  <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/psychiatry-concept-illustration_114360-9024.jpg" alt="Psychiatry">
+    </div>
+    <h3>Psychiatry</h3>
+    <p>Mental health diagnosis and therapy</p>
+  </div>
+
+  <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/ent-specialist-concept-illustration_114360-9080.jpg" alt="ENT Specialist">
+    </div>
+    <h3>ENT Specialist</h3>
+    <p>Comprehensive care for ear, nose, and throat disorders</p>
+  </div>
+
+  <div class="service-card" [@slideInUp]>
+    <div class="service-icon">
+      <img src="https://img.freepik.com/free-vector/gynecology-concept-illustration_114360-9030.jpg" alt="Gynecology">
+    </div>
+    <h3>Gynecology</h3>
+    <p>Women's health, pregnancy, and reproductive care</p>
+  </div>
+
     </div>
   </section>
 
@@ -128,7 +264,7 @@
           <img src="https://img.freepik.com/free-photo/doctor-with-white-coat-stethoscope-isolated_1303-29791.jpg" alt="Dr. Sarah Johnson">
           <div class="doctor-badge available">Available Today</div>
           <div class="doctor-overlay">
-            <button class="btn-book" (click)="navigateToAppointment()">Book Appointment</button>
+            <!-- <button class="btn-book" (click)="navigateToAppointment()">Book Appointment</button> -->
           </div>
         </div>
         <div class="doctor-info">
@@ -159,7 +295,7 @@
           <img src="https://img.freepik.com/free-photo/pleased-young-female-doctor-wearing-medical-robe-stethoscope-around-neck-standing-with-closed-posture_409827-254.jpg" alt="Dr. Emily Rodriguez">
           <div class="doctor-badge available">Available Today</div>
           <div class="doctor-overlay">
-            <button class="btn-book" (click)="navigateToAppointment()">Book Appointment</button>
+            <!-- <button class="btn-book" (click)="navigateToAppointment()">Book Appointment</button> -->
           </div>
         </div>
         <div class="doctor-info">
@@ -190,7 +326,7 @@
           <img src="https://img.freepik.com/free-photo/male-doctor-with-stethoscope-standing-against-blue-wall_662251-297.jpg" alt="Dr. Michael Chen">
           <div class="doctor-badge busy">Next Available: Tomorrow</div>
           <div class="doctor-overlay">
-            <button class="btn-book" (click)="navigateToAppointment()">Book Appointment</button>
+            <!-- <button class="btn-book" (click)="navigateToAppointment()">Book Appointment</button> -->
           </div>
         </div>
         <div class="doctor-info">
@@ -221,7 +357,7 @@
           <img src="https://img.freepik.com/free-photo/woman-doctor-wearing-lab-coat-with-stethoscope-isolated_1303-29791.jpg" alt="Dr. Lisa Anderson">
           <div class="doctor-badge available">Available Today</div>
           <div class="doctor-overlay">
-            <button class="btn-book" (click)="navigateToAppointment()">Book Appointment</button>
+            <!-- <button class="btn-book" (click)="navigateToAppointment()">Book Appointment</button> -->
           </div>
         </div>
         <div class="doctor-info">
@@ -256,7 +392,7 @@
   </section>
 
   <!-- Appointment Section -->
-  <section id="appointment" class="appointment-section">
+  <!-- <section id="appointment" class="appointment-section">
     <div class="section-header" [@fadeIn]>
       <h2>Book an Appointment</h2>
       <p>Schedule your visit with our healthcare professionals</p>
@@ -321,7 +457,7 @@
         </form>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- Testimonials Section -->
   <section id="testimonials" class="testimonials-section">
@@ -357,19 +493,19 @@
     <div class="footer-content">
       <div class="footer-section about">
         <div class="logo">
-          <img src="assets/img/healthcare-logo.svg" alt="MediCare Logo" class="logo-img">
-          <span>MediCare</span>
+         <img src="https://cdn-icons-png.flaticon.com/512/3209/3209265.png" alt="MediCare Logo" width="93">
+
         </div>
         <p>Providing quality healthcare services with a focus on patient comfort and advanced medical solutions.</p>
         <div class="contact">
-          <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-          <p><i class="fas fa-envelope"></i> contact@medicare.com</p>
+          <p><i class="fas fa-phone"></i> +918141435587</p>
+          <p><i class="fas fa-envelope"></i> healthcare@medicare.com</p>
         </div>
         <div class="socials">
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="https://www.facebook.com/"><i class="fab fa-facebook"></i></a>
+          <a href="https://x.com/?lang=en-in"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
+          <a href="https://in.linkedin.com/"><i class="fab fa-linkedin"></i></a>
         </div>
       </div>
       
@@ -407,8 +543,8 @@
         <div class="app-download">
           <p>Get our mobile app</p>
           <div class="app-buttons">
-            <a href="#"><img src="assets/img/app-store.png" alt="App Store"></a>
-            <a href="#"><img src="assets/img/google-play.png" alt="Google Play"></a>
+            <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" width="150"></a>
+            <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" width="150"></a>
           </div>
         </div>
       </div>
