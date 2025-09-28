@@ -1,4 +1,7 @@
 <div class="login-hero">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
   <!-- Navigation Bar -->
   <div class="nav-bar">
     <a [routerLink]="['/']" class="home-btn">
@@ -53,16 +56,8 @@
             <label for="userEmail">Email Address</label>
             <div class="input-group">
               <i class="fa fa-envelope input-icon"></i>
-              <input 
-                type="email" 
-                id="userEmail"
-                class="form-control" 
-                placeholder="Enter your email" 
-                name="email" 
-                [(ngModel)]="user.email" 
-                required 
-                pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
-                #email="ngModel"
+              <input type="email" id="userEmail" class="form-control" placeholder="Enter your email" name="email"
+                [(ngModel)]="user.email" required pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$" #email="ngModel"
                 [class.is-invalid]="email.invalid && email.touched">
             </div>
             <div *ngIf="email.errors && email.invalid && email.touched" class="error-text">
@@ -75,15 +70,8 @@
             <label for="userPassword">Password</label>
             <div class="input-group">
               <i class="fa fa-lock input-icon"></i>
-              <input 
-                type="password" 
-                id="userPassword"
-                class="form-control" 
-                placeholder="Enter your password" 
-                name="pwd" 
-                [(ngModel)]="user.password" 
-                required 
-                #password="ngModel"
+              <input type="password" id="userPassword" class="form-control" placeholder="Enter your password" name="pwd"
+                [(ngModel)]="user.password" required #password="ngModel"
                 [class.is-invalid]="password.invalid && password.touched">
               <button type="button" class="password-toggle" (click)="togglePassword('userPassword')">
                 <i class="fa fa-eye"></i>
@@ -103,10 +91,7 @@
             <a href="#" class="forgot-link">Forgot Password?</a>
           </div>
 
-          <button 
-            [disabled]="userloginform.form.invalid || isLoading" 
-            type="submit" 
-            class="login-btn"
+          <button [disabled]="userloginform.form.invalid || isLoading" type="submit" class="login-btn"
             [class.loading]="isLoading">
             <span *ngIf="!isLoading">Sign In</span>
             <span *ngIf="isLoading">Signing In...</span>
@@ -122,17 +107,9 @@
             <label for="doctorEmail">Email Address</label>
             <div class="input-group">
               <i class="fa fa-envelope input-icon"></i>
-              <input 
-                type="email" 
-                id="doctorEmail"
-                class="form-control" 
-                placeholder="Enter your email" 
-                name="doctoremail" 
-                [(ngModel)]="doctor.email" 
-                required 
-                pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
-                #doctoremail="ngModel"
-                [class.is-invalid]="doctoremail.invalid && doctoremail.touched">
+              <input type="email" id="doctorEmail" class="form-control" placeholder="Enter your email"
+                name="doctoremail" [(ngModel)]="doctor.email" required pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+                #doctoremail="ngModel" [class.is-invalid]="doctoremail.invalid && doctoremail.touched">
             </div>
             <div *ngIf="doctoremail.errors && doctoremail.invalid && doctoremail.touched" class="error-text">
               <span *ngIf="doctoremail.errors['required']">Email is required</span>
@@ -144,15 +121,8 @@
             <label for="doctorPassword">Password</label>
             <div class="input-group">
               <i class="fa fa-lock input-icon"></i>
-              <input 
-                type="password" 
-                id="doctorPassword"
-                class="form-control" 
-                placeholder="Enter your password" 
-                name="pwd" 
-                [(ngModel)]="doctor.password" 
-                required 
-                #doctorpassword="ngModel"
+              <input type="password" id="doctorPassword" class="form-control" placeholder="Enter your password"
+                name="pwd" [(ngModel)]="doctor.password" required #doctorpassword="ngModel"
                 [class.is-invalid]="doctorpassword.invalid && doctorpassword.touched">
               <button type="button" class="password-toggle" (click)="togglePassword('doctorPassword')">
                 <i class="fa fa-eye"></i>
@@ -172,10 +142,7 @@
             <a href="#" class="forgot-link">Forgot Password?</a>
           </div>
 
-          <button 
-            [disabled]="doctorloginform.form.invalid || isLoading" 
-            type="submit" 
-            class="login-btn"
+          <button [disabled]="doctorloginform.form.invalid || isLoading" type="submit" class="login-btn"
             [class.loading]="isLoading">
             <span *ngIf="!isLoading">Sign In</span>
             <span *ngIf="isLoading">Signing In...</span>
@@ -191,16 +158,8 @@
             <label for="adminEmail">Email Address</label>
             <div class="input-group">
               <i class="fa fa-envelope input-icon"></i>
-              <input 
-                type="email" 
-                id="adminEmail"
-                class="form-control" 
-                placeholder="Enter admin email" 
-                name="email" 
-                [(ngModel)]="adminEmail" 
-                required 
-                pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
-                #adminemail="ngModel"
+              <input type="email" id="adminEmail" class="form-control" placeholder="Enter admin email" name="email"
+                [(ngModel)]="adminEmail" required pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$" #adminemail="ngModel"
                 [class.is-invalid]="adminemail.invalid && adminemail.touched">
             </div>
             <div *ngIf="adminemail.errors && adminemail.invalid && adminemail.touched" class="error-text">
@@ -213,15 +172,8 @@
             <label for="adminPassword">Password</label>
             <div class="input-group">
               <i class="fa fa-lock input-icon"></i>
-              <input 
-                type="password" 
-                id="adminPassword"
-                class="form-control" 
-                placeholder="Enter admin password" 
-                name="pwd" 
-                [(ngModel)]="adminPassword" 
-                required 
-                #adminpassword="ngModel"
+              <input type="password" id="adminPassword" class="form-control" placeholder="Enter admin password"
+                name="pwd" [(ngModel)]="adminPassword" required #adminpassword="ngModel"
                 [class.is-invalid]="adminpassword.invalid && adminpassword.touched">
               <button type="button" class="password-toggle" (click)="togglePassword('adminPassword')">
                 <i class="fa fa-eye"></i>
@@ -236,10 +188,7 @@
             <a href="#" class="forgot-link">Forgot Password?</a>
           </div>
 
-          <button 
-            [disabled]="adminloginform.form.invalid || isLoading" 
-            type="submit" 
-            class="login-btn"
+          <button [disabled]="adminloginform.form.invalid || isLoading" type="submit" class="login-btn"
             [class.loading]="isLoading">
             <span *ngIf="!isLoading">Sign In</span>
             <span *ngIf="isLoading">Signing In...</span>
@@ -254,19 +203,21 @@
         </div>
         <div class="social-buttons">
           <button class="social-btn google">
-            <i class="fa fa-google"></i>
+            <i class="fab fa-google"></i>
           </button>
           <button class="social-btn linkedin">
-            <i class="fa fa-linkedin"></i>
+            <i class="fab fa-linkedin"></i>
           </button>
           <button class="social-btn twitter">
-            <i class="fa fa-twitter"></i>
+            <i class="fab fa-twitter"></i>
           </button>
           <button class="social-btn github">
-            <i class="fa fa-github"></i>
+            <i class="fab fa-github"></i>
           </button>
         </div>
       </div>
+<router-outlet></router-outlet>
+
 
       <!-- Registration Link -->
       <div class="registration-link">

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HeaderComponent } from './components/header/header.component';
 import { AddingdoctorComponent } from './components/addingdoctor/addingdoctor.component';
 import { AddprescriptionComponent } from './components/addprescription/addprescription.component';
 import { AdmindashboardComponent } from './components/admindashboard/admindashboard.component';
@@ -27,29 +28,32 @@ import { DoctorGuard } from './guards/doctor.guard';
 import { RouterGuard } from './guards/router.guard';
 import { UserGuard } from './guards/user.guard';
 
+
 export const routes: Routes = [
-  {path:'',component:WelcomepageComponent},
-  {path:'login',component:LoginComponent},
-  {path:'registration',component:RegistrationComponent},
-  {path:'registrationsuccess',component:RegistrationsuccessComponent},
-  {path:'userdashboard',component:UserdashboardComponent,canActivate:[RouterGuard]},
-  {path:'admindashboard',component:AdmindashboardComponent,canActivate:[RouterGuard]},
-  {path:'doctordashboard',component:DoctordashboardComponent,canActivate:[RouterGuard]},
-  {path:'addDoctor',component:AddingdoctorComponent,canActivate:[AdminGuard]},
-  {path:'doctorlist',component:DoctorlistComponent,canActivate:[RouterGuard]},
-  {path:'userlist',component:UserlistComponent,canActivate:[RouterGuard]},
-  {path:'patientlist',component:PatientlistComponent,canActivate:[RouterGuard]},
-  {path:'appointments',component:AppointmentsComponent,canActivate:[DoctorGuard]},
-  {path:'approvedoctors',component:ApprovedoctorsComponent,canActivate:[AdminGuard]},
-  {path:'approvalstatus',component:ApprovalstatusComponent,canActivate:[RouterGuard]},
-  {path:'bookappointment',component:BookappointmentComponent,canActivate:[UserGuard]},
-  {path:'scheduleslots',component:ScheduleslotsComponent,canActivate:[DoctorGuard]},
-  {path:'checkslots',component:CheckslotsComponent,canActivate:[UserGuard]},
-  {path:'addprescription',component:AddprescriptionComponent,canActivate:[DoctorGuard]},
-  {path:'prescriptionlist',component:PrescriptionlistComponent,canActivate:[UserGuard]},
-  {path:'edituserprofile',component:EditUserProfileComponent,canActivate:[UserGuard]},
-  {path:'editdoctorprofile',component:DoctorprofileComponent,canActivate:[DoctorGuard]}
+  { path: '', component: WelcomepageComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'registration', component: RegistrationComponent },
+  { path: 'registrationsuccess', component: RegistrationsuccessComponent },
+  { path: 'userdashboard', component: UserdashboardComponent, canActivate: [RouterGuard] },
+  { path: 'admindashboard', component: AdmindashboardComponent, canActivate: [RouterGuard] },
+  { path: 'doctordashboard', component: DoctordashboardComponent, canActivate: [RouterGuard] },
+  { path: 'addDoctor', component: AddingdoctorComponent, canActivate: [AdminGuard] },
+  { path: 'doctorlist', component: DoctorlistComponent, canActivate: [RouterGuard] },
+  { path: 'userlist', component: UserlistComponent, canActivate: [RouterGuard] },
+  { path: 'patientlist', component: PatientlistComponent, canActivate: [RouterGuard] },
+  { path: 'appointments', component: AppointmentsComponent, canActivate: [DoctorGuard] },
+  { path: 'approvedoctors', component: ApprovedoctorsComponent, canActivate: [AdminGuard] },
+  { path: 'approvalstatus', component: ApprovalstatusComponent, canActivate: [RouterGuard] },
+  { path: 'bookappointment', component: BookappointmentComponent, canActivate: [UserGuard] },
+  { path: 'scheduleslots', component: ScheduleslotsComponent, canActivate: [DoctorGuard] },
+  { path: 'checkslots', component: CheckslotsComponent, canActivate: [UserGuard] },
+  { path: 'addprescription', component: AddprescriptionComponent, canActivate: [DoctorGuard] },
+  { path: 'prescriptionlist', component: PrescriptionlistComponent, canActivate: [UserGuard] },
+  { path: 'edituserprofile', component: EditUserProfileComponent, canActivate: [UserGuard] },
+  { path: 'editdoctorprofile', component: DoctorprofileComponent, canActivate: [DoctorGuard] }
+
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

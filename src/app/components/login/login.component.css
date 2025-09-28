@@ -337,6 +337,9 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
 }
+.login-btn:hover{
+   background: linear-gradient(135deg, #4160e7 0%, #6f3ca2 100%);
+}
 
 .login-btn:disabled {
   background: #6c757d;
@@ -547,4 +550,39 @@ body {
     height: 40px;
     font-size: 1rem;
   }
+}
+
+
+
+
+.registration-link {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 15px;
+  color: #444;
+  font-family: "Poppins", sans-serif;
+}
+
+.registration-link p {
+  margin: 0;
+}
+
+.register-link {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* green healthcare gradient */
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+}
+
+.register-link:hover {
+  background: linear-gradient(135deg, #4160e7 0%, #6f3ca2 100%); /* darker on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(16, 185, 129, 0.35);
 }

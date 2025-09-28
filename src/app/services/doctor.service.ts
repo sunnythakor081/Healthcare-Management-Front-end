@@ -8,12 +8,15 @@ import { Slots } from '../models/slots';
 import { User } from '../models/user';
 import { Department } from '../models/department';
 
+
 const NAV_URL = environment.apiURL;
 
 @Injectable({
   providedIn: 'root'
 })
 export class DoctorService {
+
+  
   
 
   user = new User();
@@ -108,14 +111,13 @@ export class DoctorService {
     return this._http.get<any>(`${NAV_URL}/rejectpatient/`+slot);
   }
 
-  public addBookingSlots(slot : Slots) : Observable<any> {
-    // Set default status for new slots
+  public addBookingSlots(slot: Slots): Observable<any> {
     slot.amstatus = 'unbooked';
     slot.noonstatus = 'unbooked';
     slot.pmstatus = 'unbooked';
     
-    return this._http.post<any>(`${NAV_URL}/admin/addBookingSlots`, slot);
-  }
+    return this._http.post<any>(`${NAV_URL}/addBookingSlots`, slot, { responseType : 'text' });
+}
 
   public addPrescriptions(prescription : Prescription) : Observable<any>
   {

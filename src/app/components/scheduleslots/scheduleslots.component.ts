@@ -171,11 +171,11 @@ export class ScheduleslotsComponent implements OnInit {
           this._router.navigate(['/doctordashboard']);
         }, 3000);
       },
-      error: (error) => {
-        console.error('Error adding slots:', error);
-        this.isLoading = false;
-        this.error = error.error?.message || 'Failed to add slots. Please try again.';
-      }
+     error: (err) => {
+    console.error('Error adding slots:', err);
+    this.isLoading = false;
+    this.error = err.error || 'Failed to add slots. Please try again.';
+}
     });
   }
 
