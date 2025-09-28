@@ -116,7 +116,8 @@ export class DoctorService {
     slot.noonstatus = 'unbooked';
     slot.pmstatus = 'unbooked';
     
-    return this._http.post<any>(`${NAV_URL}/addBookingSlots`, slot, { responseType : 'text' });
+    return this._http.post<any>(`${NAV_URL}/addBookingSlots`, slot, );
+    // { responseType : 'text' }  set up
 }
 
   public addPrescriptions(prescription : Prescription) : Observable<any>
