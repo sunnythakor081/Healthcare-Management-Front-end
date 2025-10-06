@@ -17,39 +17,57 @@ export class ApprovedoctorsComponent implements OnInit {
 
   currRole = '';
   loggedUser = '';
-  doctors : Observable<Doctor[]> | undefined;
-  responses : Observable<any> | undefined;
+  doctors: Doctor[] = [];
   
-  constructor(private _service : DoctorService) { }
+  constructor(private _service: DoctorService) { }
 
-  ngOnInit(): void
-  {
-    this.loggedUser = JSON.stringify(sessionStorage.getItem('loggedUser')|| '{}');
-    this.loggedUser = this.loggedUser.replace(/"/g, '');
-
-    this.currRole = JSON.stringify(sessionStorage.getItem('ROLE')|| '{}'); 
-    this.currRole = this.currRole.replace(/"/g, '');
-
-    this.doctors = this._service.getDoctorList();
-
+  ngOnInit(): void {
+    this.loggedUser = sessionStorage.getItem('loggedUser') || '';
+    this.currRole = sessionStorage.getItem('ROLE') || '';
+    this._service.getDoctorList().subscribe({
+      next: (data) => this.doctors = data,
+      error: (err) => console.error('Error fetching doctors:', err)
+    });
   }
 
-  acceptRequest(curremail : string)
-  {
-    this.responses = this._service.acceptRequestForDoctorApproval(curremail);
-    $("#acceptbtn").hide();
-    $("#rejectbtn").hide();
-    $("#acceptedbtn").show();
-    $("#rejectedbtn").hide();
+  acceptRequest(email: string) {
+    const doctor = this.doctors.find(d => d.email === email);
+    if (doctor) {
+      doctor.status = 'processing';
+    }
+    this._service.acceptRequestForDoctorApproval(email).subscribe({
+      next: (res) => {
+        if (doctor) {
+          doctor.status = 'accept';
+        }
+      },
+      error: (err) => {
+        if (doctor) {
+          doctor.status = 'false';
+        }
+        console.error('Error accepting request:', err);
+      }
+    });
   }
 
-  rejectRequest(curremail : string)
-  {
-    this.responses = this._service.rejectRequestForDoctorApproval(curremail);
-    $("#acceptbtn").hide();
-    $("#rejectbtn").hide();
-    $("#acceptedbtn").hide();
-    $("#rejectedbtn").show();
+  rejectRequest(email: string) {
+    const doctor = this.doctors.find(d => d.email === email);
+    if (doctor) {
+      doctor.status = 'processing';
+    }
+    this._service.rejectRequestForDoctorApproval(email).subscribe({
+      next: (res) => {
+        if (doctor) {
+          doctor.status = 'reject';
+        }
+      },
+      error: (err) => {
+        if (doctor) {
+          doctor.status = 'false';
+        }
+        console.error('Error rejecting request:', err);
+      }
+    });
   }
 
 }

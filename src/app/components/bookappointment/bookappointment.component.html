@@ -117,68 +117,28 @@
       <h3><i class="fa fa-stethoscope"></i> Medical Information</h3>
       
       <div class="form-group">
-        <label for="problem">
-          Patient's Problem <span class="required">*</span>
-          <small>Describe the medical issue</small>
-        </label>
-        <textarea 
-          class="form-control" 
-          placeholder="Describe the patient's problem or symptoms" 
-          name="problem" 
-          [(ngModel)]="appointment.problem" 
-          required 
-          rows="3"
-          #problem="ngModel"
-          [class.is-invalid]="problem.invalid && problem.touched"></textarea>
-        <div class="error-message" *ngIf="problem.invalid && problem.touched">
-          <span *ngIf="problem.errors?.['required']">Problem description is required</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Doctor & Specialization Section -->
-    <div class="form-section">
-      <h3><i class="fa fa-user-md"></i> Doctor & Specialization</h3>
-      
-      <div class="form-group">
-        <label for="specialization">
-          Specialization <span class="required">*</span>
-          <small>Choose from available specializations</small>
-        </label>
-        <select 
-          class="form-control" 
-          name="specialization" 
-          [(ngModel)]="appointment.specialization"
-          required
-          (change)="onSpecializationChange()"
-          #specialization="ngModel"
-          [class.is-invalid]="specialization.invalid && specialization.touched">
-          <option value="">Select Specialization</option>
-          <option value="General Physician">General Physician</option>
-          <option value="Cardiologist (Heart Specialist)">Cardiologist (Heart Specialist)</option>
-          <option value="Neurologist (Brain & Nervous System)">Neurologist (Brain & Nervous System)</option>
-          <option value="Orthopedic Surgeon (Bones & Joints)">Orthopedic Surgeon (Bones & Joints)</option>
-          <option value="Pediatrician (Child Specialist)">Pediatrician (Child Specialist)</option>
-          <option value="Dermatologist (Skin Specialist)">Dermatologist (Skin Specialist)</option>
-          <option value="Gynecologist / Obstetrician (Women's Health)">Gynecologist / Obstetrician (Women's Health)</option>
-          <option value="ENT Specialist (Ear, Nose, Throat)">ENT Specialist (Ear, Nose, Throat)</option>
-          <option value="Psychiatrist (Mental Health)">Psychiatrist (Mental Health)</option>
-          <option value="Ophthalmologist (Eye Specialist)">Ophthalmologist (Eye Specialist)</option>
-          <option value="Oncologist (Cancer Specialist)">Oncologist (Cancer Specialist)</option>
-          <option value="Pulmonologist (Lungs & Respiratory)">Pulmonologist (Lungs & Respiratory)</option>
-          <option value="Gastroenterologist (Digestive System)">Gastroenterologist (Digestive System)</option>
-          <option value="Urologist (Urinary & Male Reproductive)">Urologist (Urinary & Male Reproductive)</option>
-          <option value="Endocrinologist (Hormone Specialist)">Endocrinologist (Hormone Specialist)</option>
-          <option value="Nephrologist (Kidney Specialist)">Nephrologist (Kidney Specialist)</option>
-          <option value="Rheumatologist (Joint & Autoimmune Diseases)">Rheumatologist (Joint & Autoimmune Diseases)</option>
-          <option value="Anesthesiologist (Surgery Support)">Anesthesiologist (Surgery Support)</option>
-          <option value="Radiologist (Imaging & Scans)">Radiologist (Imaging & Scans)</option>
-          <option value="Dentist">Dentist</option>
-        </select>
-        <div class="error-message" *ngIf="specialization.invalid && specialization.touched">
-          <span *ngIf="specialization.errors?.['required']">Specialization is required</span>
-        </div>
-      </div>
+  <label for="specialization">
+    Specialization <span class="required">*</span>
+    <small>Choose from available specializations</small>
+  </label>
+  <select 
+    class="form-control" 
+    name="specialization" 
+    [(ngModel)]="appointment.specialization"
+    required
+    (change)="onSpecializationChange()"
+    #specialization="ngModel"
+    [class.is-invalid]="specialization.invalid && specialization.touched">
+    <option value="">Select Specialization</option>
+    <option *ngFor="let spec of specializations | async" [value]="spec">
+      {{spec}} <!-- Yeh karo, kyunki string hai -->
+    </option>
+  </select>
+  <div class="error-message" *ngIf="specialization.invalid && specialization.touched">
+    <span *ngIf="specialization.errors?.['required']">Specialization is required</span>
+  </div>
+  <div *ngIf="(specializations | async)?.length === 0">No specializations available from backend.</div>
+</div>
 
       <div class="form-group" *ngIf="appointment.specialization && appointment.specialization !== ''">
         <label for="doctorname">
@@ -210,6 +170,27 @@
             <i class="fa fa-stethoscope"></i>
             <span>Specialization: {{appointment.specialization}}</span>
           </div>
+        </div>
+      </div>
+
+      <!-- Added Problem Description Field -->
+      <div class="form-group">
+        <label for="problem">
+          Problem Description <span class="required">*</span>
+          <small>Describe the medical issue or symptoms in detail</small>
+        </label>
+        <textarea 
+          class="form-control" 
+          name="problem" 
+          [(ngModel)]="appointment.problem"
+          required
+          rows="4"
+          placeholder="Describe your symptoms, medical history, or reason for appointment"
+          #problem="ngModel"
+          [class.is-invalid]="problem.invalid && problem.touched">
+        </textarea>
+        <div class="error-message" *ngIf="problem.invalid && problem.touched">
+          <span *ngIf="problem.errors?.['required']">Problem description is required</span>
         </div>
       </div>
     </div>
