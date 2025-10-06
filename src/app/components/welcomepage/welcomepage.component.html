@@ -94,10 +94,7 @@
     </div>
     <div class="doctors-grid">
       <div *ngFor="let doctor of featuredDoctors; let i = index" class="doctor-card" [@slideInUp]>
-        <div class="doctor-image">
-          <img [src]="doctor.image" [alt]="doctor.name">
-          <div class="doctor-badge" *ngIf="doctor.available">Available Today</div>
-        </div>
+       
         <div class="doctor-info">
           <h3>{{doctor.name}}</h3>
           <p class="specialty">{{doctor.specialty}}</p>
@@ -118,10 +115,7 @@
             </div>
           </div>
           <p class="bio">{{doctor.bio}}</p>
-          <div class="doctor-actions">
-            <button class="btn-book" (click)="navigateToBooking(doctor.id); selectDepartment(doctor.specialty)">Book Appointment</button>
-            <button class="btn-profile" [routerLink]="['/doctor', doctor.id]">View Profile</button>
-          </div>
+         
         </div>
       </div>
     </div>
