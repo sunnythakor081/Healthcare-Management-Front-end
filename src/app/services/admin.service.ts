@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, of, tap } from 'rxjs';
-import { environment } from '../../environments/environment';
 
-const NAV_URL = environment.apiURL;// Yeh tera base URL, change kar agar alag hai
+const NAV_URL = 'http://localhost:8080'; // Yeh tera base URL, change kar agar alag hai
 
 @Injectable({
   providedIn: 'root'
