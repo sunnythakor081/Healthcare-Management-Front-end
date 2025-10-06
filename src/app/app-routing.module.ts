@@ -29,6 +29,7 @@ import { RouterGuard } from './guards/router.guard';
 import { UserGuard } from './guards/user.guard';
 
 
+
 export const routes: Routes = [
   { path: '', component: WelcomepageComponent },
   { path: 'login', component: LoginComponent },
@@ -50,7 +51,10 @@ export const routes: Routes = [
   { path: 'addprescription', component: AddprescriptionComponent, canActivate: [DoctorGuard] },
   { path: 'prescriptionlist', component: PrescriptionlistComponent, canActivate: [UserGuard] },
   { path: 'edituserprofile', component: EditUserProfileComponent, canActivate: [UserGuard] },
-  { path: 'editdoctorprofile', component: DoctorprofileComponent, canActivate: [DoctorGuard] }
+  { path: 'editdoctorprofile', component: DoctorprofileComponent, canActivate: [DoctorGuard] },
+  {path: 'userprofile', component: UserprofileComponent, canActivate: [UserGuard]},
+  {path: 'doctorprofile', component: DoctorprofileComponent, canActivate: [DoctorGuard]},
+  {path:'welcomepage', component: WelcomepageComponent}
 
 ];
 

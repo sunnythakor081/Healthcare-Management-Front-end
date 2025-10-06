@@ -57,6 +57,7 @@
                 <div *ngIf="patient.appointmentstatus === 'reject'" class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Rejected</div>
                 <div *ngIf="patient.appointmentstatus === 'processing'" class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Processing...</div>
               </div>
+<<<<<<< HEAD
                 <div *ngIf="(currRole === 'doctor' || currRole === 'DOCTOR')">
                   <div *ngIf="patient.appointmentstatus === 'false'">
                     <button (click)="acceptRequest(patient)" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block mb-2 transition duration-300 btn-effect">Accept</button><br>
@@ -72,6 +73,35 @@
                     <div class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Processing...</div>
                   </div>
                 </div>
+=======
+             <div *ngIf="currRole === 'doctor' || currRole === 'DOCTOR'">
+
+  <!-- Agar Pending hai to buttons dikhao -->
+  <div *ngIf="patient.appointmentstatus === 'false'">
+    <button (click)="acceptRequest(patient)" 
+            class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block mb-2 transition duration-300">
+      Accept
+    </button><br>
+    <button (click)="rejectRequest(patient)" 
+            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block transition duration-300">
+      Reject
+    </button>
+  </div>
+
+  <!-- Agar Accept ho gaya -->
+  <div *ngIf="patient.appointmentstatus === 'accept'" 
+       class="bg-green-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">
+    Accepted
+  </div>
+
+  <!-- Agar Reject ho gaya -->
+  <div *ngIf="patient.appointmentstatus === 'reject'" 
+       class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">
+    Rejected
+  </div>
+</div>
+
+>>>>>>> cde3b3e98fa3a5d9179dcf168e64f30a62a4b031
             </td>
             <td class="py-3 px-4">
                 <div>

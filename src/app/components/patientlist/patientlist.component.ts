@@ -20,7 +20,11 @@ export class PatientlistComponent implements OnInit {
 
   currRole = '';
   loggedUser = '';
+<<<<<<< HEAD
   patients: Appointment[] = [];
+=======
+  patients: Appointment[] = []; // Change to array for local updates
+>>>>>>> cde3b3e98fa3a5d9179dcf168e64f30a62a4b031
   slots: Observable<Slots[]> | undefined;
   page: number = 1; // For pagination
 
@@ -30,7 +34,11 @@ export class PatientlistComponent implements OnInit {
     this.loggedUser = sessionStorage.getItem('loggedUser') || '';
     this.currRole = sessionStorage.getItem('ROLE') || '';
 
+<<<<<<< HEAD
     if (this.currRole === 'doctor' || this.currRole === 'DOCTOR') {
+=======
+    if (this.currRole === "user") {
+>>>>>>> cde3b3e98fa3a5d9179dcf168e64f30a62a4b031
       this._service.getPatientListByDoctorEmail(this.loggedUser).subscribe({
         next: (data) => this.patients = data,
         error: (err) => console.error('Error fetching patients:', err)
@@ -45,6 +53,7 @@ export class PatientlistComponent implements OnInit {
   }
 
   acceptRequest(patient: Appointment) {
+<<<<<<< HEAD
     patient.appointmentstatus = 'processing';
     this._service.acceptRequestForPatientApproval(patient.slot).subscribe({
       next: (res) => {
@@ -53,11 +62,25 @@ export class PatientlistComponent implements OnInit {
       error: (err) => {
         patient.appointmentstatus = 'false';
         console.error('Error accepting request:', err);
+=======
+    // Pass the full patient or slot as needed; assuming service accepts slot
+    this._service.acceptRequestForPatientApproval(patient.slot).subscribe({
+      next: (response) => {
+        // Update local patient status on success
+        patient.appointmentstatus = 'accept';
+        console.log('Accepted:', response);
+      },
+      error: (err) => {
+        console.error('Error accepting request:', err);
+        // Optionally show error message to user
+        alert('Failed to accept. Please try again.');
+>>>>>>> cde3b3e98fa3a5d9179dcf168e64f30a62a4b031
       }
     });
   }
 
   rejectRequest(patient: Appointment) {
+<<<<<<< HEAD
     patient.appointmentstatus = 'processing';
     this._service.rejectRequestForPatientApproval(patient.slot).subscribe({
       next: (res) => {
@@ -70,4 +93,19 @@ export class PatientlistComponent implements OnInit {
     });
   }
 
+=======
+    this._service.rejectRequestForPatientApproval(patient.slot).subscribe({
+      next: (response) => {
+        // Update local patient status on success
+        patient.appointmentstatus = 'reject';
+        console.log('Rejected:', response);
+      },
+      error: (err) => {
+        console.error('Error rejecting request:', err);
+        // Optionally show error message to user
+        alert('Failed to reject. Please try again.');
+      }
+    });
+  }
+>>>>>>> cde3b3e98fa3a5d9179dcf168e64f30a62a4b031
 }

@@ -312,6 +312,11 @@ export class BookappointmentComponent implements OnInit {
       this.handleBookingError(error);
     }
   });
+<<<<<<< HEAD
+}
+
+=======
+>>>>>>> cde3b3e98fa3a5d9179dcf168e64f30a62a4b031
 }
 
 }

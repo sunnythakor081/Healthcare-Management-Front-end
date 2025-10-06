@@ -5,13 +5,14 @@ import { UserService } from '../../services/user.service';
 import { FooterComponent } from '../footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-doctordashboard',
   templateUrl: './doctordashboard.component.html',
   styleUrls: ['./doctordashboard.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule, FooterComponent]
+  imports: [CommonModule, RouterModule, FooterComponent,HeaderComponent]
 })
 export class DoctordashboardComponent implements OnInit {
 

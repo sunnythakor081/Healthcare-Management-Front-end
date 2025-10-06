@@ -9,6 +9,7 @@ import { User } from '../../models/user';
 import { DoctorService } from '../../services/doctor.service';
 import { Department } from '../../models/department';
 import { HeaderComponent } from '../header/header.component';
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-admindashboard',
@@ -58,7 +59,8 @@ export class AdmindashboardComponent implements OnInit {
   constructor(
     private _route: Router, 
     private _service: UserService,
-    private doctorService: DoctorService
+    private doctorService: DoctorService,
+    private _adminService: AdminService
   ) {
     // Add scroll event listener
     window.addEventListener('scroll', this.onScroll.bind(this));
@@ -97,6 +99,7 @@ export class AdmindashboardComponent implements OnInit {
       }, 2000);
       return;
     }
+    
 
     // Load all dashboard data
     this.loadDashboardData();
@@ -119,53 +122,71 @@ export class AdmindashboardComponent implements OnInit {
   /**
    * Load all dashboard data from services
    */
-  loadDashboardData(): void {
-    this.patients = this._service.getTotalPatients().pipe(
-      catchError(error => {
-        this.handleError('Failed to load patients data');
-        return of([]);
-      })
-    );
+  // loadDashboardData(): void {
+  //   this.patients = this._service.getTotalPatients().pipe(
+  //     catchError(error => {
+  //       this.handleError('Failed to load patients data');
+  //       return of([]);
+  //     })
+  //   );
     
-    this.users = this._service.getTotalUsers().pipe(
-      catchError(error => {
-        this.handleError('Failed to load users data');
-        return of([]);
-      })
-    );
+  //   this.users = this._service.getTotalUsers().pipe(
+  //     catchError(error => {
+  //       this.handleError('Failed to load users data');
+  //       return of([]);
+  //     })
+  //   );
     
-    this.doctors = this._service.getTotalDoctors().pipe(
-      catchError(error => {
-        this.handleError('Failed to load doctors data');
-        return of([]);
-      })
-    );
+  //   this.doctors = this._service.getTotalDoctors().pipe(
+  //     catchError(error => {
+  //       this.handleError('Failed to load doctors data');
+  //       return of([]);
+  //     })
+  //   );
     
-    this.slots = this._service.getTotalSlots().pipe(
-      catchError(error => {
-        this.handleError('Failed to load slots data');
-        return of([]);
-      })
-    );
+  //   this.slots = this._service.getTotalSlots().pipe(
+  //     catchError(error => {
+  //       this.handleError('Failed to load slots data');
+  //       return of([]);
+  //     })
+  //   );
     
-    this.appointments = this._service.getTotalAppointments().pipe(
-      catchError(error => {
-        this.handleError('Failed to load appointments data');
-        return of([]);
-      })
-    );
+  //   this.appointments = this._service.getTotalAppointments().pipe(
+  //     catchError(error => {
+  //       this.handleError('Failed to load appointments data');
+  //       return of([]);
+  //     })
+  //   );
     
-    this.prescriptions = this._service.getTotalPrescriptions().pipe(
-      catchError(error => {
-        this.handleError('Failed to load prescriptions data');
-        return of([]);
-      }),
-      finalize(() => {
-        this.isLoading = false;
-      })
-    );
-  }
+  //   this.prescriptions = this._service.getTotalPrescriptions().pipe(
+  //     catchError(error => {
+  //       this.handleError('Failed to load prescriptions data');
+  //       return of([]);
+  //     }),
+  //     finalize(() => {
+  //       this.isLoading = false;
+  //     })
+  //   );
+  // }
 
+  loadDashboardData(): void {
+    this._adminService.getDashboardStats().pipe(
+      tap(stats => {
+        this.users = of(stats.totalUsers || 0);
+        this.doctors = of(stats.totalDoctors || 0);
+        this.slots = of(stats.totalSlots || 0);
+        this.appointments = of(stats.totalAppointments || 0);
+        this.prescriptions = of(stats.totalPrescriptions || 0);
+        this.patients = of(stats.totalPatients || 0);
+      }),
+      catchError(error => {
+        this.handleError('Failed to load dashboard data');
+        return of({});
+      }),
+      finalize(() => this.isLoading = false)
+    ).subscribe();
+  }
+  
   /**
    * Load system statistics
    */
