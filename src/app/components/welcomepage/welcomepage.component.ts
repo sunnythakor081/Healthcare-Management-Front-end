@@ -66,6 +66,7 @@ export class WelcomepageComponent implements OnInit {
     '05:00 PM', '06:00 PM'
   ];
   
+  
   // Services data
   services = [
     {
@@ -110,8 +111,7 @@ export class WelcomepageComponent implements OnInit {
       rating: 4.9,
       experience: '15+ Years',
       patients: '10,000+',
-      bio: 'Dr. Sarah Johnson is a board-certified cardiologist with over 15 years of experience in treating complex heart conditions. She specializes in preventive cardiology and heart health management.',
-      available: true
+      bio: 'Dr. Sarah Johnson is a board-certified cardiologist with over 15 years of experience in treating complex heart conditions. She specializes in preventive cardiology and heart health management.'
     },
     {
       id: 2,
@@ -121,8 +121,7 @@ export class WelcomepageComponent implements OnInit {
       rating: 4.8,
       experience: '12+ Years',
       patients: '8,000+',
-      bio: 'Dr. Michael Chen specializes in neurological disorders and has pioneered several innovative treatment approaches. He is known for his patient-centered approach.',
-      available: false
+      bio: 'Dr. Michael Chen specializes in neurological disorders and has pioneered several innovative treatment approaches. He is known for his patient-centered approach.'
     },
     {
       id: 3,
@@ -132,8 +131,7 @@ export class WelcomepageComponent implements OnInit {
       rating: 4.9,
       experience: '10+ Years',
       patients: '12,000+',
-      bio: 'Dr. Emily Rodriguez is dedicated to providing compassionate care for children of all ages. She focuses on developmental pediatrics and preventive healthcare for children.',
-      available: true
+      bio: 'Dr. Emily Rodriguez is dedicated to providing compassionate care for children of all ages. She focuses on developmental pediatrics and preventive healthcare for children.'
     },
     {
       id: 4,
@@ -143,8 +141,7 @@ export class WelcomepageComponent implements OnInit {
       rating: 4.7,
       experience: '14+ Years',
       patients: '7,500+',
-      bio: 'Dr. James Wilson is an expert in joint replacement and sports medicine. He specializes in minimally invasive procedures with excellent outcomes.',
-      available: true
+      bio: 'Dr. James Wilson is an expert in joint replacement and sports medicine. He specializes in minimally invasive procedures with excellent outcomes.'
     }
   ];
   
@@ -314,44 +311,10 @@ export class WelcomepageComponent implements OnInit {
     this._router.navigate([route]);
   }
 
-  // Navigation methods for main actions
-  navigateToLogin(): void {
-    this._router.navigate(['/login']);
-  }
-
-  navigateToRegister(): void {
-    this._router.navigate(['/registration']);
-  }
-
-  navigateToAppointment(): void {
-    this._router.navigate(['/bookappointment']);
-  }
-
   // Method to handle navigation to appointment booking page
   navigateToBooking(doctorId: number): void {
     // Navigate to appointment booking page with doctor ID
     this._router.navigate(['/bookappointment'], { queryParams: { doctorId: doctorId } });
-    
-    // Pre-select the doctor in the appointment form
-    const doctor = this.featuredDoctors.find(d => d.id === doctorId);
-    if (doctor) {
-      this.selectDepartment(doctor.specialty);
-    }
-  }
-  
-  selectDepartment(specialty: string) {
-    // Find the matching department in the dropdown and select it
-    this.appointmentForm.patchValue({
-      department: specialty
-    });
-    
-    // Focus on the next field after department selection
-    setTimeout(() => {
-      const messageElement = document.getElementById('message');
-      if (messageElement) {
-        messageElement.focus();
-      }
-    }, 100);
   }
 
   // Helper method to generate star rating array for testimonials

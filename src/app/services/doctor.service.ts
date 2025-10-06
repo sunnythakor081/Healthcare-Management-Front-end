@@ -36,7 +36,7 @@ export class DoctorService {
 
   getSlotList() : Observable<Slots[]>
   {
-    return this._http.get<Slots[]>(`${NAV_URL}/admin/slotlist`);
+    return this._http.get<Slots[]>(`${NAV_URL}/slotDetails`); // Yeh change: /admin/slotlist se /slotDetails kar, backend match
   }
 
   getSlotListWithUniqueDoctors() : Observable<any>

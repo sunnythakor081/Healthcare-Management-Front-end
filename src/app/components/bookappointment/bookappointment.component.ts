@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent]
 })
 export class BookappointmentComponent implements OnInit {
-
+  
   currRole = '';
   loggedUser = '';
   message = '';
@@ -42,6 +42,17 @@ export class BookappointmentComponent implements OnInit {
 
   ngOnInit(): void
   {
+  
+   this.specializations = this._service.getSlotListWithUniqueSpecializations().pipe();
+  // Yeh add karo debug ke liye
+  this.specializations.subscribe({
+    next: (data) => {
+      console.log('Specializations data from backend:', data); // Yeh check karo console mein, array aana chahiye
+    },
+    error: (err) => {
+      console.error('Error fetching specializations:', err); // Agar error aa raha hai, toh yahan show hoga (jaise 404, CORS)
+    }
+  });
     this.loggedUser = JSON.stringify(sessionStorage.getItem('loggedUser')|| '{}');
     this.loggedUser = this.loggedUser.replace(/"/g, '');
 
@@ -124,21 +135,21 @@ export class BookappointmentComponent implements OnInit {
       slot.date === this.appointment.date
     );
 
-    if (!doctorSlots) return true; // New slot can be created
+    if (!doctorSlots) return false; // Yeh false karo, taaki frontend bhi reject kare
 
     switch(this.appointment.slot) {
       case 'AM slot':
-        return doctorSlots.amstatus === 'unbooked' && doctorSlots.amslot === 'empty';
+        return doctorSlots.amstatus === 'unbooked'; // Remove && doctorSlots.amslot === 'empty'
       case 'Noon slot':
-        return doctorSlots.noonstatus === 'unbooked' && doctorSlots.noonslot === 'empty';
+        return doctorSlots.noonstatus === 'unbooked'; // Remove && doctorSlots.noonslot === 'empty'
       case 'PM slot':
-        return doctorSlots.pmstatus === 'unbooked' && doctorSlots.pmslot === 'empty';
+        return doctorSlots.pmstatus === 'unbooked'; // Remove && doctorSlots.pmslot === 'empty'
       default:
         return false;
     }
   }
 
-  checkSlotAvailability() {
+ checkSlotAvailability() {
     // Get all slots for the selected doctor on the selected date
     this._service.getSlotList().subscribe(slots => {
       const doctorSlots = slots.find((slot: Slots) => 
@@ -150,22 +161,22 @@ export class BookappointmentComponent implements OnInit {
       
       if (doctorSlots) {
         // Check AM slot
-        if (doctorSlots.amstatus === 'unbooked' && doctorSlots.amslot === 'empty') {
+        if (doctorSlots.amstatus === 'unbooked') { // Remove && doctorSlots.amslot === 'empty'
           this.availableSlots.push('AM slot');
         }
         
         // Check Noon slot
-        if (doctorSlots.noonstatus === 'unbooked' && doctorSlots.noonslot === 'empty') {
+        if (doctorSlots.noonstatus === 'unbooked') { // Remove && doctorSlots.noonslot === 'empty'
           this.availableSlots.push('Noon slot');
         }
         
         // Check PM slot
-        if (doctorSlots.pmstatus === 'unbooked' && doctorSlots.pmslot === 'empty') {
+        if (doctorSlots.pmstatus === 'unbooked') { // Remove && doctorSlots.pmslot === 'empty'
           this.availableSlots.push('PM slot');
         }
       } else {
-        // If no slots found for the date, all slots are available
-        this.availableSlots = ['AM slot', 'Noon slot', 'PM slot'];
+        // If no slots found for the date, NO slots are available (match backend behavior)
+        this.availableSlots = [];
       }
     });
   }
@@ -192,8 +203,12 @@ export class BookappointmentComponent implements OnInit {
     if (!this.appointment.date?.trim()) {
       return { isValid: false, message: "Date is required" };
     }
-    if (!(typeof this.appointment.age === 'string' && this.appointment.age.trim() !== "") || isNaN(Number(this.appointment.age))) {
-      return { isValid: false, message: "Valid age is required" };
+
+    // Yeh add kiya: age ko parse karo taaki string se number bane
+    const ageNum = parseInt(this.appointment.age as unknown as string, 10);  // Yeh assume kar raha hai ki age string hai, agar model mein number hai toh yeh hata do
+
+    if (this.appointment.age == null || isNaN(ageNum) || ageNum < 0 || ageNum > 150) {
+      return { isValid: false, message: "Valid age is required (0-150)" };
     }
     if (!this.appointment.gender?.trim()) {
       return { isValid: false, message: "Gender is required" };
@@ -209,6 +224,7 @@ export class BookappointmentComponent implements OnInit {
 
   private handleBookingError(error: any) {
     console.error("Booking failed:", error);
+    console.error("Error details:", error.message || error.error);
     this.isSubmitting = false;
     this.showForm = true;
     this.showMessage = true;
@@ -236,65 +252,66 @@ export class BookappointmentComponent implements OnInit {
   }
 
   bookAppointment() {
-    this.isSubmitting = true;
-    this.showMessage = false;
-    
-    // Validate all required fields
-    const validation = this.validateAppointment();
-    if (!validation.isValid) {
-      this.isSubmitting = false;
-      this.showMessage = true;
-      this.message = validation.message;
-      return;
-    }
-
-    // Check slot availability one final time before booking
-    this._service.getSlotList().subscribe({
-      next: (slots) => {
-        const slotAvailable = this.checkFinalSlotAvailability(slots);
-        if (!slotAvailable) {
-          this.isSubmitting = false;
-          this.showMessage = true;
-          this.message = "Sorry, this slot is no longer available. Please select another slot.";
-          this.checkSlotAvailability(); // Refresh available slots
-          return;
-        }
-
-        // Prepare appointment data
-        const appointmentData = {
-          ...this.appointment,
-          appointmentstatus: 'false',
-          admissionstatus: 'false',
-          patientid: this.generatePatientId()
-        };
-
-        // Attempt to book the appointment
-        this.userService.addBookingAppointments(appointmentData).subscribe({
-          next: (data) => {
-            console.log("Appointment booked successfully");
-            this.isSubmitting = false;
-            this.showForm = false;
-            this.showMessage = true;
-            this.message = "Your appointment has been booked successfully! Appointment ID: " + appointmentData.patientid;
-            this.retryCount = 0; // Reset retry counter
-            
-            setTimeout(() => {
-              this._router.navigate(['/userdashboard']);
-            }, 3000);
-          },
-          error: (error) => {
-            if (error.status === 409 && this.retryCount < this.maxRetries) {
-              // Retry on conflict (race condition)
-              this.retryBooking();
-            } else {
-              this.handleBookingError(error);
-            }
-          }
-        });
-      },
-      error: (error) => {
-        this.handleBookingError(error);
-      }
-    });
+  this.isSubmitting = true;
+  this.showMessage = false;
+  
+  // Validate all required fields
+  const validation = this.validateAppointment();
+  if (!validation.isValid) {
+    this.isSubmitting = false;
+    this.showMessage = true;
+    this.message = validation.message;
+    return;
   }
+
+  // Check slot availability one final time before booking
+  this._service.getSlotList().subscribe({
+    next: (slots) => {
+      const slotAvailable = this.checkFinalSlotAvailability(slots);
+      if (!slotAvailable) {
+        this.isSubmitting = false;
+        this.showMessage = true;
+        this.message = "Sorry, this slot is no longer available. Please select another slot.";
+        this.checkSlotAvailability(); // Refresh available slots
+        return;
+      }
+
+      // Prepare appointment data (yeh yahan add/replace karo)
+      const appointmentData = {
+        ...this.appointment,
+        appointmentstatus: 'false',
+        admissionstatus: 'false',
+        patientid: '' // Empty set karo, backend generate karega
+      };
+
+      // Attempt to book the appointment
+      this.userService.addBookingAppointments(appointmentData).subscribe({
+        next: (data) => {
+          console.log("Appointment booked successfully");
+          this.isSubmitting = false;
+          this.showForm = false;
+          this.showMessage = true;
+          this.message = "Your appointment has been booked successfully! Appointment ID: " + data.patientid; // Ab backend se aane wala ID use karo
+          this.retryCount = 0; // Reset retry counter
+          
+          setTimeout(() => {
+            this._router.navigate(['/userdashboard']);
+          }, 3000);
+        },
+        error: (error) => {
+          if (error.status === 409 && this.retryCount < this.maxRetries) {
+            // Retry on conflict (race condition)
+            this.retryBooking();
+          } else {
+            this.handleBookingError(error);
+          }
+        }
+      });
+    },
+    error: (error) => {
+      this.handleBookingError(error);
+    }
+  });
+}
+
 }

@@ -20,7 +20,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let patient of (patients | async) || [] | paginate: { itemsPerPage: 10, currentPage: page }" class="border-b hover:bg-gray-50">
+          <tr *ngFor="let patient of patients | paginate: { itemsPerPage: 10, currentPage: page }" class="border-b hover:bg-gray-50">
             <td class="py-3 px-4">
               <img *ngIf="patient.gender === 'Male' || patient.gender === 'male'" class="mx-auto rounded-full h-16 w-16 object-cover" [src]="'assets/img/maleuser.png'">
               <img *ngIf="patient.gender === 'Female' || patient.gender === 'female'" class="mx-auto rounded-full h-16 w-16 object-cover" [src]="'assets/img/femaleuser.png'">
@@ -56,19 +56,33 @@
                 <div *ngIf="patient.appointmentstatus === 'false'" class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Pending</div>
                 <div *ngIf="patient.appointmentstatus === 'reject'" class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Rejected</div>
               </div>
-                <div *ngIf="patient.appointmentstatus === 'false' && currRole === 'doctor' || currRole === 'DOCTOR'" >
-                    <button (click)="acceptRequest(patient.slot)" id="acceptbtn" value="patient.email" value="Accept" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block mb-2 transition duration-300">Accept</button><br>
-                    <button (click)="rejectRequest(patient.slot)" id="rejectbtn" value="patient.email" value="Reject" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block transition duration-300">Reject</button>
-                    <div id="acceptedbtn" class="bg-green-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block hidden">Accepted</div>
-                    <div id="rejectedbtn" class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block hidden">Rejected</div>
-                  </div>
-                  <div *ngIf="patient.appointmentstatus === 'accept' && currRole === 'doctor' || currRole === 'DOCTOR'" >
-                    <div class="bg-green-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Accepted</div>
-                  </div>
-                  <div *ngIf="patient.appointmentstatus === 'reject' && currRole === 'doctor' || currRole === 'DOCTOR'" >
-                    <div class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Rejected</div>
-                  </div>
-                <div *ngFor="let details of (responses | async) || []"></div>
+             <div *ngIf="currRole === 'doctor' || currRole === 'DOCTOR'">
+
+  <!-- Agar Pending hai to buttons dikhao -->
+  <div *ngIf="patient.appointmentstatus === 'false'">
+    <button (click)="acceptRequest(patient)" 
+            class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block mb-2 transition duration-300">
+      Accept
+    </button><br>
+    <button (click)="rejectRequest(patient)" 
+            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block transition duration-300">
+      Reject
+    </button>
+  </div>
+
+  <!-- Agar Accept ho gaya -->
+  <div *ngIf="patient.appointmentstatus === 'accept'" 
+       class="bg-green-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">
+    Accepted
+  </div>
+
+  <!-- Agar Reject ho gaya -->
+  <div *ngIf="patient.appointmentstatus === 'reject'" 
+       class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">
+    Rejected
+  </div>
+</div>
+
             </td>
             <td class="py-3 px-4">
                 <div>

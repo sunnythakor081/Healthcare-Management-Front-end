@@ -21,49 +21,58 @@ export class PatientlistComponent implements OnInit {
 
   currRole = '';
   loggedUser = '';
-  patients : Observable<Appointment[]> | undefined;
-  slots : Observable<Slots[]> | undefined;
-  responses : Observable<any> | undefined;
+  patients: Appointment[] = []; // Change to array for local updates
+  slots: Observable<Slots[]> | undefined;
   page: number = 1; // For pagination
 
-  constructor(private _service : DoctorService) { }
+  constructor(private _service: DoctorService) { }
 
-  ngOnInit(): void
-  {
-    this.loggedUser = JSON.stringify(sessionStorage.getItem('loggedUser')|| '{}');
-    this.loggedUser = this.loggedUser.replace(/"/g, '');
+  ngOnInit(): void {
+    this.loggedUser = sessionStorage.getItem('loggedUser') || '';
+    this.currRole = sessionStorage.getItem('ROLE') || '';
 
-    this.currRole = JSON.stringify(sessionStorage.getItem('ROLE')|| '{}'); 
-    this.currRole = this.currRole.replace(/"/g, '');
-
-    if(this.currRole === "user")
-    {
-      this.patients = this._service.getPatientListByDoctorEmail(this.loggedUser);
-    }
-    else
-    {
-      this.patients = this._service.getPatientList();
+    if (this.currRole === "user") {
+      this._service.getPatientListByDoctorEmail(this.loggedUser).subscribe({
+        next: (data) => this.patients = data,
+        error: (err) => console.error('Error fetching patients:', err)
+      });
+    } else {
+      this._service.getPatientList().subscribe({
+        next: (data) => this.patients = data,
+        error: (err) => console.error('Error fetching patients:', err)
+      });
     }
     this.slots = this._service.getSlotDetails(this.loggedUser);
   }
 
-  acceptRequest(slot : string)
-  {
-    this.responses = this._service.acceptRequestForPatientApproval(slot);
-    $("#acceptbtn").addClass('hidden');
-    $("#rejectbtn").addClass('hidden');
-    $("#acceptedbtn").removeClass('hidden');
-    $("#rejectedbtn").addClass('hidden');
+  acceptRequest(patient: Appointment) {
+    // Pass the full patient or slot as needed; assuming service accepts slot
+    this._service.acceptRequestForPatientApproval(patient.slot).subscribe({
+      next: (response) => {
+        // Update local patient status on success
+        patient.appointmentstatus = 'accept';
+        console.log('Accepted:', response);
+      },
+      error: (err) => {
+        console.error('Error accepting request:', err);
+        // Optionally show error message to user
+        alert('Failed to accept. Please try again.');
+      }
+    });
   }
 
-  rejectRequest(slot : string)
-  {
-    this.responses = this._service.rejectRequestForPatientApproval(slot);
-    $("#acceptbtn").addClass('hidden');
-    $("#rejectbtn").addClass('hidden');
-    $("#acceptedbtn").addClass('hidden');
-    $("#rejectedbtn").removeClass('hidden');
+  rejectRequest(patient: Appointment) {
+    this._service.rejectRequestForPatientApproval(patient.slot).subscribe({
+      next: (response) => {
+        // Update local patient status on success
+        patient.appointmentstatus = 'reject';
+        console.log('Rejected:', response);
+      },
+      error: (err) => {
+        console.error('Error rejecting request:', err);
+        // Optionally show error message to user
+        alert('Failed to reject. Please try again.');
+      }
+    });
   }
-
-
 }

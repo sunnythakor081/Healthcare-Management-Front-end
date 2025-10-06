@@ -33,6 +33,7 @@ export class DoctorprofileComponent implements OnInit {
 
     this.currRole = JSON.stringify(sessionStorage.getItem('ROLE')|| '{}'); 
     this.currRole = this.currRole.replace(/"/g, '');
+    
 
     $("#profilecard").show();
     $("#profileform").hide();
@@ -47,6 +48,7 @@ export class DoctorprofileComponent implements OnInit {
 
   getProfileDetails(loggedUser : string)
   {
+    
     this.profileDetails = this._service.getProfileDetails(this.loggedUser);
     console.log(this.profileDetails);
   }
