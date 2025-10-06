@@ -13,16 +13,25 @@
         <a href="#appointment">Appointment</a>
         <a href="#testimonials">Testimonials</a>
       </div>
-      <div class="auth-buttons">
-        <button class="btn-login" (click)="showLogin()">Login</button>
-        <button class="btn-register" (click)="showRegister()">Register</button>
-      </div>
+     <div class="nav-actions">
+  <a [routerLink]="['/login']" class="signup-btn">
+    <i class="fas fa-sign-in-alt"></i> <!-- Login icon -->
+    <span>Login</span>
+  </a>
+</div>
+
+      <div class="nav-actions">
+      <a [routerLink]="['/registration']" class="signup-btn">
+        <i class="fa fa-user-plus"></i>
+        <span>Sign Up</span>
+      </a>
+    </div>
       <div class="mobile-menu-btn" (click)="toggleMobileMenu()">
         <i class="fas" [ngClass]="{'fa-bars': !isMobileMenuOpen, 'fa-times': isMobileMenuOpen}"></i>
       </div>
     </div>
   </nav>
-  
+
   <!-- Mobile Menu -->
   <div class="mobile-menu" [ngClass]="{'open': isMobileMenuOpen}">
     <a href="#home" (click)="toggleMobileMenu()">Home</a>
@@ -39,7 +48,8 @@
     <div class="hero-content">
       <div class="hero-text" [@fadeIn]>
         <h1>Your Health, <span class="highlight">Our Priority</span></h1>
-        <p>Advanced healthcare solutions with personalized care for you and your family. Experience the future of healthcare today.</p>
+        <p>Advanced healthcare solutions with personalized care for you and your family. Experience the future of
+          healthcare today.</p>
         <div class="hero-stats">
           <div class="stat-item">
             <span class="stat-number">15+</span>
@@ -55,17 +65,35 @@
           </div>
         </div>
         <div class="hero-buttons">
-          <a href="#appointment" class="btn btn-primary" [@pulse]="pulseState">Book Appointment</a>
+          <a class="btn btn-primary" [routerLink]="['/login']"a><i class="fas fa-sign-in-alt"></i> Login</a>
+
           <a href="#services" class="btn btn-outline">Our Services</a>
         </div>
+
       </div>
       <div class="hero-image" [@slideInRight]>
+        <!-- Background main image -->
         <img src="assets/img/healthcaresystem.png" alt="Healthcare System" class="main-hero-image">
-        <div class="floating-badge online-status">
-          <img src="assets/img/online-status.svg" alt="Online Status" class="badge-icon">
-          <span>Doctors Online</span>
+
+        <!-- Online Doctors Section -->
+        <div class="online-doctors">
+          <img src="https://images.pexels.com/photos/3825529/pexels-photo-3825529.jpeg" alt="Doctor 1"
+            class="doctor-avatar">
+
+          <img src="https://images.pexels.com/photos/8376234/pexels-photo-8376234.jpeg" alt="Doctor 5"
+            class="doctor-avatar">
+
+          <img src="https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg" alt="Doctor 3"
+            class="doctor-avatar">
+          <img src="https://images.pexels.com/photos/5452203/pexels-photo-5452203.jpeg" alt="Doctor 4"
+            class="doctor-avatar">
         </div>
+
+
+
       </div>
+
+
     </div>
   </section>
 
@@ -87,108 +115,50 @@
   </section>
 
   <!-- Doctors Section -->
-  <section id="doctors" class="doctors-section">
-    <div class="section-header" [@fadeIn]>
-      <h2>Meet Our Doctors</h2>
-      <p>Experienced healthcare professionals dedicated to your wellbeing</p>
-    </div>
-    <div class="doctors-grid">
-      <div *ngFor="let doctor of featuredDoctors; let i = index" class="doctor-card" [@slideInUp]>
-       
-        <div class="doctor-info">
-          <h3>{{doctor.name}}</h3>
-          <p class="specialty">{{doctor.specialty}}</p>
-          <div class="doctor-rating">
-            <span class="rating">{{doctor.rating}}</span>
-            <div class="stars">
-              <i class="fas fa-star" *ngFor="let star of [1,2,3,4,5]"></i>
-            </div>
-          </div>
-          <div class="doctor-stats">
-            <div class="stat">
-              <span class="label">Experience</span>
-              <span class="value">{{doctor.experience}}</span>
-            </div>
-            <div class="stat">
-              <span class="label">Patients</span>
-              <span class="value">{{doctor.patients}}</span>
-            </div>
-          </div>
-          <p class="bio">{{doctor.bio}}</p>
-         
-        </div>
-      </div>
-    </div>
-  </section>
+<section id="doctors" class="doctors-section">
+  <div class="section-header" [@fadeIn]>
+    <h2>Meet Our Doctors</h2>
+    <p>Experienced healthcare professionals dedicated to your wellbeing</p>
+  </div>
 
-  <!-- Appointment Section -->
-  <section id="appointment" class="appointment-section">
-    <div class="section-header" [@fadeIn]>
-      <h2>Book an Appointment</h2>
-      <p>Schedule your visit with our healthcare professionals</p>
-    </div>
-    <div class="appointment-container">
-      <div class="appointment-image" [@slideInLeft]>
-        <img src="assets/img/telemedicine.svg" alt="Book appointment" class="main-appointment-image">
-        <div class="appointment-features">
-          <div class="feature-item">
-            <img src="assets/img/modern-technology.svg" alt="Modern Technology" class="feature-icon">
-            <span>Modern Technology</span>
-          </div>
-          <div class="feature-item">
-            <img src="assets/img/specialized-support.svg" alt="Specialized Support" class="feature-icon">
-            <span>Specialized Support</span>
-          </div>
-          <div class="feature-item">
-            <img src="assets/img/emergency-care.svg" alt="Emergency Care" class="feature-icon">
-            <span>24/7 Emergency Care</span>
+  <div class="doctors-grid">
+    <div *ngFor="let doctor of featuredDoctors; let i = index" class="doctor-card" [@slideInUp]>
+      
+      <div class="doctor-image">
+        <img [src]="doctor.image" [alt]="doctor.name">
+        <div class="online-indicator"></div>
+      </div>
+
+      <div class="doctor-info">
+        <h3>{{doctor.name}}</h3>
+        <p class="specialty">{{doctor.specialty}}</p>
+
+        <div class="doctor-rating">
+          <span class="rating">{{doctor.rating}}</span>
+          <div class="stars">
+            <i class="fas fa-star" *ngFor="let star of [1,2,3,4,5]"></i>
           </div>
         </div>
-      </div>
-      <div class="appointment-form" [@slideInRight]>
-        <form [formGroup]="appointmentForm">
-          <div class="form-group">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" formControlName="name" placeholder="Your full name">
+
+        <div class="doctor-stats">
+          <div class="stat">
+            <span class="label">Experience</span>
+            <span class="value">{{doctor.experience}}</span>
           </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" formControlName="email" placeholder="Your email address">
+          <div class="stat">
+            <span class="label">Patients</span>
+            <span class="value">{{doctor.patients}}</span>
           </div>
-          <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="tel" id="phone" formControlName="phone" placeholder="Your phone number">
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="date">Date</label>
-              <input type="date" id="date" formControlName="date">
-            </div>
-            <div class="form-group">
-              <label for="time">Time</label>
-              <select id="time" formControlName="time">
-                <option value="">Select time</option>
-                <option *ngFor="let slot of timeSlots" [value]="slot">{{slot}}</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="department">Department</label>
-            <select id="department" formControlName="department">
-              <option value="">Select department</option>
-              <option *ngFor="let service of services" [value]="service.title">{{service.title}}</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="message">Message (Optional)</label>
-            <textarea id="message" formControlName="message" placeholder="Additional information"></textarea>
-          </div>
-          <button type="submit" class="btn-submit">Book Appointment</button>
-        </form>
+        </div>
+
+        <p class="bio">{{doctor.bio}}</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
+
+ 
   <!-- Testimonials Section -->
   <section id="testimonials" class="testimonials-section">
     <div class="section-header" [@fadeIn]>
@@ -196,7 +166,8 @@
       <p>Testimonials from those who have experienced our care</p>
     </div>
     <div class="testimonials-grid">
-      <div *ngFor="let testimonial of testimonials; let i = index" class="testimonial-card" [@slideInUp] [ngClass]="{'featured': i === 1}">
+      <div *ngFor="let testimonial of testimonials; let i = index" class="testimonial-card" [@slideInUp]
+        [ngClass]="{'featured': i === 1}">
         <div class="testimonial-badge" *ngIf="i === 1">Featured</div>
         <div class="testimonial-image">
           <img [src]="testimonial.image" [alt]="testimonial.name">
@@ -238,7 +209,7 @@
           <a href="#"><i class="fab fa-linkedin"></i></a>
         </div>
       </div>
-      
+
       <div class="footer-section links">
         <h3>Quick Links</h3>
         <ul>
@@ -250,7 +221,7 @@
           <li><a href="#">Contact</a></li>
         </ul>
       </div>
-      
+
       <div class="footer-section services-list">
         <h3>Our Services</h3>
         <ul>
@@ -262,7 +233,7 @@
           <li><a href="#">Lab Tests</a></li>
         </ul>
       </div>
-      
+
       <div class="footer-section newsletter">
         <h3>Newsletter</h3>
         <p>Subscribe to our newsletter for health tips and updates</p>
@@ -279,7 +250,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="footer-bottom">
       <p>&copy; {{currentYear}} MediCare Healthcare System. All rights reserved.</p>
     </div>
@@ -298,8 +269,10 @@
         <div class="form-group">
           <label for="login-password">Password</label>
           <div class="password-input">
-            <input [type]="showPassword ? 'text' : 'password'" id="login-password" formControlName="password" placeholder="Your password">
-            <i class="fas" [ngClass]="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}" (click)="showPassword = !showPassword"></i>
+            <input [type]="showPassword ? 'text' : 'password'" id="login-password" formControlName="password"
+              placeholder="Your password">
+            <i class="fas" [ngClass]="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+              (click)="showPassword = !showPassword"></i>
           </div>
         </div>
         <div class="form-group remember-me">
@@ -329,13 +302,16 @@
         <div class="form-group">
           <label for="register-password">Password</label>
           <div class="password-input">
-            <input [type]="showRegisterPassword ? 'text' : 'password'" id="register-password" formControlName="password" placeholder="Choose a password">
-            <i class="fas" [ngClass]="{'fa-eye': !showRegisterPassword, 'fa-eye-slash': showRegisterPassword}" (click)="showRegisterPassword = !showRegisterPassword"></i>
+            <input [type]="showRegisterPassword ? 'text' : 'password'" id="register-password" formControlName="password"
+              placeholder="Choose a password">
+            <i class="fas" [ngClass]="{'fa-eye': !showRegisterPassword, 'fa-eye-slash': showRegisterPassword}"
+              (click)="showRegisterPassword = !showRegisterPassword"></i>
           </div>
         </div>
         <div class="form-group">
           <label for="register-confirm-password">Confirm Password</label>
-          <input type="password" id="register-confirm-password" formControlName="confirmPassword" placeholder="Confirm your password">
+          <input type="password" id="register-confirm-password" formControlName="confirmPassword"
+            placeholder="Confirm your password">
         </div>
         <div class="form-group">
           <label for="register-phone">Phone</label>

@@ -1,172 +1,80 @@
-<app-header></app-header>
-<div class="userdashboard-hero">
-  <div class="userdashboard-avatar">
-    <img *ngIf="gender === 'male' || gender === 'Male'" src="assets/img/maleuser.png" alt="User" />
-    <img *ngIf="gender === 'female' || gender === 'Female'" src="assets/img/femaleuser.png" alt="User" />
-  </div>
-  <h1 class="userdashboard-title">Hello, {{name}}!</h1>
-  <p class="userdashboard-subtitle">Book appointments, view your prescriptions, and take charge of your health journey.</p>
+<div class="dashboard-container">
+  <!-- Header -->
+  <header class="top-nav">
+    <a [routerLink]="['/']" class="home-link">Home</a>
+    <div class="user-info">User: {{name}}</div>
+    <button (click)="logout()" class="logout-btn">Logout</button>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+  <nav class="nav-menu">
+    <a routerLink="/edituserprofile" routerLinkActive="active" class="nav-item">
+      <i class="fas fa-user-edit"></i>
+      <span>Edit Profile</span>
+    </a>
+
+    <a routerLink="/doctorlist" routerLinkActive="active" class="nav-item">
+      <i class="fas fa-user-md"></i>
+      <span>Doctors List</span>
+    </a>
+
+    <a routerLink="/checkslots" routerLinkActive="active" class="nav-item">
+      <i class="fas fa-calendar-alt"></i>
+      <span>Check Slots</span>
+    </a>
+
+    <a routerLink="/bookappointment" routerLinkActive="active" class="nav-item">
+      <i class="fas fa-calendar-plus"></i>
+      <span>Book Appointment</span>
+    </a>
+
+    <a routerLink="/approvalstatus" routerLinkActive="active" class="nav-item">
+      <i class="fas fa-check-circle"></i>
+      <span>Approval Status</span>
+    </a>
+
+    <a routerLink="/prescriptionlist" routerLinkActive="active" class="nav-item">
+      <i class="fas fa-file-prescription"></i>
+      <span>Your Prescriptions</span>
+    </a>
+  </nav>
+</aside>
+
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="userdashboard-hero">
+      <div class="userdashboard-avatar">
+        <img *ngIf="gender === 'male' || gender === 'Male'" src="assets/img/maleuser.png" alt="User" />
+        <img *ngIf="gender === 'female' || gender === 'Female'" src="assets/img/femaleuser.png" alt="User" />
+      </div>
+      <h1 class="userdashboard-title">Hello, {{name}}!</h1>
+      <p class="userdashboard-subtitle">Book appointments, view your prescriptions, and take charge of your health journey.</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <p class="stat-label">Total Users</p>
+        <p class="stat-value">{{ (users | async) || 0 }}</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-user-md"></i></div>
+        <p class="stat-label">Total Doctors</p>
+        <p class="stat-value">{{ (doctors | async) || 0 }}</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-hospital-user"></i></div>
+        <p class="stat-label">Total Patients</p>
+        <p class="stat-value">{{ (patients | async) || 0 }}</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+        <p class="stat-label">Total Slots</p>
+        <p class="stat-value">{{ (slots | async) || 0 }}</p>
+      </div>
+    </div>
+  </main>
 </div>
-
-<!-- <div class="userdashboard-actions">
-  <a [routerLink]="['/bookappointment']" class="dashboard-action-card">
-    <div class="action-icon"><i class="fa fa-calendar-plus-o"></i></div>
-    <div class="action-title">Book Appointment</div>
-    <div class="action-desc">Schedule a visit with your doctor</div>
-  </a>
-  <a [routerLink]="['/prescriptionlist']" class="dashboard-action-card">
-    <div class="action-icon"><i class="fa fa-sticky-note-o"></i></div>
-    <div class="action-title">View Prescriptions</div>
-    <div class="action-desc">See your latest prescriptions</div>
-  </a>
-  <a [routerLink]="['/edituserprofile']" class="dashboard-action-card">
-    <div class="action-icon"><i class="fa fa-user"></i></div>
-    <div class="action-title">Edit Profile</div>
-    <div class="action-desc">Update your personal information</div>
-  </a>
-  <a [routerLink]="['/doctorlist']" class="dashboard-action-card">
-    <div class="action-icon"><i class="fa fa-user-md"></i></div>
-    <div class="action-title">Find Doctors</div>
-    <div class="action-desc">Browse and connect with doctors</div>
-  </a>
-
- <a [routerLink]="['/checkslots']" class="dashboard-action-card">
-    <div class="action-icon"><i class="fa fa-user-md"></i></div>
-    <div class="action-title">Check Slots</div>
-    <div class="action-desc">Check all slots</div>
-  </a>
-
-   <a [routerLink]="['/approvalstatus']" class="dashboard-action-card">
-    <div class="action-icon"><i class="fa fa-user-md"></i></div>
-    <div class="action-title">approvalstatus</div>
-    <div class="action-desc"> your approvalstatus </div>
-  </a>
-
-  <a [routerLink]="['/']" class="dashboard-action-card">
-    <div class="action-icon"><i class="fa fa-user-md"></i></div>
-    <div class="action-title">approvalstatus</div>
-    <div class="action-desc"> your approvalstatus </div>
-  </a>
-</div> -->
-
-
- <!-- Navigation Links -->
-      <nav class="flex-1 overflow-y-auto py-4">
-        <div class="px-4 space-y-2">
-
-           <a routerLink="/edituserprofile" routerLinkActive="bg-blue-700"
-             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="fa fa-user-md"></i>
-            <span>Edit Profile</span>
-          </a>
-        
-          <a routerLink="/doctorlist" routerLinkActive="bg-blue-700"
-             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="fas fa-user-md w-5"></i>
-            <span>Doctors List</span>
-          </a>
-  
-          
-         
-          <a routerLink="/checkslots" routerLinkActive="bg-blue-700"
-             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
-           <i class="fa fa-user-md"></i>
-            <span>check slots</span>
-          </a>
-
-            <a routerLink="/bookappointment" routerLinkActive="bg-blue-700"
-             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="fa fa-calendar"></i>
-            <span> Book Appointment</span>
-          </a>
-
-           <a routerLink="/approvalstatus" routerLinkActive="bg-blue-700"
-             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
-           <i class="fa fa-check-circle text-xl"></i>
-            <span>Approval status</span>
-          </a>
-
-           <a routerLink="/prescriptionlist" routerLinkActive="bg-blue-700"
-             class="flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="fa fa-calendar"></i>
-            <span>your prescriptions</span>
-          </a>
-      
-        </div>
-      </nav>
-
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"></div>
-
- <!-- Total Users -->
-  <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
-    <div class="flex items-start justify-between">
-      <div>
-        <p class="text-lg font-medium text-gray-600">Total Users</p>
-        <p class="text-3xl font-bold text-gray-900 mt-2">{{ (users | async) || 0 }}</p> <!-- Yeh change -->
-      </div>
-      <div class="p-3 bg-blue-100 rounded-lg">
-        <i class="fas fa-users text-blue-600 text-xl"></i>
-      </div>
-    </div>
-    <div class="mt-4 flex items-center text-sm text-gray-500">
-      <i class="fas fa-chart-line mr-2"></i>
-      <span>Active Accounts</span>
-    </div>
-  </div>
-
-
- <!-- Total Doctors -->
-  <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
-    <div class="flex items-start justify-between">
-      <div>
-        <p class="text-lg font-medium text-gray-600">Total Doctors</p>
-        <p class="text-3xl font-bold text-gray-900 mt-2">{{ (doctors | async) || 0 }}</p> <!-- Change -->
-      </div>
-      <div class="p-3 bg-green-100 rounded-lg">
-        <i class="fas fa-user-md text-green-600 text-xl"></i>
-      </div>
-    </div>
-    <div class="mt-4 flex items-center text-sm text-gray-500">
-      <i class="fas fa-check-circle mr-2"></i>
-      <span>Available Specialists</span>
-    </div>
-  </div>
-
-
-  <!-- Total Patients -->
-  <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
-    <div class="flex items-start justify-between">
-      <div>
-        <p class="text-lg font-medium text-gray-600">Total Patients</p>
-        <p class="text-3xl font-bold text-gray-900 mt-2">{{ (patients | async) || 0 }}</p> <!-- Change -->
-      </div>
-      <div class="p-3 bg-yellow-100 rounded-lg">
-        <i class="fas fa-hospital-user text-yellow-600 text-xl"></i>
-      </div>
-    </div>
-    <div class="mt-4 flex items-center text-sm text-gray-500">
-      <i class="fas fa-user-plus mr-2"></i>
-      <span>Registered Patients</span>
-    </div>
-  </div>
-
-  <!-- Available Slots -->
-  <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
-    <div class="flex items-start justify-between">
-      <div>
-        <p class="text-lg font-medium text-gray-600">Total Slots</p>
-        <p class="text-3xl font-bold text-gray-900 mt-2">{{ (slots | async) || 0 }}</p> <!-- Change -->
-      </div>
-      <div class="p-3 bg-indigo-100 rounded-lg">
-        <i class="fas fa-clock text-indigo-600 text-xl"></i>
-      </div>
-    </div>
-    <div class="mt-4 flex items-center text-sm text-gray-500">
-      <i class="fas fa-calendar-alt mr-2"></i>
-      <span>Open Time Slots</span>
-    </div>
-  </div>
-
-
-
-<app-footer></app-footer>
