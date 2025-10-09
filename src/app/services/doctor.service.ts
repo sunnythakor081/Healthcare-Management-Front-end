@@ -130,10 +130,9 @@ export class DoctorService {
     return this._http.get(`${NAV_URL}/doctorProfileDetails/`+loggedUser);
   }
   
-  public UpdateDoctorProfile(user:any):Observable<any>
-  {
-    return this._http.put<any>(`${NAV_URL}/updatedoctor`,user)
-  }
+  public updateDoctorProfile(doctor: Doctor): Observable<Doctor> {
+  return this._http.put<Doctor>(`${NAV_URL}/updatedoctor`, doctor);
+}
 
   /**
    * Get doctor by ID

@@ -59,14 +59,16 @@ export class UserService {
     };
   }
 
-  public UpdateUserProfile(user: any): Observable<any> {
-    return this._http.put<any>(`${NAV_URL}/updateuser`, user, this.getHttpOptions())
-      .pipe(
-        retry(3), // Retry failed requests up to 3 times
-        timeout(30000), // 30 seconds timeout
-        catchError(this.handleError)
-      );
-  }
+ // ... (other imports and code) ...
+
+public UpdateUserProfile(user: User): Observable<any> {  // Change 'any' to User for type safety
+  return this._http.put<any>(`${NAV_URL}/updateuser/${user.id}`, user, this.getHttpOptions())  // Add /${user.id}
+    .pipe(
+      retry(3),
+      timeout(30000),
+      catchError(this.handleError)
+    );
+}
 
   public getTotalPatients() : Observable<any>
   {

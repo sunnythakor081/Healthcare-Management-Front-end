@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Doctor } from '../../models/doctor';
 import { DoctorService } from '../../services/doctor.service';
 import { HeaderComponent } from '../header/header.component';
@@ -18,26 +18,29 @@ import { FormsModule } from '@angular/forms';
 export class DoctorprofileComponent implements OnInit {
 
   profileDetails : Observable<Doctor[]> | undefined;
-  doctor: Doctor = new Doctor;
+  doctor: Doctor = new Doctor();
   msg = ' ';
   currRole = '';
   loggedUser = '';
   temp = false;
+  private subscription: Subscription | undefined;
 
   constructor(private _service: DoctorService, private activatedRoute: ActivatedRoute, private _router : Router) { }
 
   ngOnInit(): void 
   {
-    this.loggedUser = JSON.stringify(sessionStorage.getItem('loggedUser')|| '{}');
-    this.loggedUser = this.loggedUser.replace(/"/g, '');
-
-    this.currRole = JSON.stringify(sessionStorage.getItem('ROLE')|| '{}'); 
-    this.currRole = this.currRole.replace(/"/g, '');
-    
+    this.loggedUser = sessionStorage.getItem('loggedUser') || '';
+    this.currRole = sessionStorage.getItem('ROLE') || ''; 
 
     $("#profilecard").show();
     $("#profileform").hide();
-    this.getProfileDetails(this.loggedUser);
+    this.getProfileDetails();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   editProfile()
@@ -46,24 +49,36 @@ export class DoctorprofileComponent implements OnInit {
     $("#profileform").show();
   }
 
-  getProfileDetails(loggedUser : string)
+  getProfileDetails()
   {
-    
     this.profileDetails = this._service.getProfileDetails(this.loggedUser);
-    console.log(this.profileDetails);
+    this.subscription = this.profileDetails.subscribe({
+      next: (data: Doctor[]) => {
+        if (data && data.length > 0) {
+          this.doctor = { ...data[0] }; // Clone the fetched doctor data to pre-fill the form
+          this.doctor.email = this.loggedUser; // Ensure email is set but not editable
+           // Do not include password
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching profile:', err);
+      }
+    });
   }
 
   updateDoctorProfile()
   {
-    this._service.UpdateDoctorProfile(this.doctor).subscribe(
+    this._service.updateDoctorProfile(this.doctor).subscribe(
       data => {
-        console.log("UserProfile Updated succesfully");
+        console.log("Profile Updated successfully");
         this.msg = "Profile Updated Successfully !!!";
         $(".editbtn").hide();
         $("#message").show();
         this.temp = true;
         $("#profilecard").show();
         $("#profileform").hide();
+        // Refresh the profile data after update
+        this.getProfileDetails();
         setTimeout(() => {
             this._router.navigate(['/userdashboard']);
           }, 6000);
@@ -75,6 +90,4 @@ export class DoctorprofileComponent implements OnInit {
       }
     )
   }
-
-
 }
