@@ -27,47 +27,81 @@ export class PatientlistComponent implements OnInit {
   constructor(private _service: DoctorService) { }
 
   ngOnInit(): void {
-    this.loggedUser = sessionStorage.getItem('loggedUser') || '';
-    this.currRole = sessionStorage.getItem('ROLE') || '';
+  this.loggedUser = sessionStorage.getItem('loggedUser') || '';
+  this.currRole = sessionStorage.getItem('ROLE') || '';
+  console.log('Logged user:', this.loggedUser, 'Role:', this.currRole);
 
-    if (this.currRole === 'doctor' || this.currRole === 'DOCTOR') {
-      this._service.getPatientListByDoctorEmail(this.loggedUser).subscribe({
-        next: (data) => this.patients = data,
-        error: (err) => console.error('Error fetching patients:', err)
-      });
-    } else {
-      this._service.getPatientList().subscribe({
-        next: (data) => this.patients = data,
-        error: (err) => console.error('Error fetching patients:', err)
-      });
-    }
-    this.slots = this._service.getSlotDetails(this.loggedUser);
+  if (this.currRole === 'doctor' || this.currRole === 'DOCTOR') {
+    console.log('Loading doctor patients...');
+    this._service.getPatientListByDoctorEmail(this.loggedUser).subscribe({
+      next: (data) => {
+        console.log('Doctor patients data:', data);
+        this.patients = data || [];
+        if (this.patients.length === 0) {
+          console.warn('No doctor patients, loading all as fallback...');
+          // Fallback: All patients load karo if empty
+          this._service.getPatientList().subscribe({
+            next: (allData) => {
+              this.patients = allData || [];
+              console.log('Fallback all patients:', this.patients.length);
+            },
+            error: (err) => console.error('Fallback error:', err)
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching doctor patients:', err);
+        this.patients = [];
+        // Fallback on error
+        this._service.getPatientList().subscribe({
+          next: (allData) => this.patients = allData || [],
+          error: (err) => console.error('All patients error:', err)
+        });
+      }
+    });
+  } else {
+    console.log('Loading all patients...');
+    this._service.getPatientList().subscribe({
+      next: (data) => {
+        console.log('All patients data:', data);
+        this.patients = data || [];
+      },
+      error: (err) => {
+        console.error('Error fetching all patients:', err);
+        this.patients = [];
+      }
+    });
   }
+  this.slots = this._service.getSlotDetails(this.loggedUser);
+}
 
   acceptRequest(patient: Appointment) {
+    console.log('Accepting patient:', patient.patientid);  // Debug
     patient.appointmentstatus = 'processing';
     this._service.acceptRequestForPatientApproval(patient.slot).subscribe({
       next: (res) => {
+        console.log('Accept success:', res);  // Debug
         patient.appointmentstatus = 'accept';
       },
       error: (err) => {
+        console.error('Accept error:', err);  // Debug
         patient.appointmentstatus = 'false';
-        console.error('Error accepting request:', err);
       }
     });
   }
 
   rejectRequest(patient: Appointment) {
+    console.log('Rejecting patient:', patient.patientid);  // Debug
     patient.appointmentstatus = 'processing';
     this._service.rejectRequestForPatientApproval(patient.slot).subscribe({
       next: (res) => {
+        console.log('Reject success:', res);
         patient.appointmentstatus = 'reject';
       },
       error: (err) => {
+        console.error('Reject error:', err);
         patient.appointmentstatus = 'false';
-        console.error('Error rejecting request:', err);
       }
     });
   }
-
 }

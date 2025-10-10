@@ -4,13 +4,9 @@
   <h1 class="appointments-title">Manage Your Appointments</h1>
   <p class="appointments-subtitle">Schedule, view, or cancel appointments seamlessly with just a few clicks.</p>
   <div class="appointments-actions">
-    <a class="action-btn primary" [routerLink]="['/bookappointment']">
-      <i class="fa fa-calendar-plus-o"></i>
-      Schedule New
-    </a>
-    <a class="action-btn secondary" [routerLink]="['/checkslots']">
-      <i class="fa fa-clock-o"></i>
-      Check Slots
+    <a class="action-btn secondary" [routerLink]="['/appointmentshistory']">
+      <i class="fa fa-history"></i>
+      View Appointment History
     </a>
   </div>
 </div>
@@ -94,10 +90,7 @@
     <i class="fa fa-calendar-o"></i>
     <h3>No appointments today</h3>
     <p>You have no scheduled appointments for today.</p>
-    <a class="action-btn primary" [routerLink]="['/bookappointment']">
-      <i class="fa fa-calendar-plus-o"></i>
-      Schedule Your First Appointment
-    </a>
+    
   </div>
 </div>
 

@@ -220,32 +220,30 @@
           </div>
         </div>
 
-                  <div class="form-group">
-          <label for="slot">
-            Appointment Slot <span class="required">*</span>
-            <small>Choose available time slot</small>
-          </label>
-          <select 
-            class="form-control" 
-            name="slot" 
-            [(ngModel)]="appointment.slot"
-            required
-            #slot="ngModel"
-            [class.is-invalid]="slot.invalid && slot.touched">
-            <option value="">Select Slot</option>
-            <option *ngFor="let availableSlot of availableSlots" [value]="availableSlot">
-              {{availableSlot === 'AM slot' ? 'Morning (9:00 AM - 12:00 PM)' : 
-                availableSlot === 'Noon slot' ? 'Afternoon (12:00 PM - 3:00 PM)' : 
-                'Evening (3:00 PM - 6:00 PM)'}}
-            </option>
-          </select>
-          <div class="error-message" *ngIf="slot.invalid && slot.touched">
-            <span *ngIf="slot.errors?.['required']">Time slot is required</span>
-          </div>
-          <div *ngIf="availableSlots.length === 0 && appointment.date && appointment.doctorname" class="error-message">
-            No slots available for the selected date and doctor.
-          </div>
-        </div>
+              <div class="form-group">
+  <label for="slot">
+    Appointment Slot <span class="required">*</span>
+    <small>Choose available time slot</small>
+  </label>
+  <select 
+    class="form-control" 
+    name="slot" 
+    [(ngModel)]="appointment.slot"
+    required
+    #slot="ngModel"
+    [class.is-invalid]="slot.invalid && slot.touched">
+    <option value="">Select Slot</option>
+    <option *ngFor="let availableSlot of availableSlots" [value]="availableSlot">
+      {{availableSlot}}  <!-- Ab direct time show hoga, jaise "9.00 AM - 11.00 AM" -->
+    </option>
+  </select>
+  <div class="error-message" *ngIf="slot.invalid && slot.touched">
+    <span *ngIf="slot.errors?.['required']">Time slot is required</span>
+  </div>
+  <div *ngIf="availableSlots.length === 0 && appointment.date && appointment.doctorname" class="error-message">
+    No slots available for the selected date and doctor.
+  </div>
+</div>
       </div>
     </div>
 

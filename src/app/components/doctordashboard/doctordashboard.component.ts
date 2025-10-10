@@ -19,11 +19,11 @@ export class DoctordashboardComponent implements OnInit {
   gender = '';
   loggedUser = '';
   currRole = '';
-  patients: Observable<any[]> | undefined;
-  users: Observable<any[]> | undefined;
-  doctors: Observable<any[]> | undefined;
-  slots: Observable<any[]> | undefined;
-  prescriptions: Observable<any[]> | undefined;
+  patients: Observable<number> | undefined;  // Change to number
+  users: Observable<number> | undefined;
+  doctors: Observable<number> | undefined;
+  slots: Observable<number> | undefined;
+  prescriptions: Observable<number> | undefined;
 
   constructor(private _route: Router, private _service: UserService) {}
 
@@ -45,10 +45,16 @@ export class DoctordashboardComponent implements OnInit {
     this.currRole = JSON.stringify(sessionStorage.getItem('ROLE') || '{}');
     this.currRole = this.currRole.replace(/"/g, '');
 
+    console.log('Dashboard loading for user:', this.loggedUser, 'Role:', this.currRole);  // Add debug
+
+    // Load stats
     this.patients = this._service.getTotalPatients();
     this.users = this._service.getTotalUsers();
     this.doctors = this._service.getTotalDoctors();
     this.slots = this._service.getTotalSlots();
     this.prescriptions = this._service.getTotalPrescriptions();
+
+    // Subscribe to one for debug (optional, remove after test)
+    this.patients.subscribe(count => console.log('Total patients count:', count));  // Add
   }
 }

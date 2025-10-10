@@ -7,7 +7,7 @@ import { Prescription } from '../models/prescription';
 import { Slots } from '../models/slots';
 import { User } from '../models/user';
 import { Department } from '../models/department';
-
+import { tap } from 'rxjs/operators';
 
 const NAV_URL = environment.apiURL;
 
@@ -15,9 +15,6 @@ const NAV_URL = environment.apiURL;
   providedIn: 'root'
 })
 export class DoctorService {
-
-  
-  
 
   user = new User();
   doctor = new Doctor();
@@ -36,7 +33,7 @@ export class DoctorService {
 
   getSlotList() : Observable<Slots[]>
   {
-    return this._http.get<Slots[]>(`${NAV_URL}/slotDetails`); // Yeh change: /admin/slotlist se /slotDetails kar, backend match
+    return this._http.get<Slots[]>(`${NAV_URL}/slotDetails`);
   }
 
   getSlotListWithUniqueDoctors() : Observable<any>
@@ -50,15 +47,12 @@ export class DoctorService {
   }
 
   getSlotDetails(email: string): Observable<Slots[]> {
-    // Using the admin endpoint for better type safety and consistent naming
     return this._http.get<Slots[]>(`${NAV_URL}/admin/doctorSlots/${email}`).pipe(
       catchError((error: HttpErrorResponse) => {
         console.error('Error fetching slot details:', error);
         if (error.status === 404) {
-          // Fallback to legacy endpoint if admin endpoint not found
           return this._http.get<Slots[]>(`${NAV_URL}/slotDetails/${email}`);
         }
-        // Return empty array if both endpoints fail
         return of([]);
       })
     );
@@ -74,16 +68,17 @@ export class DoctorService {
     return this._http.get<any>(`${NAV_URL}/patientlistbyemail/`+email);
   }
 
-  getPatientList() : Observable<any>
-  {
-    return this._http.get<any>(`${NAV_URL}/patientlist`);
-  }
+ getPatientListByDoctorEmail(loggedUser: string): Observable<any> {
+  return this._http.get<any>(`${NAV_URL}/patientlistbydoctoremail/` + loggedUser).pipe(
+    tap((data: any) => console.log('Service: Doctor patients:', data))
+  );
+}
 
-  getPatientListByDoctorEmail(loggedUser : string) : Observable<any>
-  {
-    return this._http.get<any>(`${NAV_URL}/patientlistbydoctoremail/`+loggedUser);
-  }
-
+getPatientList(): Observable<any> {
+  return this._http.get<any>(`${NAV_URL}/patientlist`).pipe(
+    tap((data: any) => console.log('Service: All patients:', data))
+  );
+}
   getPatientListByDoctorEmailAndDate(loggedUser : string) : Observable<any>
   {
     return this._http.get<any>(`${NAV_URL}/patientlistbydoctoremailanddate/`+loggedUser);
@@ -112,13 +107,19 @@ export class DoctorService {
   }
 
   public addBookingSlots(slot: Slots): Observable<any> {
+    // Set default status for new slots (already handled in component, but safe here too)
     slot.amstatus = 'unbooked';
     slot.noonstatus = 'unbooked';
     slot.pmstatus = 'unbooked';
     
-    return this._http.post<any>(`${NAV_URL}/addBookingSlots`, slot, );
-    // { responseType : 'text' }  set up
-}
+    // Key fix: Add responseType: 'text' to accept plain text response from backend
+    // Also ensure Content-Type header for JSON body
+    const headers = { 'Content-Type': 'application/json' };
+    return this._http.post(`${NAV_URL}/addBookingSlots`, slot, { 
+      headers: headers,
+      responseType: 'text'  // This prevents JSON parsing error on plain text response
+    });
+  }
 
   public addPrescriptions(prescription : Prescription) : Observable<any>
   {
@@ -134,73 +135,37 @@ export class DoctorService {
   return this._http.put<Doctor>(`${NAV_URL}/updatedoctor`, doctor);
 }
 
-  /**
-   * Get doctor by ID
-   * @param id Doctor ID
-   * @returns Observable of Doctor
-   */
   getDoctorById(id: number): Observable<Doctor> {
     return this._http.get<Doctor>(`${NAV_URL}/doctors/${id}`);
   }
 
-  /**
-   * Delete doctor
-   * @param id Doctor ID
-   * @returns Observable of any
-   */
   deleteDoctor(id: number): Observable<any> {
     return this._http.delete(`${NAV_URL}/doctors/${id}`);
   }
 
-  /**
-   * Get doctor's available slots
-   * @param doctorId Doctor ID
-   * @returns Observable of slots array
-   */
   getDoctorSlots(doctorId: number): Observable<any[]> {
     return this._http.get<any[]>(`${NAV_URL}/doctors/${doctorId}/slots`);
   }
 
-  /**
-   * Get doctor's appointments
-   * @param doctorId Doctor ID
-   * @returns Observable of appointments array
-   */
   getDoctorAppointments(doctorId: number): Observable<any[]> {
     return this._http.get<any[]>(`${NAV_URL}/doctors/${doctorId}/appointments`);
   }
 
-  /**
-   * Get departments
-   * @returns Observable of departments array
-   */
   getDepartments(): Observable<Department[]> {
     return this._http.get<Department[]>(`${NAV_URL}/departments`);
   }
 
-  /**
-   * Add department
-   * @param department Department object
-   * @returns Observable of created Department
-   */
   addDepartment(department: Department): Observable<Department> {
     return this._http.post<Department>(`${NAV_URL}/departments`, department);
   }
 
-  /**
-   * Get appointment list
-   * @returns Observable of appointments array
-   */
   getAppointmentList(): Observable<any[]> {
     return this._http.get<any[]>(`${NAV_URL}/appointments`);
   }
 
-  /**
-   * Add prescription from remote
-   * @param prescription Prescription object
-   * @returns Observable of any
-   */
-  addPrescriptionFromRemote(prescription: Prescription): Observable<any> {
-    return this._http.post<any>(`${NAV_URL}/addPrescription`, prescription);
-  }
+ addPrescriptionFromRemote(prescription: Prescription): Observable<any> {
+  const headers = { 'Content-Type': 'application/json' };
+  return this._http.post<any>(`${NAV_URL}/addPrescription`, prescription, { headers });
+}
+
 }

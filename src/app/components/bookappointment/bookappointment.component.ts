@@ -130,57 +130,55 @@ export class BookappointmentComponent implements OnInit {
   }
 
   checkFinalSlotAvailability(slots: any[]): boolean {
+  const doctorSlots = slots.find((slot: Slots) => 
+    slot.doctorname === this.appointment.doctorname && 
+    slot.date === this.appointment.date
+  );
+
+  if (!doctorSlots) return false;
+
+  // Now slot is actual time string, so check which field it matches
+  if (this.appointment.slot.includes('AM') && doctorSlots.amstatus === 'unbooked') {
+    return true;
+  } else if (this.appointment.slot.includes('PM') && (this.appointment.slot.includes('Noon') || this.appointment.slot.includes('1.') || this.appointment.slot.includes('2.'))) {  // Noon/AM check by time
+    return doctorSlots.noonstatus === 'unbooked';
+  } else if (this.appointment.slot.includes('PM') && doctorSlots.pmstatus === 'unbooked') {  // Evening PM
+    return true;
+  }
+  return false;
+}
+
+checkSlotAvailability() {
+  // Get all slots for the selected doctor on the selected date
+  this._service.getSlotList().subscribe(slots => {
     const doctorSlots = slots.find((slot: Slots) => 
       slot.doctorname === this.appointment.doctorname && 
       slot.date === this.appointment.date
     );
 
-    if (!doctorSlots) return false; // Yeh false karo, taaki frontend bhi reject kare
-
-    switch(this.appointment.slot) {
-      case 'AM slot':
-        return doctorSlots.amstatus === 'unbooked'; // Remove && doctorSlots.amslot === 'empty'
-      case 'Noon slot':
-        return doctorSlots.noonstatus === 'unbooked'; // Remove && doctorSlots.noonslot === 'empty'
-      case 'PM slot':
-        return doctorSlots.pmstatus === 'unbooked'; // Remove && doctorSlots.pmslot === 'empty'
-      default:
-        return false;
-    }
-  }
-
- checkSlotAvailability() {
-    // Get all slots for the selected doctor on the selected date
-    this._service.getSlotList().subscribe(slots => {
-      const doctorSlots = slots.find((slot: Slots) => 
-        slot.doctorname === this.appointment.doctorname && 
-        slot.date === this.appointment.date
-      );
-
-      this.availableSlots = [];
-      
-      if (doctorSlots) {
-        // Check AM slot
-        if (doctorSlots.amstatus === 'unbooked') { // Remove && doctorSlots.amslot === 'empty'
-          this.availableSlots.push('AM slot');
-        }
-        
-        // Check Noon slot
-        if (doctorSlots.noonstatus === 'unbooked') { // Remove && doctorSlots.noonslot === 'empty'
-          this.availableSlots.push('Noon slot');
-        }
-        
-        // Check PM slot
-        if (doctorSlots.pmstatus === 'unbooked') { // Remove && doctorSlots.pmslot === 'empty'
-          this.availableSlots.push('PM slot');
-        }
-      } else {
-        // If no slots found for the date, NO slots are available (match backend behavior)
-        this.availableSlots = [];
+    this.availableSlots = [];
+    
+    if (doctorSlots) {
+      // Check AM slot - actual time push karo if unbooked and not empty
+      if (doctorSlots.amstatus === 'unbooked' && doctorSlots.amslot !== 'empty') {
+        this.availableSlots.push(doctorSlots.amslot);  // Yeh "9.00 AM - 11.00 AM" jaise string push karega
       }
-    });
-  }
-
+      
+      // Check Noon slot
+      if (doctorSlots.noonstatus === 'unbooked' && doctorSlots.noonslot !== 'empty') {
+        this.availableSlots.push(doctorSlots.noonslot);  // "1.00 PM - 3.00 PM"
+      }
+      
+      // Check PM slot
+      if (doctorSlots.pmstatus === 'unbooked' && doctorSlots.pmslot !== 'empty') {
+        this.availableSlots.push(doctorSlots.pmslot);  // "5.00 PM - 7.00 PM"
+      }
+    } else {
+      // If no slots found for the date, NO slots are available
+      this.availableSlots = [];
+    }
+  });
+}
   generatePatientId(): string {
     const timestamp = new Date().getTime();
     const random = Math.floor(Math.random() * 1000);
@@ -251,7 +249,7 @@ export class BookappointmentComponent implements OnInit {
     }
   }
 
-  bookAppointment() {
+bookAppointment() {
   this.isSubmitting = true;
   this.showMessage = false;
   
@@ -260,7 +258,7 @@ export class BookappointmentComponent implements OnInit {
   if (!validation.isValid) {
     this.isSubmitting = false;
     this.showMessage = true;
-    this.message = validation.message;
+    this.message = validation.message;  // Yeh already hai
     return;
   }
 
@@ -276,22 +274,23 @@ export class BookappointmentComponent implements OnInit {
         return;
       }
 
-      // Prepare appointment data (yeh yahan add/replace karo)
+      // Prepare appointment data
       const appointmentData = {
         ...this.appointment,
         appointmentstatus: 'false',
         admissionstatus: 'false',
-        patientid: '' // Empty set karo, backend generate karega
+        patientid: '' // Backend generate karega
       };
 
       // Attempt to book the appointment
       this.userService.addBookingAppointments(appointmentData).subscribe({
-        next: (data) => {
+        next: (data) => {  // 'data' ab Appointments object hai backend se
           console.log("Appointment booked successfully");
           this.isSubmitting = false;
           this.showForm = false;
           this.showMessage = true;
-          this.message = "Your appointment has been booked successfully! Appointment ID: " + data.patientid; // Ab backend se aane wala ID use karo
+          // Fix: 'Success' include kar ke message banao, taaki class success lage
+          this.message = "Success! Your appointment has been booked successfully! Appointment ID: " + data.patientid;
           this.retryCount = 0; // Reset retry counter
           
           setTimeout(() => {
@@ -313,6 +312,5 @@ export class BookappointmentComponent implements OnInit {
     }
   });
 }
-
 }
 

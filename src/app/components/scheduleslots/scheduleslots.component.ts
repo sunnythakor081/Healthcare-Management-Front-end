@@ -141,6 +141,7 @@ export class ScheduleslotsComponent implements OnInit {
     const validation = this.validateSlot();
     if (!validation.isValid) {
       this.error = validation.message;
+      this.successMessage = null; // Clear any previous success
       return;
     }
 
@@ -158,25 +159,32 @@ export class ScheduleslotsComponent implements OnInit {
     this.slot.date = date.toISOString().split('T')[0];
 
     this._service.addBookingSlots(this.slot).subscribe({
-      next: () => {
-        this.successMessage = 'Slots added successfully!';
+      next: (response) => {
+        // Response is now plain text like "modified successfully !!!", so we can log it but ignore for UI
+        console.log('Backend response:', response);
+        this.successMessage = 'Slots added successfully! 🎉';
         this.isLoading = false;
         this.loadDoctorSlots(); // Refresh the slots list
         this.showForm = false;
         this.slot = new Slots(); // Reset form
 
-        // Auto-hide success message after 3 seconds
+        // Auto-hide success message after 3 seconds and navigate
         setTimeout(() => {
           this.successMessage = null;
           this._router.navigate(['/doctordashboard']);
         }, 3000);
       },
-     error: (err) => {
-    console.error('Error adding slots:', err);
-    this.isLoading = false;
-    this.error = err.error || 'Failed to add slots. Please try again.';
-}
+      error: (err) => {
+        console.error('Error adding slots:', err);
+        this.isLoading = false;
+        this.successMessage = null; // Clear any previous success
+        // Improved error handling for non-200 errors
+        if (err.error instanceof ErrorEvent) {
+          this.error = 'Network error: Please check your connection and try again.';
+        } else {
+          this.error = `Server error (${err.status}): ${err.message || 'Failed to add slots. Please try again later.'}`;
+        }
+      }
     });
   }
-
 }

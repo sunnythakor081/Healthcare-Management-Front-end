@@ -16,37 +16,56 @@ import { FooterComponent } from '../footer/footer.component';
   standalone: true,
   imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent]
 })
-export class AddprescriptionComponent implements OnInit 
-{
+export class AddprescriptionComponent implements OnInit {
   message = '';
   prescriptionobj = new Prescription();
-  appointment : Observable<Appointment[]> | undefined;
+  appointment: Observable<Appointment[]> | undefined;  // Keep type Appointment[]
   isSubmitting = false;
+  loggedDoctorEmail = '';
 
-  constructor(private _service : DoctorService, private _router: Router) { }
+  constructor(private _service: DoctorService, private _router: Router) { }
 
-  ngOnInit(): void 
-  {
-    this.appointment = this._service.getAppointmentList();
+  ngOnInit(): void {
+    this.loggedDoctorEmail = sessionStorage.getItem('loggedUser') || '';  // Doctor's email from session
+    console.log('Logged doctor email for filter:', this.loggedDoctorEmail);  // Debug
+
+    // Load doctor-specific patients (exact names from backend)
+    this.appointment = this._service.getPatientListByDoctorEmail(this.loggedDoctorEmail);
+
+    // Auto-set doctor name (assume stored in session at login; adjust if from profile)
+    const doctorName = sessionStorage.getItem('doctorName') || this.loggedDoctorEmail;  // Fallback to email if not stored
+    this.prescriptionobj.doctorname = doctorName;
+    console.log('Auto-set doctor name:', this.prescriptionobj.doctorname);  // Debug
   }
 
-  addPrescription()
-  {
+  addPrescription() {
     this.isSubmitting = true;
     
-    this._service.addPrescriptionFromRemote(this.prescriptionobj).subscribe(
-      (data: any) => {
-        console.log("Prescription added Successfully");
+    // Trim patientname to remove spaces for exact match
+    if (this.prescriptionobj.patientname) {
+      this.prescriptionobj.patientname = this.prescriptionobj.patientname.trim();
+    }
+    console.log('Trimmed form data before submit:', this.prescriptionobj);  // Updated log
+    console.log('Trimmed patient name selected:', this.prescriptionobj.patientname);  // Specific check
+
+    this._service.addPrescriptionFromRemote(this.prescriptionobj).subscribe({
+      next: (response: any) => {  // Now response is text, so any
+        console.log("Prescription added Successfully", response);
         this.isSubmitting = false;
-        this.message = "Prescription added Successfully!";
-        this._router.navigate(['/doctordashboard']);
+        this.message = "Success! Prescription added successfully!";  // Updated for consistent 'Success' trigger
+        // Delay navigation to show success message for 3 seconds (increased for better visibility)
+        setTimeout(() => {
+          this._router.navigate(['/doctordashboard']);
+        }, 3000);
       },
-      (error: any) => {
+      error: (error: any) => {
         console.log("process Failed");
+        console.log('Full error response:', error);
+        console.log('Error status:', error.status);  // e.g., 400
+        console.log('Error message:', error.error);  // e.g., "Patient not found"
         this.isSubmitting = false;
         this.message = "Failed to add prescription. Please try again.";
-        console.log(error.error);
       }
-    )
+    });
   }
 }

@@ -1,132 +1,297 @@
-@import url('https://fonts.googleapis.com/css2?family=Aladin&family=Merienda+One&family=Staatliches&family=Volkhov:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+/* Global Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);  /* Modern gradient background */
+  min-height: 100vh;
+}
 
 /* Heading Styles */
 .heading {
-  font-weight: bolder;
-  color: darkgreen;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  color: #10b981;  /* Teal green for success */
   margin-top: 3%;
-  font-family: 'Aladin', cursive;
   margin-bottom: 2%;
+  text-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);  /* Subtle shadow for depth */
+  animation: fadeInDown 0.8s ease-out;
 }
 
-/* Prescription Card Styles */
-.prescription-card {
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 10px;
-  box-shadow: 5px 5px 35px 8px rgb(147, 158, 147); 
-  background-color: white;
-  max-width: 700px;
-  margin-bottom: 6%;
-  transition: transform 0.3s ease;
-}
-
-.prescription-card:hover {
-  transform: translateY(-5px);
-}
-
-.header-flag {
-  background-color: rgb(7, 54, 54);
-  width: 100%;
-  padding: 20px 30px;
-  height: 100px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.footer-flag {
-  background-color: rgb(7, 54, 54);
-  width: 100%;
-  height: 50px;
-  padding: 15px;
-  color: white;
-  margin-bottom: 3%;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  overflow: hidden;
-}
-
-.topname {
-  color: white;
-  font-weight: bolder;
-}
-
-.prescription-body {
-  margin: 5% 10%;
-  padding-bottom: 20px;
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Search Form Styles */
 .message {
-  width: 40%;
-  background-color: white;
-  box-shadow: 5px 5px 35px 8px rgb(147, 158, 147); 
-  border-radius: 25px;
-  font-weight: bolder;
-  font-size: larger;
-  color: maroon;
-  font-family: monospace;
-  padding: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 5%;
-  margin-bottom: 10%;
-  transition: all 0.3s ease;
+  width: 90%;  /* Responsive width */
+  max-width: 500px;
+  background: rgba(255, 255, 255, 0.95);  /* Glassmorphism: semi-transparent white */
+  backdrop-filter: blur(10px);  /* Blur effect for modern look */
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);  /* Enhanced shadow */
+  border-radius: 20px;  /* Softer corners */
+  border: 1px solid rgba(255, 255, 255, 0.18);  /* Subtle border */
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #8b4513;  /* Saddle brown for maroon-like */
+  font-family: 'Oswald', sans-serif;
+  padding: 2rem;
+  margin: 2rem auto;  /* Centered, responsive margin */
+  transition: all 0.4s ease;  /* Smooth hover */
+  position: relative;
+  overflow: hidden;
+}
+
+.message::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #10b981, #3b82f6);  /* Gradient top border */
 }
 
 .message:hover {
-  box-shadow: 5px 5px 40px 10px rgb(127, 138, 127);
+  transform: translateY(-5px);  /* Lift on hover */
+  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);  /* Deeper shadow */
 }
 
 input {
   border-radius: 12px;
   margin-top: 8px;
+  border: 2px solid #e5e7eb;  /* Light border */
   transition: all 0.3s ease;
+  padding: 0.75rem;
+  font-size: 1rem;
 }
 
 input:focus {
-  box-shadow: 0 0 8px rgba(7, 54, 54, 0.5);
-  border-color: rgb(7, 54, 54);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);  /* Focus ring modern */
+  border-color: #10b981;  /* Teal focus */
+  transform: scale(1.02);  /* Subtle scale */
 }
 
 label {
   margin-top: 10px;
-  font-family: 'Volkhov', serif;
-  letter-spacing: 0px;
-  font-size: medium;
-  font-weight: bolder;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #374151;  /* Gray for labels */
 }
 
+/* Button Styles */
 .registerbtn {
-  background-color: transparent;
-  padding-left: 8%;
-  padding-right: 8%;
-  margin: auto;  
-  padding-bottom: 7px;
-  border-radius: 15px;
-  margin-top: 10px;
-  color: black;
-  border: 1px solid black;
+  background: linear-gradient(135deg, #10b981, #059669);  /* Gradient button */
+  padding: 0.75rem 2rem;
+  margin: 1rem auto;
+  border-radius: 50px;  /* Pill shape */
+  color: white;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 250px;
+}
+
+.registerbtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.registerbtn:hover::before {
+  left: 100%;  /* Shimmer effect on hover */
 }
 
 .registerbtn:hover {
-  background-color: rgb(7, 54, 54);
-  padding-left: 7%;
-  padding-right: 7%;
-  cursor: pointer;
-  color: white;
-  transform: translateY(-2px);
+  transform: translateY(-3px);  /* Lift */
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);  /* Glow shadow */
+  background: linear-gradient(135deg, #059669, #047857);  /* Darker gradient */
 }
 
 .registerbtn:disabled {
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  background: #9ca3af;
 }
 
-/* Custom text color */
+/* Prescription Card Styles */
+.prescription-card {
+  margin: 2rem auto;
+  max-width: 800px;  /* Wider for better readability */
+  border-radius: 20px;  /* Softer corners */
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);  /* Soft modern shadow */
+  background: white;
+  overflow: hidden;  /* No overflow */
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.prescription-card:hover {
+  transform: translateY(-10px);  /* Lift on hover */
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+}
+
+.header-flag {
+  background: linear-gradient(135deg, #1f2937, #374151);  /* Dark gradient header */
+  width: 100%;
+  padding: 1.5rem 2rem;
+  height: auto;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topname {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.topname h3 {
+  margin: 0;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 1px;
+}
+
+.topname h5 {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.header-flag img {
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.prescription-body {
+  margin: 2rem;
+  padding-bottom: 1rem;
+}
+
+/* Row Styles for Card Body */
+.row {
+  display: flex;
+  margin-bottom: 0.75rem;
+  align-items: center;
+}
+
+.col-4 {
+  flex: 0 0 30%;  /* Fixed width for labels */
+  font-weight: 600;
+  color: #4b5563;  /* Gray labels */
+}
+
+.col-8 {
+  flex: 1;
+  font-weight: 700;
+  color: #dc2626;  /* Red for values */
+}
+
+.text-primary {
+  color: #3b82f6 !important;  /* Blue for accents */
+}
+
+.text-danger {
+  color: #dc2626 !important;
+}
+
 .text-teal {
-  color: rgb(7, 54, 54);
+  color: #0d9488 !important;  /* Teal for labels */
+}
+
+/* Badges */
+.badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;  /* Pill shape */
+  transition: all 0.3s ease;
+}
+
+.bg-warning {
+  background-color: #f59e0b !important;
+  color: #92400e !important;
+}
+
+.bg-success {
+  background-color: #10b981 !important;
+  color: white !important;
+}
+
+.bg-danger {
+  background-color: #ef4444 !important;
+  color: white !important;
+}
+
+/* Footer Flag */
+.footer-flag {
+  background: linear-gradient(135deg, #1f2937, #374151);  /* Matching header */
+  width: 100%;
+  height: auto;
+  padding: 1rem 2rem;
+  color: white;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.footer-flag h6 {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Print Button */
+#prescriptionpages {
+  animation: fadeIn 0.6s ease-out;
+}
+
+#printbtn {
+  background: linear-gradient(135deg, #6b7280, #4b5563);  /* Gray gradient */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
+
+#printbtn:hover {
+  background: linear-gradient(135deg, #4b5563, #374151);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(107, 114, 128, 0.4);
 }
 
 /* Animation */
@@ -139,31 +304,70 @@ label {
   animation: fadeIn 0.5s ease-out;
 }
 
-/* Print styles */
+/* Print Styles (Improved) */
 @media print {
-  #printbtn {
+  .message, #printbtn {
     display: none !important;
   }
   
   .prescription-card {
     box-shadow: none !important;
-    margin-top: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+    border-radius: 0 !important;
   }
   
   .header-flag, .footer-flag {
     -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    background: #1f2937 !important;  /* Force color in print */
+  }
+  
+  .row {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  body {
+    background: white !important;
   }
 }
 
-/* Responsive adjustments */
+/* Responsive Design (Latest Mobile-First) */
 @media (max-width: 768px) {
   .message {
-    width: 80%;
+    width: 95%;
+    padding: 1.5rem;
+    font-size: 1rem;
   }
   
   .prescription-card {
-    margin-left: 15px;
-    margin-right: 15px;
+    margin: 1rem;
+    max-width: none;
+  }
+  
+  .header-flag, .footer-flag {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .col-4, .col-8 {
+    flex: none;
+    width: 100%;
+  }
+  
+  input, button {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) {
+  .message {
+    width: 50%;
   }
 }

@@ -111,6 +111,8 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('doctorname', this.doctor.email); // Save email as doctorname for now
         sessionStorage.setItem('name', this.doctor.email);
         sessionStorage.setItem('gender', "male");
+        sessionStorage.setItem('doctorName', data.doctorname);
+        sessionStorage.setItem('gender', data.gender);
         this.isLoading = false;
         
         // Show success message with SweetAlert2

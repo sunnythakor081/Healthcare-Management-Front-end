@@ -1,125 +1,106 @@
 <app-header></app-header>
 
 <div class="container mx-auto px-4 py-8">
-    <div class="mb-8">
-      <h2 class="text-center font-oswald text-3xl text-teal-700 my-6"> Patient List </h2>
-    </div>
-    <div class="overflow-x-auto shadow-lg rounded-lg">
-      <table class="min-w-full bg-white">
-        <thead class="bg-teal-800 text-white">
-          <tr>
-            <th class="py-3 px-4 uppercase font-semibold text-sm">Identity</th>
-            <th class="py-3 px-4 uppercase font-semibold text-sm">Patient ID</th>
-            <th class="py-3 px-4 uppercase font-semibold text-sm">Name</th>
-            <th class="py-3 px-4 uppercase font-semibold text-sm">Age</th>
-            <th class="py-3 px-4 uppercase font-semibold text-sm">Slot</th>
-            <th class="py-3 px-4 uppercase font-semibold text-sm">Date</th>
-            <th class="py-3 px-4 uppercase font-semibold text-sm">Problem</th>
-            <th class="py-3 px-4 uppercase font-semibold text-sm">Approval</th>
-            <th class="py-3 px-4 uppercase font-semibold text-sm">Admission</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let patient of patients | paginate: { itemsPerPage: 10, currentPage: page }" class="border-b hover:bg-gray-50">
-            <td class="py-3 px-4">
-              <img *ngIf="patient.gender === 'Male' || patient.gender === 'male'" class="mx-auto rounded-full h-16 w-16 object-cover" src="assets/img/maleuser.png">
-              <img *ngIf="patient.gender === 'Female' || patient.gender === 'female'" class="mx-auto rounded-full h-16 w-16 object-cover" src="assets/img/femaleuser.png">
-            </td>
-            <td class="py-3 px-4">
-              <div class="bg-blue-900 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">{{patient.patientid}}</div>
-            </td>
-            <td class="py-3 px-4 font-medium">{{patient.patientname}}</td>
-            <td class="py-3 px-4">{{patient.age}} years</td>
-            <td class="py-3 px-4">
-              <div *ngIf="loggedUser === 'admin@gmail.com'">
-                <div class="bg-amber-800 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">{{patient.slot}}</div>
-              </div>
-                <div *ngFor="let slot of (slots | async) || []">
-                    <div *ngIf="patient.slot === 'AM slot' && slot.amstatus === 'booked' && patient.date === slot.date">
-                        <div class="bg-amber-800 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">{{slot.amslot}}</div>
-                    </div>
-                    <div *ngIf="patient.slot === 'Noon slot' && slot.noonstatus === 'booked' && patient.date === slot.date">
-                        <div class="bg-amber-800 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">{{slot.noonslot}}</div>
-                    </div>
-                    <div *ngIf="patient.slot === 'PM slot' && slot.pmstatus === 'booked' && patient.date === slot.date">
-                        <div class="bg-amber-800 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">{{slot.pmslot}}</div>
-                    </div>
-                </div>
-            </td>
-            <td class="py-3 px-4">
-                <div class="bg-blue-900 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">{{patient.date}}</div>
-            </td>
-            <td class="py-3 px-4">{{patient.problem}}</td>
-            <td class="py-3 px-4">
-               <div *ngIf="currRole === 'admin' || currRole === 'ADMIN'">
-                <div *ngIf="patient.appointmentstatus === 'accept'" class="bg-green-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Accepted</div>
-                <div *ngIf="patient.appointmentstatus === 'false'" class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Pending</div>
-                <div *ngIf="patient.appointmentstatus === 'reject'" class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Rejected</div>
-                <div *ngIf="patient.appointmentstatus === 'processing'" class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Processing...</div>
-              </div>
-<<<<<<< HEAD
-                <div *ngIf="(currRole === 'doctor' || currRole === 'DOCTOR')">
-                  <div *ngIf="patient.appointmentstatus === 'false'">
-                    <button (click)="acceptRequest(patient)" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block mb-2 transition duration-300 btn-effect">Accept</button><br>
-                    <button (click)="rejectRequest(patient)" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block transition duration-300 btn-effect">Reject</button>
-                  </div>
-                  <div *ngIf="patient.appointmentstatus === 'accept'">
-                    <div class="bg-green-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Accepted</div>
-                  </div>
-                  <div *ngIf="patient.appointmentstatus === 'reject'">
-                    <div class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Rejected</div>
-                  </div>
-                  <div *ngIf="patient.appointmentstatus === 'processing'">
-                    <div class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Processing...</div>
-                  </div>
-                </div>
-=======
-             <div *ngIf="currRole === 'doctor' || currRole === 'DOCTOR'">
-
-  <!-- Agar Pending hai to buttons dikhao -->
-  <div *ngIf="patient.appointmentstatus === 'false'">
-    <button (click)="acceptRequest(patient)" 
-            class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block mb-2 transition duration-300">
-      Accept
-    </button><br>
-    <button (click)="rejectRequest(patient)" 
-            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block transition duration-300">
-      Reject
-    </button>
+  <div class="mb-8">
+    <h2 class="text-center font-oswald text-3xl text-teal-700 my-6"> Patient List </h2>
   </div>
-
-  <!-- Agar Accept ho gaya -->
-  <div *ngIf="patient.appointmentstatus === 'accept'" 
-       class="bg-green-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">
-    Accepted
+  <div class="overflow-x-auto shadow-lg rounded-lg">
+    <table class="min-w-full bg-white">
+      <thead class="bg-teal-800 text-white">
+        <tr>
+          <th class="py-3 px-4 uppercase font-semibold text-sm">Identity</th>
+          <th class="py-3 px-4 uppercase font-semibold text-sm">Patient ID</th>
+          <th class="py-3 px-4 uppercase font-semibold text-sm">Name</th>
+          <th class="py-3 px-4 uppercase font-semibold text-sm">Age</th>
+          <th class="py-3 px-4 uppercase font-semibold text-sm">Slot</th>
+          <th class="py-3 px-4 uppercase font-semibold text-sm">Date</th>
+          <th class="py-3 px-4 uppercase font-semibold text-sm">Problem</th>
+          <th class="py-3 px-4 uppercase font-semibold text-sm">Approval</th>
+          <th class="py-3 px-4 uppercase font-semibold text-sm">Admission</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of patients | paginate: { itemsPerPage: 10, currentPage: page }" class="border-b hover:bg-gray-50">
+          <td class="py-3 px-4">
+            <img *ngIf="patient.gender === 'Male' || patient.gender === 'male'" class="mx-auto rounded-full h-16 w-16 object-cover" src="assets/img/maleuser.png">
+            <img *ngIf="patient.gender === 'Female' || patient.gender === 'female'" class="mx-auto rounded-full h-16 w-16 object-cover" src="assets/img/femaleuser.png">
+          </td>
+          <td class="py-3 px-4">
+            <div class="bg-blue-900 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">{{patient.patientid}}</div>
+          </td>
+          <td class="py-3 px-4 font-medium">{{patient.patientname}}</td>
+          <td class="py-3 px-4">{{patient.age}} years</td>
+          <td class="py-3 px-4">
+            <div *ngIf="loggedUser === 'admin@gmail.com'">
+              <div class="bg-amber-800 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">{{patient.slot}}</div>
+            </div>
+            <div *ngFor="let slot of (slots | async) || []">
+              <div *ngIf="patient.slot === 'AM slot' && slot.amstatus === 'booked' && patient.date === slot.date">
+                <div class="bg-amber-800 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">{{slot.amslot}}</div>
+              </div>
+              <div *ngIf="patient.slot === 'Noon slot' && slot.noonstatus === 'booked' && patient.date === slot.date">
+                <div class="bg-amber-800 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">{{slot.noonslot}}</div>
+              </div>
+              <div *ngIf="patient.slot === 'PM slot' && slot.pmstatus === 'booked' && patient.date === slot.date">
+                <div class="bg-amber-800 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">{{slot.pmslot}}</div>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4">
+            <div class="bg-blue-900 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">{{patient.date}}</div>
+          </td>
+          <td class="py-3 px-4">{{patient.problem}}</td>
+          <td class="py-3 px-4">
+            <div *ngIf="currRole === 'admin' || currRole === 'ADMIN'">
+              <div *ngIf="patient.appointmentstatus === 'accept'" class="bg-green-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Accepted</div>
+              <div *ngIf="patient.appointmentstatus === 'false'" class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Pending</div>
+              <div *ngIf="patient.appointmentstatus === 'reject'" class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Rejected</div>
+              <div *ngIf="patient.appointmentstatus === 'processing'" class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Processing...</div>
+            </div>
+            <!-- Doctor ke liye buttons (clean, no conflict) -->
+            <div *ngIf="currRole === 'doctor' || currRole === 'DOCTOR'">
+              <!-- Pending pe buttons dikhao -->
+              <div *ngIf="patient.appointmentstatus === 'false'">
+                <button (click)="acceptRequest(patient)" 
+                        class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block mb-2 transition duration-300">
+                  Accept
+                </button><br>
+                <button (click)="rejectRequest(patient)" 
+                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block transition duration-300">
+                  Reject
+                </button>
+              </div>
+              <!-- Accepted -->
+              <div *ngIf="patient.appointmentstatus === 'accept'" class="bg-green-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">
+                Accepted
+              </div>
+              <!-- Rejected -->
+              <div *ngIf="patient.appointmentstatus === 'reject'" class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">
+                Rejected
+              </div>
+              <!-- Processing -->
+              <div *ngIf="patient.appointmentstatus === 'processing'" class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">
+                Processing...
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4">
+            <div>
+              <div *ngIf="patient.admissionstatus === 'accept'" class="bg-green-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Admitted</div>
+              <div *ngIf="patient.admissionstatus === 'false'" class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Pending</div>
+              <div *ngIf="patient.admissionstatus === 'reject'" class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Not Admitted</div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-
-  <!-- Agar Reject ho gaya -->
-  <div *ngIf="patient.appointmentstatus === 'reject'" 
-       class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">
-    Rejected
+  
+  <!-- Pagination controls -->
+  <div class="mt-4 flex justify-center">
+    <pagination-controls (pageChange)="page = $event" class="text-center"></pagination-controls>
   </div>
 </div>
-
->>>>>>> cde3b3e98fa3a5d9179dcf168e64f30a62a4b031
-            </td>
-            <td class="py-3 px-4">
-                <div>
-                    <div *ngIf="patient.admissionstatus === 'accept'" class="bg-green-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Admitted</div>
-                    <div *ngIf="patient.admissionstatus === 'false'" class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Pending</div>
-                    <div *ngIf="patient.admissionstatus === 'reject'" class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Not Admitted</div>
-                </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    <!-- Pagination controls -->
-    <div class="mt-4 flex justify-center">
-      <pagination-controls (pageChange)="page = $event" class="text-center"></pagination-controls>
-    </div>
-  </div>
 
 <div class="py-16"></div>
 <app-footer></app-footer>

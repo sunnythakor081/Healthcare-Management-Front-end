@@ -1,87 +1,87 @@
 <app-header></app-header>
 
 <div class="row" id="profilecard">
-    <div *ngFor="let doctor of profileDetails | async" id="bloodCards">
-        <a><img style="margin-top: 2%;" *ngIf="doctor.gender === 'Male' || doctor.gender === 'male'" class="bloodimg" [src]="'assets/img/maledoctor.png'" width="130" height="140"></a>
-        <a><img style="margin-top: 2%;" *ngIf="doctor.gender === 'Female' || doctor.gender === 'female'" class="bloodimg" [src]="'assets/img/femaledoctor.png'" width="130" height="140"></a>
-        <div class="card-block">
-            <div class="text"><b style="color: navy;">Doctor Name : </b><b class="element" style="margin-left: 57px;"> {{doctor.doctorname}}</b> </div>
-            <div class="text"><b style="color: navy;">Mobile Number : </b><b class="element" style="margin-left: 35px;"> {{doctor.mobile}}</b> </div>
-            <div class="text"><b style="color: navy;">Gender : </b><b class="element" style="margin-left: 102px;"> {{doctor.gender}}</b> </div>
-            <div class="text"><b style="color: navy;">Experience : </b><b class="element" style="margin-left: 73px;"> {{doctor.experience}} years</b> </div>
-            <div class="text"><b style="color: navy;">Specialization : </b><b class="element" style="margin-left: 50px;"> {{doctor.specialization}}</b> </div>
-            <div class="text"><b style="color: navy;">Previous Hospital : </b><b class="element" style="margin-left: 21px;"> {{doctor.previoushospital}} hospital</b> </div>
-            <div class="text"><b style="color: navy;">Mail ID : </b><b class="element" style="margin-left: 102px;"> {{doctor.email}}</b> </div>
-            <div class="btndiv" style="align-items: center;"><button class="editbtn" (click)="editProfile()"><i class="fa fa-edit"></i> edit</button></div>
-            <small id="message" *ngIf="temp === true" style="text-align: center; margin-top: 3%; color: green;"><b>Profile Updated Successfully !!!</b></small> 
-          </div>
-    </div>
+  <a><img style="margin-top: 2%;" *ngIf="doctor.gender === 'Male' || doctor.gender === 'male'" class="bloodimg" [src]="'assets/img/maledoctor.png'" width="130" height="140"></a>
+  <a><img style="margin-top: 2%;" *ngIf="doctor.gender === 'Female' || doctor.gender === 'female'" class="bloodimg" [src]="'assets/img/femaledoctor.png'" width="130" height="140"></a>
+  <div class="card-block">
+    <div class="text"><b style="color: navy;">Doctor Name : </b><b class="element" style="margin-left: 57px;"> {{doctor.doctorname}}</b> </div>
+    <div class="text"><b style="color: navy;">Mobile Number : </b><b class="element" style="margin-left: 35px;"> {{doctor.mobile}}</b> </div>
+    <div class="text"><b style="color: navy;">Gender : </b><b class="element" style="margin-left: 102px;"> {{doctor.gender}}</b> </div>
+    <div class="text"><b style="color: navy;">Experience : </b><b class="element" style="margin-left: 73px;"> {{doctor.experience}} years</b> </div>
+    <div class="text"><b style="color: navy;">Specialization : </b><b class="element" style="margin-left: 50px;"> {{doctor.specialization}}</b> </div>
+    <div class="text"><b style="color: navy;">Previous Hospital : </b><b class="element" style="margin-left: 21px;"> {{doctor.previoushospital}}</b> </div>
+    <div class="text"><b style="color: navy;">Mail ID : </b><b class="element" style="margin-left: 102px;"> {{doctor.email}}</b> </div>
+    <div class="text"><b style="color: navy;">Address : </b><b class="element" style="margin-left: 102px;"> {{doctor.address}}</b> </div>
+    <div class="btndiv" style="align-items: center;"><button class="editbtn" (click)="editProfile()"><i class="fa fa-edit"></i> edit</button></div>
+    <small id="message" *ngIf="temp === true" style="text-align: center; margin-top: 3%; color: green;"><b>Profile Updated Successfully !!!</b></small> 
   </div>
-  
-    <div class="container" id="profileform">
-      <h3 class="textual">Update Doctor Profile</h3>
-      <form #Updateform="ngForm" (ngSubmit)="updateDoctorProfile()">
-        <small *ngIf="temp === false" style="text-align: center; color: navy;"><b>Dear {{loggedUser}}, update your profile here</b></small>
-        <small *ngIf="temp === true" style="text-align: center; color: green;"><b>Profile Updated Successfully !!!</b></small>  
-  
-        <div class="form-group">
-          <label for="doctorname">Doctor Name: <b class="text-danger">*</b></label>
-          <input type="text" class="form-control" placeholder="enter doctor name" name="doctorname" required [(ngModel)]="doctor.doctorname"
-          #doctorname="ngModel"
-          [class.is-invalid]="doctorname.invalid && doctorname.touched">
-          <small class="text-danger" [class.d-none]="doctorname.valid || doctorname.untouched"><b>required field</b></small>
-        </div>
-  
-        <div class="form-group">
-          <label for="gender">Gender: <b class="text-danger">*</b></label>
-          <select class="form-control" id="sel1" name="gender" [(ngModel)]="doctor.gender" required
-              #gender="ngModel">
-                  <option *ngFor="let option of ['Male', 'Female', 'Others']" [value]="option" [selected]="doctor.gender === option">{{option}}</option>
-              </select>
-         </div>
-  
-        <div class="form-group">
-          <label for="mobile">Mobile Number: <b class="text-danger">*</b></label>
-          <input type="tel" class="form-control" placeholder="enter mobile number" name="mobile" [(ngModel)]="doctor.mobile" required
-          #mobile="ngModel"
-          [class.is-invalid]="mobile.invalid && mobile.touched">
-          <small class="text-danger" [class.d-none]="mobile.valid || mobile.untouched"><b>required field</b></small>
-         </div>
+</div>
 
-         <div class="form-group">
-            <label for="experience">Experience : <b class="text-danger">*</b></label>
-            <input type="text" class="form-control" placeholder="enter experience (in years)" name="experience" [(ngModel)]="doctor.experience" required
-            #experience="ngModel"
-            [class.is-invalid]="experience.invalid && experience.touched">
-            <small class="text-danger" [class.d-none]="experience.valid || experience.untouched"><b>required field</b></small>
-        </div>
+<div class="container" id="profileform">
+  <h3 class="textual">Update Doctor Profile</h3>
+  <form #Updateform="ngForm" (ngSubmit)="updateDoctorProfile()">
+    <small *ngIf="temp === false" style="text-align: center; color: navy;"><b>Dear {{loggedUser}}, update your profile here</b></small>
+    <small *ngIf="temp === true" style="text-align: center; color: green;"><b>Profile Updated Successfully !!!</b></small>  
 
-        <div class="form-group">
-            <label for="specialization">Specialization : <b class="text-danger">*</b></label>
-            <input type="text" class="form-control" placeholder="enter your specialization" name="specialization" [(ngModel)]="doctor.specialization" required
-            #specialization="ngModel"
-            [class.is-invalid]="specialization.invalid && specialization.touched">
-            <small class="text-danger" [class.d-none]="specialization.valid || specialization.untouched"><b>required field</b></small>
-        </div>
-
-        <div class="form-group">
-            <label for="previoushospital">Previous Working Hospital : <b class="text-danger">*</b></label>
-            <input type="text" class="form-control" placeholder="enter your previous working hospital" name="previoushospital" [(ngModel)]="doctor.previoushospital" required
-            #previoushospital="ngModel"
-            [class.is-invalid]="previoushospital.invalid && previoushospital.touched">
-            <small class="text-danger" [class.d-none]="previoushospital.valid || previoushospital.untouched"><b>required field</b></small>
-        </div>
-
-        <div class="form-group">
-            <label for="address">Address : <b class="text-danger">*</b></label>
-            <input type="text" class="form-control" placeholder="enter your address" name="address" [(ngModel)]="doctor.address" required
-            #address="ngModel"
-            [class.is-invalid]="address.invalid && address.touched">
-            <small class="text-danger" [class.d-none]="address.valid || address.untouched"><b>required field</b></small>
-        </div>
-  
-        <button [disabled]="Updateform.form.invalid" type="submit" class="btn registerbtn">Update</button>
-      </form>
+    <div class="form-group">
+      <label for="doctorname">Doctor Name: <b class="text-danger">*</b></label>
+      <input type="text" class="form-control" placeholder="enter doctor name" name="doctorname" required [(ngModel)]="doctor.doctorname"
+      #doctorname="ngModel"
+      [class.is-invalid]="doctorname.invalid && doctorname.touched">
+      <small class="text-danger" [class.d-none]="doctorname.valid || doctorname.untouched"><b>required field</b></small>
     </div>
-  
-  <app-footer></app-footer>
+
+    <div class="form-group">
+      <label for="gender">Gender: <b class="text-danger">*</b></label>
+      <select class="form-control" id="sel1" name="gender" [(ngModel)]="doctor.gender" required
+          #gender="ngModel">
+              <option *ngFor="let option of ['Male', 'Female', 'Others']" [value]="option">{{option}}</option>
+      </select>
+      <small class="text-danger" [class.d-none]="gender.valid || gender.untouched"><b>required field</b></small>
+    </div>
+
+    <div class="form-group">
+      <label for="mobile">Mobile Number: <b class="text-danger">*</b></label>
+      <input type="tel" class="form-control" placeholder="enter mobile number" name="mobile" [(ngModel)]="doctor.mobile" required
+      #mobile="ngModel"
+      [class.is-invalid]="mobile.invalid && mobile.touched">
+      <small class="text-danger" [class.d-none]="mobile.valid || mobile.untouched"><b>required field</b></small>
+    </div>
+
+    <div class="form-group">
+      <label for="experience">Experience : <b class="text-danger">*</b></label>
+      <input type="text" class="form-control" placeholder="enter experience (in years)" name="experience" [(ngModel)]="doctor.experience" required
+      #experience="ngModel"
+      [class.is-invalid]="experience.invalid && experience.touched">  <!-- Changed back to type="text" -->
+      <small class="text-danger" [class.d-none]="experience.valid || experience.untouched"><b>required field</b></small>
+    </div>
+
+    <div class="form-group">
+      <label for="specialization">Specialization : <b class="text-danger">*</b></label>
+      <input type="text" class="form-control" placeholder="enter your specialization" name="specialization" [(ngModel)]="doctor.specialization" required
+      #specialization="ngModel"
+      [class.is-invalid]="specialization.invalid && specialization.touched">
+      <small class="text-danger" [class.d-none]="specialization.valid || specialization.untouched"><b>required field</b></small>
+    </div>
+
+    <div class="form-group">
+      <label for="previoushospital">Previous Working Hospital : <b class="text-danger">*</b></label>
+      <input type="text" class="form-control" placeholder="enter your previous working hospital" name="previoushospital" [(ngModel)]="doctor.previoushospital" required
+      #previoushospital="ngModel"
+      [class.is-invalid]="previoushospital.invalid && previoushospital.touched">
+      <small class="text-danger" [class.d-none]="previoushospital.valid || previoushospital.untouched"><b>required field</b></small>
+    </div>
+
+    <div class="form-group">
+      <label for="address">Address : <b class="text-danger">*</b></label>
+      <input type="text" class="form-control" placeholder="enter your address" name="address" [(ngModel)]="doctor.address" required
+      #address="ngModel"
+      [class.is-invalid]="address.invalid && address.touched">
+      <small class="text-danger" [class.d-none]="address.valid || address.untouched"><b>required field</b></small>
+    </div>
+
+    <button [disabled]="Updateform.form.invalid" type="submit" class="btn registerbtn">Update</button>
+  </form>
+</div>
+
+<app-footer></app-footer>

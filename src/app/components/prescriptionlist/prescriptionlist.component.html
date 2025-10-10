@@ -19,12 +19,13 @@
         [class.is-invalid]="patientname.invalid && patientname.touched">
       <small class="text-danger" [class.d-none]="patientname.valid || patientname.untouched"><b>Required field</b></small>
     </div>
-    <button 
-      [disabled]="tempform.form.invalid" 
-      type="submit" 
-      class="btn registerbtn mt-3 d-flex align-items-center justify-content-center">
-      <i class="fa fa-check me-2"></i> Search Prescription
-    </button>
+   <!-- Existing form... -->
+<button 
+  [disabled]="tempform.form.invalid" 
+  type="submit" 
+  class="btn registerbtn mt-3 d-flex align-items-center justify-content-center">
+  <i class="fa fa-search me-2"></i> Search Prescription  <!-- Icon add kiya for modern look -->
+</button>
   </form>
 </div>
 <div *ngFor="let patient of prescriptionlist | async" id="prescriptionpages" class="mt-4 animate-fade-in">
@@ -42,7 +43,7 @@
     <div class="header-flag">
       <div class="topname ms-4">
         <h3>Healthcare Management System</h3>
-        <h5 class="ms-4 mt-1">[developed by Gowthamraj K]</h5>
+        <h5 class="ms-4 mt-1">[developed by SunnyThakor ]</h5>
       </div>
       <img class="float-end me-4 mt-n4" [src]="'assets/img/medicinelogo.png'" width="120" height="90">
     </div>
@@ -131,10 +132,10 @@
     <!-- Footer -->
     <div class="footer-flag">
       <div class="float-start ms-4">
-        <h6><i class="fa fa-phone me-2"></i>9698382306 / 8610254674</h6>
+        <h6><i class="fa fa-phone me-2"></i>8141435587 / 9510967146</h6>
       </div>
       <div class="float-end me-4">
-        <h6><i class="fa fa-envelope me-2"></i>gowthamraj692@gmail.com</h6>
+        <h6><i class="fa fa-envelope me-2"></i>Healthcare@gmail.com</h6>
       </div>
     </div>
   </div>

@@ -27,11 +27,13 @@ import { AdminGuard } from './guards/admin.guard';
 import { DoctorGuard } from './guards/doctor.guard';
 import { RouterGuard } from './guards/router.guard';
 import { UserGuard } from './guards/user.guard';
+import { UserCheckSlotsComponent } from './components/user-check-slots/user-check-slots.component';
 
 
 
 export const routes: Routes = [
   { path: '', component: WelcomepageComponent },
+  { path: 'user-check-slots', component: UserCheckSlotsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
   { path: 'registrationsuccess', component: RegistrationsuccessComponent },
