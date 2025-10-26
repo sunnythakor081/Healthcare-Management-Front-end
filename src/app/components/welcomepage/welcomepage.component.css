@@ -19,92 +19,318 @@ img {
 }
 
 /* ===== NAVBAR ===== */
+/* Enhanced Navbar CSS - Always Visible on Scroll (Sticky & Smooth) */
 .navbar {
-  position: fixed;
+  position: fixed; /* Fixed to top - always visible on scroll */
   top: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.1); /* Transparent background like login nav */
-  z-index: 999;
-  transition: 0.3s;
-  padding: 10px 5%;
+  background: rgba(255, 255, 255, 0.1); /* Glassy transparent base */
+  z-index: 9999; /* High z-index to stay above all content */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 12px 5%;
   display: flex;
   justify-content: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(10px); /* Glass effect from login page */
+  backdrop-filter: blur(20px); /* Glass effect */
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* Ensure no overlap - add padding to body when navbar is fixed */
 }
 
+body {
+  padding-top: 80px; /* Navbar height space - adjust if navbar changes */
+  transition: padding-top 0.3s ease; /* Smooth padding change */
+}
+
+/* Scrolled State - Opaque & Elevated */
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.2); /* Slightly opaque on scroll */
+  background: rgba(255, 255, 255, 0.95); /* Opaque white for visibility */
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+  padding: 8px 5%; /* Slight shrink */
+  backdrop-filter: blur(20px);
 }
 
+/* Navbar Container - Full Width */
 .navbar-container {
   width: 100%;
   max-width: 1200px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
+/* Logo - Attractive & Fixed */
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #667eea;
+  transition: color 0.3s ease;
+  z-index: 10000; /* Ensure logo stays on top */
+}
+
+.logo:hover {
+  color: #764ba2;
 }
 
 .logo-img {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
 }
 
+.logo:hover .logo-img {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Nav Links - Smooth Hover with Visibility */
 .nav-links {
   display: flex;
-  gap: 25px;
+  gap: 30px;
+  align-items: center;
+  transition: opacity 0.3s ease; /* Fade if needed */
 }
 
 .nav-links a {
   font-weight: 500;
-  padding: 6px 10px;
-  transition: 0.3s;
-  border-radius: 5px;
-  color: white; /* Match login text color */
+  padding: 8px 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 25px;
+  color: #333; /* Dark for scrolled */
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap; /* No wrap on small screens */
 }
 
-.nav-links a.active,
-.nav-links a:hover {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Gradient from login */
-  color: white;
+.nav-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transition: left 0.4s ease;
+  z-index: -1;
 }
 
-.auth-buttons button {
-  margin-left: 10px;
-  padding: 8px 15px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
+.nav-links a:hover::before,
+.nav-links a.active::before {
+  left: 0;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Nav Actions - Persistent Buttons */
+.nav-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  transition: opacity 0.3s ease; /* Fade if hidden on mobile */
+}
+
+.signup-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 25px;
   font-weight: 500;
-  transition: 0.3s;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  color: rgb(0, 0, 0);
+  white-space: nowrap; /* No wrap */
 }
 
-.btn-login {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Login page gradient */
-  color: white;
+.signup-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transition: left 0.4s ease;
+  z-index: -1;
 }
 
-.btn-login:hover {
-  background: linear-gradient(135deg, #4160e7 0%, #6f3ca2 100%); /* Darker gradient on hover */
+.signup-btn:hover::before {
+  left: 0;
 }
 
-.btn-register {
-  background: white;
+.signup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+  color: white !important;
+}
+
+.signup-btn i {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.signup-btn:hover i {
+  transform: scale(1.2);
+}
+
+/* Mobile Menu Button - Always Visible */
+.mobile-menu-btn {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s ease, transform 0.3s ease;
+  z-index: 10000; /* Stay on top */
+}
+
+.navbar.scrolled .mobile-menu-btn {
+  color: #333;
+}
+
+.mobile-menu-btn:hover {
   color: #667eea;
-  border: 1px solid #667eea;
+  transform: rotate(90deg); /* Spin effect */
 }
 
-.btn-register:hover {
+/* Mobile Menu - Dropdown Always Accessible */
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%; /* Below navbar */
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  width: 250px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  padding: 20px;
+  gap: 15px;
+  border-radius: 0 0 10px 10px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(102, 126, 234, 0.2);
+  z-index: 9998; /* Below navbar but above content */
+}
+
+.mobile-menu.open {
+  display: flex;
+  animation: slideDown 0.3s ease; /* Smooth dropdown */
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mobile-menu a,
+.mobile-menu button {
+  width: 100%;
+  text-align: left;
+  padding: 12px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  color: #333;
+  font-weight: 500;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.mobile-menu a:hover,
+.mobile-menu button:hover {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+  transform: translateX(5px);
+}
+
+/* Ensure Visibility on Scroll - Body Padding */
+body {
+  padding-top: 80px; /* Navbar height - prevents overlap */
+  transition: padding-top 0.3s ease;
+}
+
+/* Content Sections - No Overlap */
+.hero-section,
+.services-section,
+.doctors-section,
+.testimonials-section {
+  padding-top: 80px; /* Match body padding for fixed navbar */
+}
+
+/* Responsive - Mobile Navbar */
+@media (max-width: 991px) {
+  .nav-links, .nav-actions {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+  }
+  
+  .navbar-container {
+    justify-content: space-between;
+  }
+
+  body {
+    padding-top: 70px; /* Adjust for mobile navbar */
+  }
+
+  .mobile-menu {
+    width: 100%;
+    right: 0;
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar {
+    padding: 8px 3%;
+  }
+  
+  body {
+    padding-top: 60px;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+    gap: 8px;
+  }
+
+  .logo-img {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+/* Smooth Scroll & Custom Scrollbar (Always Visible) */
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
 }
 
 /* MOBILE MENU */
@@ -469,37 +695,416 @@ img {
   color: gold;
 }
 
-/* ===== FOOTER ===== */
+/* Attractive Footer CSS - Clean, Responsive & Healthcare Theme */
 .footer {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Match login gradient */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 50px 5%;
+  padding: 50px 5% 20px;
+  font-family: 'Arial', sans-serif;
 }
 
-.footer .logo-img {
-  width: 40px;
-  height: 40px;
-}
-
-.footer .footer-section {
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
   margin-bottom: 30px;
 }
 
-.footer a {
+.footer-section h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #fff;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 5px;
+}
+
+.footer-section p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: block;
+  padding: 5px 0;
+}
+
+.footer-section ul li a:hover {
+  color: #fff;
+  padding-left: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* About Section */
+.about .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.about .logo-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.contact p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.contact i {
+  width: 20px;
+  text-align: center;
+  color: #4a90e2;
+}
+
+.socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.socials a {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
   color: white;
-  transition: 0.3s;
 }
 
-.footer a:hover {
-  color: #e0e7ff; /* Light contrast color */
+.socials a:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Newsletter Section */
+.newsletter form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.newsletter input[type="email"] {
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  placeholder-color: rgba(255, 255, 255, 0.7);
+}
+
+.newsletter input[type="email"]::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.newsletter button {
+  padding: 10px 20px;
+  background: #4a90e2;
+  border: none;
+  border-radius: 25px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-weight: bold;
+}
+
+.newsletter button:hover {
+  background: #357abd;
+}
+
+.app-download p {
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.app-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.app-buttons a img {
+  width: 120px;
+  height: auto;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.app-buttons a img:hover {
+  transform: scale(1.05);
+}
+
+/* Complete Attractive Footer CSS - Integrated with App Download Fix */
+.footer {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 50px 5% 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.footer-section h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #fff;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 5px;
+}
+
+.footer-section p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: block;
+  padding: 5px 0;
+}
+
+.footer-section ul li a:hover {
+  color: #fff;
+  padding-left: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* About Section */
+.about .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.about .logo-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.contact p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.contact i {
+  width: 20px;
+  text-align: center;
+  color: #4a90e2;
+}
+
+.socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.socials a {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.socials a:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Newsletter Section */
+.newsletter form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.newsletter input[type="email"] {
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.newsletter input[type="email"]::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.newsletter button {
+  padding: 10px 20px;
+  background: #4a90e2;
+  border: none;
+  border-radius: 25px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-weight: bold;
+}
+
+.newsletter button:hover {
+  background: #357abd;
+}
+
+/* App Download Section - Fixed with Images */
+.app-download {
+  margin-top: 20px;
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.app-download p {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+.app-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.app-buttons a {
+  display: block;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.app-buttons img {
+  width: 128px;
+  height: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  object-fit: contain; /* Ensure images fit without distortion */
+}
+
+.app-buttons img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Fallback if images missing */
+.app-buttons .hidden {
+  display: none;
+}
+
+/* Footer Bottom */
 .footer-bottom {
   text-align: center;
-  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .newsletter form {
+    flex-direction: column;
+  }
+
+  .app-buttons {
+    gap: 15px;
+    justify-content: center;
+  }
+
+  .app-buttons img {
+    width: 100px;
+    height: 32px;
+  }
+
+  .socials {
+    justify-content: center;
+  }
+
+  .footer {
+    padding: 30px 3%;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 20px 2%;
+  }
+
+  .footer-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .app-buttons img {
+    width: 90px;
+    height: 28px;
+  }
+
+  .app-download p {
+    font-size: 0.9rem;
+  }
+}
 /* ===== RESPONSIVE ===== */
 @media (max-width: 991px) {
   .nav-links, .auth-buttons {

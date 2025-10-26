@@ -102,48 +102,91 @@ export class WelcomepageComponent implements OnInit {
   ];
   
   // Featured doctors data
-  featuredDoctors = [
-    {
-      id: 1,
-      name: 'Dr. Sarah Johnson',
-      specialty: 'Cardiologist',
-      image: 'assets/img/doctor1-real.svg',
-      rating: 4.9,
-      experience: '15+ Years',
-      patients: '10,000+',
-      bio: 'Dr. Sarah Johnson is a board-certified cardiologist with over 15 years of experience in treating complex heart conditions. She specializes in preventive cardiology and heart health management.'
-    },
-    {
-      id: 2,
-      name: 'Dr. Michael Chen',
-      specialty: 'Neurologist',
-      image: 'assets/img/doctor2-real.svg',
-      rating: 4.8,
-      experience: '12+ Years',
-      patients: '8,000+',
-      bio: 'Dr. Michael Chen specializes in neurological disorders and has pioneered several innovative treatment approaches. He is known for his patient-centered approach.'
-    },
-    {
-      id: 3,
-      name: 'Dr. Emily Rodriguez',
-      specialty: 'Pediatrician',
-      image: 'assets/img/doctor3-real.svg',
-      rating: 4.9,
-      experience: '10+ Years',
-      patients: '12,000+',
-      bio: 'Dr. Emily Rodriguez is dedicated to providing compassionate care for children of all ages. She focuses on developmental pediatrics and preventive healthcare for children.'
-    },
-    {
-      id: 4,
-      name: 'Dr. James Wilson',
-      specialty: 'Orthopedic Surgeon',
-      image: 'assets/img/doctor4-real.svg',
-      rating: 4.7,
-      experience: '14+ Years',
-      patients: '7,500+',
-      bio: 'Dr. James Wilson is an expert in joint replacement and sports medicine. He specializes in minimally invasive procedures with excellent outcomes.'
-    }
-  ];
+ // Featured doctors data
+// Featured doctors data
+featuredDoctors = [
+  {
+    id: 1,
+    name: 'Dr. Sarah Johnson',
+    specialty: 'Cardiologist',
+    image: 'https://images.pexels.com/photos/5214992/pexels-photo-5214992.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop',
+    rating: 4.9,
+    experience: '15+ Years',
+    patients: '10,000+',
+    bio: 'Board-certified cardiologist specializing in preventive heart health and advanced treatments for cardiac conditions.'
+  },
+  {
+    id: 2,
+    name: 'Dr. Michael Chen',
+    specialty: 'Neurologist',
+    image: 'https://images.pexels.com/photos/8376152/pexels-photo-8376152.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop',
+    rating: 4.8,
+    experience: '12+ Years',
+    patients: '8,000+',
+    bio: 'Expert in neurological disorders, pioneering innovative therapies with a focus on patient recovery and quality of life.'
+  },
+  {
+    id: 3,
+    name: 'Dr. Emily Rodriguez',
+    specialty: 'Pediatrician',
+    image: 'https://images.pexels.com/photos/3259629/pexels-photo-3259629.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop',
+    rating: 4.9,
+    experience: '10+ Years',
+    patients: '12,000+',
+    bio: 'Compassionate pediatrician dedicated to child development, vaccinations, and family-centered preventive care.'
+  },
+  {
+    id: 4,
+    name: 'Dr. James Wilson',
+    specialty: 'Orthopedic Surgeon',
+    image: 'https://images.pexels.com/photos/7446985/pexels-photo-7446985.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop',
+    rating: 4.7,
+    experience: '14+ Years',
+    patients: '7,500+',
+    bio: 'Specialist in joint replacements and sports medicine, emphasizing minimally invasive techniques for faster recovery.'
+  },
+  // New additions
+  {
+    id: 5,
+    name: 'Dr. Lisa Patel',
+    specialty: 'Dermatologist',
+    image: 'https://images.pexels.com/photos/5215465/pexels-photo-5215465.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop',  // Female doctor in clinic
+    rating: 4.8,
+    experience: '11+ Years',
+    patients: '9,500+',
+    bio: 'Renowned dermatologist treating skin conditions, acne, and cosmetic concerns with cutting-edge laser therapies.'
+  },
+  {
+    id: 6,
+    name: 'Dr. Robert Kim',
+    specialty: 'General Surgeon',
+    image: 'https://images.pexels.com/photos/8460158/pexels-photo-8460158.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"',  // Female eye doctor
+    rating: 4.7,
+    experience: '18+ Years',
+    patients: '15,000+',
+    bio: 'Experienced general surgeon handling complex procedures, from appendectomies to advanced laparoscopic operations.'
+  },
+  {
+    id: 7,
+    name: 'Dr. Anna Kowalski',
+    specialty: 'Ophthalmologist',
+    image: 'https://images.pexels.com/photos/8460158/pexels-photo-8460158.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"',  // Female eye doctor
+    rating: 4.7,
+    experience: '9+ Years',
+    patients: '6,000+',
+    bio: 'Ophthalmologist focused on vision correction, glaucoma treatment, and comprehensive eye health for all ages.'
+  },
+  {
+    id: 8,
+    name: 'Dr. David Singh',
+    specialty: 'Psychiatrist',
+    image: 'https://images.pexels.com/photos/5452268/pexels-photo-5452268.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop',  // Male doctor in thoughtful pose
+    rating: 4.8,
+    experience: '13+ Years',
+    patients: '11,000+',
+    bio: 'Compassionate psychiatrist addressing mental health issues, anxiety, and depression through therapy and medication management.'
+  }
+];
   
   // Testimonials data
   testimonials = [
