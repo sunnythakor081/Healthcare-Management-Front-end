@@ -19,31 +19,48 @@ import { NgxPaginationModule } from 'ngx-pagination';
 })
 export class PrescriptionlistComponent implements OnInit {
 
-  prescriptionlist : Observable<Prescription[]> | undefined;
-  name : string = '';
+  prescriptionlist: Observable<Prescription[]> | undefined;
+  name: string = '';
+  errorMessage: string = ''; // <-- New property for error
 
-  constructor(private _service : UserService) { }
+  constructor(private _service: UserService) { }
 
-  ngOnInit(): void 
-  {
-    
+  ngOnInit(): void {
     $('#messagecard').show();
     $('#prescriptionpages').hide();
-
+    this.errorMessage = ''; // Clear error on init
   }
 
-  searchPrescription()
-  {
-    this.prescriptionlist = this._service.getPrescriptionsByName(this.name);
+  searchPrescription() {
+    if (!this.name.trim()) {
+      this.errorMessage = 'Please enter a patient name';
+      $('#prescriptionpages').hide();
+      return;
+    }
+
+    this.errorMessage = ''; // Clear previous error
     $('#messagecard').hide();
     $('#prescriptionpages').show();
+
+    this.prescriptionlist = this._service.getPrescriptionsByName(this.name);
+    this.prescriptionlist.subscribe({
+      next: (prescriptions: Prescription[]) => {
+        console.log('Prescriptions received:', prescriptions);
+        if (prescriptions.length === 0) {
+          this.errorMessage = 'Prescription not found for patient: ' + this.name;
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching prescriptions:', err);
+        this.errorMessage = 'Prescription not found or server error. Please try again.';
+      }
+    });
   }
 
-  onPrint()
-  {
+  onPrint() {
     $("#printbtn").hide();
     $("#prescriptionpages").css('margin-top','6%');
     window.print();
+    $("#printbtn").show(); // Show button again after print
   }
-
 }

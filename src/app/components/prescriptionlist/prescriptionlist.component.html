@@ -1,141 +1,151 @@
 <app-header></app-header>
 
-<div class="text-center mt-5 mb-4">
-  <h1 class="display-5 fw-bold text-success heading">Your Prescription</h1>
-</div>
-
-<div class="message" id="messagecard">
-  <form #tempform="ngForm" (ngSubmit)="searchPrescription()">
-    <div class="form-group">
-      <label for="patientname" class="mb-2">Patient Name : <b class="text-danger">*</b></label>
-      <input 
-        type="text" 
-        class="form-control" 
-        placeholder="Enter patient name" 
-        name="patientname" 
-        [(ngModel)]="this.name" 
-        required 
-        #patientname="ngModel"
-        [class.is-invalid]="patientname.invalid && patientname.touched">
-      <small class="text-danger" [class.d-none]="patientname.valid || patientname.untouched"><b>Required field</b></small>
-    </div>
-   <!-- Existing form... -->
-<button 
-  [disabled]="tempform.form.invalid" 
-  type="submit" 
-  class="btn registerbtn mt-3 d-flex align-items-center justify-content-center">
-  <i class="fa fa-search me-2"></i> Search Prescription  <!-- Icon add kiya for modern look -->
-</button>
-  </form>
-</div>
-<div *ngFor="let patient of prescriptionlist | async" id="prescriptionpages" class="mt-4 animate-fade-in">
-  <div class="text-end mb-3">
-    <button 
-      id="printbtn" 
-      (click)="onPrint()" 
-      class="btn btn-dark px-4 py-2 rounded-pill">
-      <i class="fa fa-print me-2"></i> Print
-    </button>
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h2 class="text-center font-oswald text-3xl text-teal-700 my-6"> Patient List </h2>
   </div>
-  
-  <div class="prescription-card">
-    <!-- Header -->
-    <div class="header-flag">
-      <div class="topname ms-4">
-        <h3>Healthcare Management System</h3>
-        <h5 class="ms-4 mt-1">[developed by SunnyThakor ]</h5>
+
+  <!-- Error Message - New -->
+  <div *ngIf="errorMessage" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded-lg">
+    <div class="flex items-center">
+      <i class="fa fa-exclamation-triangle mr-2 text-red-500"></i>
+      <span class="font-medium">{{ errorMessage }}</span>
+    </div>
+  </div>
+
+  <div class="message" id="messagecard">
+    <form #tempform="ngForm" (ngSubmit)="searchPrescription()">
+      <div class="form-group">
+        <label for="patientname" class="mb-2">Patient Name : <b class="text-danger">*</b></label>
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Enter patient name" 
+          name="patientname" 
+          [(ngModel)]="name" 
+          required 
+          #patientname="ngModel"
+          [class.is-invalid]="patientname.invalid && patientname.touched">
+        <small class="text-danger" [class.d-none]="patientname.valid || patientname.untouched"><b>Required field</b></small>
       </div>
-      <img class="float-end me-4 mt-n4" [src]="'assets/img/medicinelogo.png'" width="120" height="90">
+      <button 
+        [disabled]="tempform.form.invalid" 
+        type="submit" 
+        class="btn registerbtn mt-3 d-flex align-items-center justify-content-center">
+        <i class="fa fa-search me-2"></i> Search Prescription
+      </button>
+    </form>
+  </div>
+
+  <div *ngFor="let patient of prescriptionlist | async" id="prescriptionpages" class="mt-4 animate-fade-in">
+    <div class="text-end mb-3">
+      <button 
+        id="printbtn" 
+        (click)="onPrint()" 
+        class="btn btn-dark px-4 py-2 rounded-pill">
+        <i class="fa fa-print me-2"></i> Print
+      </button>
     </div>
     
-    <!-- Body -->
-    <div class="prescription-body">
-      <hr>
-      
-      <div class="row mt-3">
-        <div class="col-6">
-          <div class="text-info fw-bold">Dr.{{patient.doctorname}} MBBS,MS,PhD</div>
+    <div class="prescription-card">
+      <!-- Header -->
+      <div class="header-flag">
+        <div class="topname ms-4">
+          <h3>Healthcare Management System</h3>
+          <h5 class="ms-4 mt-1">[developed by SunnyThakor ]</h5>
         </div>
-        <div class="col-6 text-end">
-          <div class="fw-bold">
-            <span class="text-teal">PatientID: </span>
-            <span class="text-danger">{{patient.patientid}}</span>
+        <img class="float-end me-4 mt-n4" [src]="'assets/img/medicinelogo.png'" width="120" height="90">
+      </div>
+      
+      <!-- Body -->
+      <div class="prescription-body">
+        <hr>
+        
+        <div class="row mt-3">
+          <div class="col-6">
+            <div class="text-info fw-bold">Dr.{{patient.doctorname}} MBBS,MS,PhD</div>
+          </div>
+          <div class="col-6 text-end">
+            <div class="fw-bold">
+              <span class="text-teal">PatientID: </span>
+              <span class="text-danger">{{patient.patientid}}</span>
+            </div>
           </div>
         </div>
-      </div>
-      
-      <div class="row mt-2">
-        <div class="col-6">
-          <div class="fw-bold">
-            <span class="text-teal">Age: </span>
-            <span class="text-primary">{{patient.age}}</span>
+        
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="fw-bold">
+              <span class="text-teal">Age: </span>
+              <span class="text-primary">{{patient.age}}</span>
+            </div>
+          </div>
+          <div class="col-6 text-end">
+            <div class="fw-bold">
+              <span class="text-teal">Date: </span>
+              <span class="text-primary">{{patient.date}}</span>
+            </div>
           </div>
         </div>
-        <div class="col-6 text-end">
-          <div class="fw-bold">
-            <span class="text-teal">Date: </span>
-            <span class="text-primary">{{patient.date}}</span>
+        
+        <hr class="my-3">
+        
+        <div class="text-dark fw-semibold my-3">
+          Please find your respective treatment prescription from your doctor...
+        </div>
+        
+        <div class="my-4">
+          <div class="row mb-2">
+            <div class="col-4 text-primary fw-bold">Patient Name:</div>
+            <div class="col-8 text-danger fw-bold">{{patient.patientname}}</div>
+          </div>
+          
+          <div class="row mb-2">
+            <div class="col-4 text-primary fw-bold">Gender:</div>
+            <div class="col-8 text-danger fw-bold">{{patient.gender}}</div>
+          </div>
+          
+          <div class="row mb-2">
+            <div class="col-4 text-primary fw-bold">Patient Disease:</div>
+            <div class="col-8 text-danger fw-bold">{{patient.disease}}</div>
+          </div>
+          
+          <div class="row mb-2">
+            <div class="col-4 text-primary fw-bold">Prescription:</div>
+            <div class="col-8 text-danger fw-bold">{{patient.prescription}}</div>
+          </div>
+          
+          <div class="row mb-2">
+            <div class="col-4 text-primary fw-bold">Admission Status:</div>
+            <div class="col-8">
+              <span 
+                class="badge rounded-pill px-3 py-2" 
+                [ngClass]="{
+                  'bg-warning': patient.admissionstatus === 'false',
+                  'bg-success': patient.admissionstatus === 'accept',
+                  'bg-danger': patient.admissionstatus === 'reject'
+                }">
+                {{ patient.admissionstatus === 'false' ? 'Admission Pending' : 
+                   patient.admissionstatus === 'accept' ? 'Admitted' : 'Rejected' }}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-      
-      <hr class="my-3">
-      
-      <div class="text-dark fw-semibold my-3">
-        Please find your respective treatment prescription from your doctor...
-      </div>
-      
-      <div class="my-4">
-        <div class="row mb-2">
-          <div class="col-4 text-primary fw-bold">Patient Name:</div>
-          <div class="col-8 text-danger fw-bold">{{patient.patientname}}</div>
-        </div>
         
-        <div class="row mb-2">
-          <div class="col-4 text-primary fw-bold">Gender:</div>
-          <div class="col-8 text-danger fw-bold">{{patient.gender}}</div>
-        </div>
-        
-        <div class="row mb-2">
-          <div class="col-4 text-primary fw-bold">Patient Disease:</div>
-          <div class="col-8 text-danger fw-bold">{{patient.disease}}</div>
-        </div>
-        
-        <div class="row mb-2">
-          <div class="col-4 text-primary fw-bold">Prescription:</div>
-          <div class="col-8 text-danger fw-bold">{{patient.prescription}}</div>
-        </div>
-        
-        <div class="row mb-2">
-          <div class="col-4 text-primary fw-bold">Admission Status:</div>
-          <div class="col-8">
-            <span 
-              class="badge rounded-pill px-3 py-2" 
-              [ngClass]="{
-                'bg-warning': patient.admissionstatus === 'false',
-                'bg-success': patient.admissionstatus === 'accept',
-                'bg-danger': patient.admissionstatus === 'reject'
-              }">
-              {{ patient.admissionstatus === 'false' ? 'Admission Pending' : 
-                 patient.admissionstatus === 'accept' ? 'Admitted' : 'Rejected' }}
-            </span>
-          </div>
+        <div class="mt-5 text-center">
+          <div class="fw-semibold">(Follow the above given prescriptions properly)</div>
+          <div class="fw-semibold fs-5 mt-2">Get Well Soon !!!!</div>
         </div>
       </div>
       
-      <div class="mt-5 text-center">
-        <div class="fw-semibold">(Follow the above given prescriptions properly)</div>
-        <div class="fw-semibold fs-5 mt-2">Get Well Soon !!!!</div>
-      </div>
-    </div>
-    
-    <!-- Footer -->
-    <div class="footer-flag">
-      <div class="float-start ms-4">
-        <h6><i class="fa fa-phone me-2"></i>8141435587 / 9510967146</h6>
-      </div>
-      <div class="float-end me-4">
-        <h6><i class="fa fa-envelope me-2"></i>Healthcare@gmail.com</h6>
+      <!-- Footer -->
+      <div class="footer-flag">
+        <div class="float-start ms-4">
+          <h6><i class="fa fa-phone me-2"></i>8141435587 / 9510967146</h6>
+        </div>
+        <div class="float-end me-4">
+          <h6><i class="fa fa-envelope me-2"></i>Healthcare@gmail.com</h6>
+        </div>
       </div>
     </div>
   </div>

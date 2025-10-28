@@ -5,7 +5,7 @@
   <div class="hero-content">
     <h1 class="hero-title">Our Medical Team</h1>
     <p class="hero-subtitle">Meet our qualified and experienced healthcare professionals dedicated to your well-being</p>
-    <div class="hero-stats">
+    <div class="hero-stats" *ngIf="userRole === 'admin'">
       <div class="stat-item">
         <span class="stat-number">{{ (doctors | async)?.length || 0 }}</span>
         <span class="stat-label">Total Doctors</span>
@@ -36,25 +36,26 @@
           class="search-input">
       </div>
       
-      <div class="filter-options">
-        <select [(ngModel)]="selectedSpecialization" (change)="filterDoctors()" class="filter-select">
-          <option value="">All Specializations</option>
-          <option *ngFor="let spec of specializations" [value]="spec">{{ spec }}</option>
-        </select>
-        
-        <select [(ngModel)]="selectedStatus" (change)="filterDoctors()" class="filter-select">
-          <option value="">All Status</option>
-          <option value="accept">Approved</option>
-          <option value="false">Pending</option>
-          <option value="reject">Rejected</option>
-        </select>
-        
-        <select [(ngModel)]="selectedGender" (change)="filterDoctors()" class="filter-select">
-          <option value="">All Genders</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-      </div>
+     <div class="filter-options">
+  <select [(ngModel)]="selectedSpecialization" (change)="filterDoctors()" class="filter-select">
+    <option value="">All Specializations</option>
+    <option *ngFor="let spec of specializations" [value]="spec">{{ spec }}</option>
+  </select>
+  
+  <!-- Status filter - Admin only -->
+  <select *ngIf="userRole === 'admin'" [(ngModel)]="selectedStatus" (change)="filterDoctors()" class="filter-select">
+    <option value="">All Status</option>
+    <option value="accept">Approved</option>
+    <option value="false">Pending</option>
+    <option value="reject">Rejected</option>
+  </select>
+  
+  <select [(ngModel)]="selectedGender" (change)="filterDoctors()" class="filter-select">
+    <option value="">All Genders</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+  </select>
+</div>
     </div>
   </div>
 </div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Doctor } from '../../models/doctor';
 import { DoctorService } from '../../services/doctor.service';
+import { LoginService } from '../../services/login.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -17,11 +18,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
   imports: [CommonModule, FormsModule, RouterModule, HeaderComponent, FooterComponent, NgxPaginationModule]
 })
 export class DoctorlistComponent implements OnInit {
-
   doctors: Observable<Doctor[]> | undefined;
   filteredDoctors: Doctor[] = [];
   allDoctors: Doctor[] = [];
   isLoading = true;
+  userRole: string = ''; // Role storage
   
   // Search and filter properties
   searchTerm = '';
@@ -35,17 +36,28 @@ export class DoctorlistComponent implements OnInit {
   itemsPerPage = 9;
   totalPages = 1;
 
-  constructor(private _service: DoctorService) { }
+  constructor(private _service: DoctorService, private loginService: LoginService) { }
 
   ngOnInit(): void {
-    this.loadDoctors();
+    const role = this.loginService.userType(); // Role get karo
+    this.userRole = role || 'user'; // Fallback to 'user' if null
+    console.log('Component: User role:', this.userRole);
+
+    if (this.userRole === 'admin') {
+      this.loadAllDoctors(); // Admin ko all
+    } else {
+      this.loadApprovedDoctors(); // User/Doctor ko approved
+    }
   }
 
-  loadDoctors() {
+  // Admin ke liye - All doctors load (/doctorlist)
+  loadAllDoctors() {
+    console.log('Component: Loading ALL doctors for admin...');
     this.isLoading = true;
     this.doctors = this._service.getDoctorList();
     this.doctors.subscribe(
       (doctors: Doctor[]) => {
+        console.log('Component: Received', doctors.length, 'ALL doctors for admin');
         this.allDoctors = doctors;
         this.filteredDoctors = doctors;
         this.extractSpecializations();
@@ -53,7 +65,28 @@ export class DoctorlistComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Error loading doctors:', error);
+        console.error('Error loading all doctors for admin:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // User/Doctor ke liye - Approved doctors load (/doctors/approved)
+  loadApprovedDoctors() {
+    console.log('Component: Loading APPROVED doctors for user/doctor...');
+    this.isLoading = true;
+    this.doctors = this._service.getApprovedDoctors();
+    this.doctors.subscribe(
+      (doctors: Doctor[]) => {
+        console.log('Component: Received', doctors.length, 'APPROVED doctors for user/doctor');
+        this.allDoctors = doctors;
+        this.filteredDoctors = doctors;
+        this.extractSpecializations();
+        this.calculatePagination();
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error loading approved doctors:', error);
         this.isLoading = false;
       }
     );
@@ -89,8 +122,8 @@ export class DoctorlistComponent implements OnInit {
       );
     }
 
-    // Status filter
-    if (this.selectedStatus) {
+    // Status filter (admin ke liye useful)
+    if (this.selectedStatus && this.userRole === 'admin') {
       filtered = filtered.filter(doctor => 
         doctor.status === this.selectedStatus
       );
@@ -172,7 +205,6 @@ export class DoctorlistComponent implements OnInit {
 
   // Action methods
   viewDoctorProfile(doctor: Doctor) {
-    // TODO: Implement doctor profile view
     console.log('Viewing profile for:', doctor.doctorname);
   }
 

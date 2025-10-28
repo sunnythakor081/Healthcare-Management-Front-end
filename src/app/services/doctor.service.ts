@@ -16,6 +16,7 @@ const NAV_URL = environment.apiURL;
 })
 export class DoctorService {
 
+  
   user = new User();
   doctor = new Doctor();
 
@@ -47,16 +48,17 @@ export class DoctorService {
   }
 
   getSlotDetails(email: string): Observable<Slots[]> {
-    return this._http.get<Slots[]>(`${NAV_URL}/admin/doctorSlots/${email}`).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error fetching slot details:', error);
-        if (error.status === 404) {
-          return this._http.get<Slots[]>(`${NAV_URL}/slotDetails/${email}`);
-        }
-        return of([]);
-      })
-    );
-  }
+  return this._http.get<Slots[]>(`${NAV_URL}/slotDetails/${email}`).pipe(
+    catchError((error: HttpErrorResponse) => {
+      console.error('Error fetching slot details:', error);
+      if (error.status === 404) {
+        console.warn('No slots found for email:', email);
+        return of([]); // Empty array return karo agar slots nahi
+      }
+      throw error; // Other errors ke liye throw
+    })
+  );
+}
 
   getDoctorListByEmail(loggedUser : string) : Observable<any>
   {
@@ -168,4 +170,8 @@ getPatientList(): Observable<any> {
   return this._http.post<any>(`${NAV_URL}/addPrescription`, prescription, { headers });
 }
 
+// Naya method - Sirf approved doctors load karo
+getApprovedDoctors(): Observable<Doctor[]> {
+  return this._http.get<Doctor[]>(`${NAV_URL}/doctors/approved`); // Backend endpoint call
+}
 }

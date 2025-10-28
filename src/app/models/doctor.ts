@@ -19,6 +19,7 @@ export class Doctor
     departmentName?: string;
     availableDays?: string[];
     availableTimeSlots?: string[];
+    
 
     constructor() {}
 }

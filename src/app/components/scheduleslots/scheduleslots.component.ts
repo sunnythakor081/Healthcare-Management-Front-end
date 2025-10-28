@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Slots } from '../../models/slots';
+import { Doctor } from '../../models/doctor';
 import { DoctorService } from '../../services/doctor.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -24,7 +25,7 @@ export class ScheduleslotsComponent implements OnInit {
   error: string | null = null;
   showForm = false;
   successMessage: string | null = null;
-  
+
   constructor(private _service: DoctorService, private _router: Router) { }
 
   ngOnInit(): void {
@@ -44,23 +45,28 @@ export class ScheduleslotsComponent implements OnInit {
     const roleStr = sessionStorage.getItem('ROLE');
     this.currRole = roleStr ? roleStr.replace(/"/g, '') : '';
 
-    if (!this.loggedUser) {
+    if (!this.loggedUser || this.currRole !== 'doctor') {
       this._router.navigate(['/login']);
       return;
     }
 
-    this.slot = new Slots(); // Reset slot data
+    this.slot = new Slots();
     this.slot.email = this.loggedUser;
 
-    // Pre-fill doctor information
     this._service.getProfileDetails(this.loggedUser).subscribe({
-      next: (profile) => {
-        this.slot.doctorname = profile.username;
-        this.slot.specialization = profile.specialization;
+      next: (profile: Doctor) => {
+        this.slot.doctorname = profile.doctorname || 'Unknown Doctor';
+        this.slot.specialization = profile.specialization || 'Unknown Specialization';
+        console.log('Pre-filled doctor data:', this.slot);
+        if (!profile.doctorname || !profile.specialization) {
+          this.error = 'Profile data incomplete. Please update your profile.';
+        }
       },
       error: (error) => {
         console.error('Error loading profile:', error);
-        this.error = 'Failed to load doctor profile. Please try again.';
+        this.error = 'Failed to load doctor profile. Please contact admin.';
+        this.slot.doctorname = 'Unknown Doctor';
+        this.slot.specialization = 'Unknown Specialization';
       }
     });
   }
@@ -85,14 +91,23 @@ export class ScheduleslotsComponent implements OnInit {
   toggleForm() {
     this.showForm = !this.showForm;
     if (this.showForm) {
-      this.error = null; // Clear any errors when showing form
-      // Re-initialize slot data
+      this.error = null;
       this.slot = new Slots();
       this.slot.email = this.loggedUser;
       this._service.getProfileDetails(this.loggedUser).subscribe({
-        next: (profile) => {
-          this.slot.doctorname = profile.username;
-          this.slot.specialization = profile.specialization;
+        next: (profile: Doctor) => {
+          this.slot.doctorname = profile.doctorname || 'Unknown Doctor';
+          this.slot.specialization = profile.specialization || 'Unknown Specialization';
+          console.log('Form pre-filled:', this.slot);
+          if (!profile.doctorname || !profile.specialization) {
+            this.error = 'Profile data incomplete. Please update your profile.';
+          }
+        },
+        error: (error) => {
+          console.error('Error loading profile:', error);
+          this.error = 'Failed to load doctor profile. Please contact admin.';
+          this.slot.doctorname = 'Unknown Doctor';
+          this.slot.specialization = 'Unknown Specialization';
         }
       });
     }
@@ -100,18 +115,18 @@ export class ScheduleslotsComponent implements OnInit {
 
   validateSlot(): { isValid: boolean, message: string } {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time part for date comparison
+    today.setHours(0, 0, 0, 0);
     const selectedDate = new Date(this.slot.date);
     selectedDate.setHours(0, 0, 0, 0);
-    
-    if (!this.slot.doctorname?.trim()) {
-      return { isValid: false, message: 'Doctor name is required' };
+
+    if (!this.slot.doctorname?.trim() || this.slot.doctorname === 'Unknown Doctor') {
+      return { isValid: false, message: 'Valid doctor name is required' };
     }
     if (!this.slot.email?.trim()) {
       return { isValid: false, message: 'Email is required' };
     }
-    if (!this.slot.specialization?.trim()) {
-      return { isValid: false, message: 'Specialization is required' };
+    if (!this.slot.specialization?.trim() || this.slot.specialization === 'Unknown Specialization') {
+      return { isValid: false, message: 'Valid specialization is required' };
     }
     if (!this.slot.date) {
       return { isValid: false, message: 'Date is required' };
@@ -123,7 +138,6 @@ export class ScheduleslotsComponent implements OnInit {
       return { isValid: false, message: 'Patient type is required' };
     }
 
-    // Check for existing slots on the same date
     const existingSlot = this.slots.find(s => {
       const slotDate = new Date(s.date);
       slotDate.setHours(0, 0, 0, 0);
@@ -141,7 +155,7 @@ export class ScheduleslotsComponent implements OnInit {
     const validation = this.validateSlot();
     if (!validation.isValid) {
       this.error = validation.message;
-      this.successMessage = null; // Clear any previous success
+      this.successMessage = null;
       return;
     }
 
@@ -149,26 +163,29 @@ export class ScheduleslotsComponent implements OnInit {
     this.error = null;
     this.successMessage = null;
 
-    // Set default status for new slots
-    this.slot.amstatus = 'unbooked';
-    this.slot.noonstatus = 'unbooked';
-    this.slot.pmstatus = 'unbooked';
+    this.slot.amstatus = this.slot.amslot && this.slot.amslot !== 'empty' ? 'unbooked' : 'empty';
+    this.slot.noonstatus = this.slot.noonslot && this.slot.noonslot !== 'empty' ? 'unbooked' : 'empty';
+    this.slot.pmstatus = this.slot.pmslot && this.slot.pmslot !== 'empty' ? 'unbooked' : 'empty';
 
-    // Format the date to match the expected format
     const date = new Date(this.slot.date);
     this.slot.date = date.toISOString().split('T')[0];
 
     this._service.addBookingSlots(this.slot).subscribe({
       next: (response) => {
-        // Response is now plain text like "modified successfully !!!", so we can log it but ignore for UI
         console.log('Backend response:', response);
         this.successMessage = 'Slots added successfully! 🎉';
         this.isLoading = false;
-        this.loadDoctorSlots(); // Refresh the slots list
+        this.loadDoctorSlots();
         this.showForm = false;
-        this.slot = new Slots(); // Reset form
+        this.slot = new Slots();
+        this.slot.email = this.loggedUser;
+        this._service.getProfileDetails(this.loggedUser).subscribe({
+          next: (profile: Doctor) => {
+            this.slot.doctorname = profile.doctorname || 'Unknown Doctor';
+            this.slot.specialization = profile.specialization || 'Unknown Specialization';
+          }
+        });
 
-        // Auto-hide success message after 3 seconds and navigate
         setTimeout(() => {
           this.successMessage = null;
           this._router.navigate(['/doctordashboard']);
@@ -177,13 +194,8 @@ export class ScheduleslotsComponent implements OnInit {
       error: (err) => {
         console.error('Error adding slots:', err);
         this.isLoading = false;
-        this.successMessage = null; // Clear any previous success
-        // Improved error handling for non-200 errors
-        if (err.error instanceof ErrorEvent) {
-          this.error = 'Network error: Please check your connection and try again.';
-        } else {
-          this.error = `Server error (${err.status}): ${err.message || 'Failed to add slots. Please try again later.'}`;
-        }
+        this.successMessage = null;
+        this.error = `Failed to add slots: ${err.message || 'Please try again.'}`;
       }
     });
   }

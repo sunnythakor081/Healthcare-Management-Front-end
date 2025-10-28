@@ -151,158 +151,144 @@
         </div>
     </div>
 
+    
     <!-- Add Slot Form -->
-    <div [hidden]="!showForm" class="bg-white rounded-lg shadow-lg p-6 mt-8">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-semibold text-green-600">
-                <i class="fa fa-user-md mr-2"></i>Add Available Slots
-            </h2>
-            <button (click)="toggleForm()" class="text-gray-500 hover:text-gray-700">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
+<div [hidden]="!showForm" class="bg-white rounded-lg shadow-lg p-6 mt-8">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-semibold text-green-600">
+      <i class="fa fa-user-md mr-2"></i>Add Available Slots
+    </h2>
+    <button (click)="toggleForm()" class="text-gray-500 hover:text-gray-700">
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
 
-        <form #addslotform="ngForm" (ngSubmit)="addSlot()" class="space-y-6">
-            <!-- Doctor Info Section -->
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div class="form-group">
-                    <label class="block text-sm font-medium text-gray-700">Doctor Name <span class="text-red-500">*</span></label>
-                    <input type="text" 
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                           [class.border-red-500]="doctorname.invalid && doctorname.touched"
-                           name="doctorname"
-                           [(ngModel)]="slot.doctorname"
-                           required
-                           #doctorname="ngModel"
-                           placeholder="Enter your full name">
-                    <small *ngIf="doctorname.invalid && doctorname.touched" class="text-red-500">Name is required</small>
-                </div>
+  <form #addslotform="ngForm" (ngSubmit)="addSlot()" class="space-y-6">
+    <!-- Doctor Info Section -->
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div class="form-group">
+        <label class="block text-sm font-medium text-gray-700">Doctor Name <span class="text-red-500">*</span></label>
+        <input type="text" 
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100" 
+               name="doctorname"
+               [(ngModel)]="slot.doctorname"
+               readonly
+               placeholder="Doctor name (auto-filled)">
+      </div>
 
-                <div class="form-group">
-                    <label class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500">*</span></label>
-                    <input type="email" 
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                           [class.border-red-500]="email.invalid && email.touched"
-                           name="email"
-                           [(ngModel)]="slot.email"
-                           required
-                           #email="ngModel"
-                           pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                           placeholder="Enter your email">
-                    <small *ngIf="email.invalid && email.touched" class="text-red-500">
-                        <span *ngIf="email.errors?.['required']">Email is required</span>
-                        <span *ngIf="email.errors?.['pattern']">Please enter a valid email</span>
-                    </small>
-                </div>
-            </div>
-
-            <!-- Specialization & Date -->
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div class="form-group">
-                    <label class="block text-sm font-medium text-gray-700">Specialization <span class="text-red-500">*</span></label>
-                    <input type="text" 
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                           [class.border-red-500]="specialization.invalid && specialization.touched"
-                           name="specialization"
-                           [(ngModel)]="slot.specialization"
-                           required
-                           #specialization="ngModel"
-                           placeholder="Enter your specialization">
-                    <small *ngIf="specialization.invalid && specialization.touched" class="text-red-500">
-                        Specialization is required
-                    </small>
-                </div>
-
-                <div class="form-group">
-                    <label class="block text-sm font-medium text-gray-700">Available Date <span class="text-red-500">*</span></label>
-                    <input type="date" 
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                           [class.border-red-500]="date.invalid && date.touched"
-                           name="date"
-                           [(ngModel)]="slot.date"
-                           [min]="getMinDate()"
-                           required
-                           #date="ngModel">
-                    <small *ngIf="date.invalid && date.touched" class="text-red-500">
-                        Please select a valid future date
-                    </small>
-                </div>
-            </div>
-
-            <!-- Time Slots -->
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-                <div class="form-group">
-                    <label class="block text-sm font-medium text-gray-700">Morning Slot</label>
-                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                            name="amslot"
-                            [(ngModel)]="slot.amslot">
-                        <option value="empty" selected>No Slot</option>
-                        <option>9.00 AM - 11.00 AM</option>
-                        <option>9.30 AM - 11.30 AM</option>
-                        <option>10.00 AM - 12.00 PM</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="block text-sm font-medium text-gray-700">Afternoon Slot</label>
-                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                            name="noonslot"
-                            [(ngModel)]="slot.noonslot">
-                        <option value="empty" selected>No Slot</option>
-                        <option>1.00 PM - 3.00 PM</option>
-                        <option>1.30 PM - 3.30 PM</option>
-                        <option>2.00 PM - 4.00 PM</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="block text-sm font-medium text-gray-700">Evening Slot</label>
-                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                            name="pmslot"
-                            [(ngModel)]="slot.pmslot">
-                        <option value="empty" selected>No Slot</option>
-                        <option>5.00 PM - 7.00 PM</option>
-                        <option>5.30 PM - 7.30 PM</option>
-                        <option>6.00 PM - 8.00 PM</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Patient Type -->
-            <div class="form-group">
-                <label class="block text-sm font-medium text-gray-700">Patient Type <span class="text-red-500">*</span></label>
-                <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                        name="patienttype"
-                        [(ngModel)]="slot.patienttype"
-                        required>
-                    <option>IN Patients</option>
-                    <option>OUT Patients</option>
-                    <option selected>Both IN & OUT Patients</option>
-                    <option>Emergency Operations</option>
-                </select>
-            </div>
-
-            <!-- Form Actions -->
-            <div class="flex justify-end space-x-4 pt-4">
-                <button type="button"
-                        (click)="toggleForm()"
-                        class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
-                    Cancel
-                </button>
-                <button type="submit"
-                        [disabled]="addslotform.form.invalid || isLoading"
-                        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 flex items-center">
-                    <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    {{ isLoading ? 'Adding...' : 'Add Slot' }}
-                </button>
-            </div>
-        </form>
+      <div class="form-group">
+        <label class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500">*</span></label>
+        <input type="email" 
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100"
+               name="email"
+               [(ngModel)]="slot.email"
+               readonly
+               placeholder="Email (auto-filled)">
+      </div>
     </div>
+
+    <!-- Specialization & Date -->
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div class="form-group">
+        <label class="block text-sm font-medium text-gray-700">Specialization <span class="text-red-500">*</span></label>
+        <input type="text" 
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100"
+               name="specialization"
+               [(ngModel)]="slot.specialization"
+               readonly
+               placeholder="Specialization (auto-filled)">
+      </div>
+
+      <div class="form-group">
+        <label class="block text-sm font-medium text-gray-700">Available Date <span class="text-red-500">*</span></label>
+        <input type="date" 
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+               [class.border-red-500]="date.invalid && date.touched"
+               name="date"
+               [(ngModel)]="slot.date"
+               [min]="getMinDate()"
+               required
+               #date="ngModel">
+        <small *ngIf="date.invalid && date.touched" class="text-red-500">
+          Please select a valid future date
+        </small>
+      </div>
+    </div>
+
+    <!-- Time Slots -->
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div class="form-group">
+        <label class="block text-sm font-medium text-gray-700">Morning Slot</label>
+        <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                name="amslot"
+                [(ngModel)]="slot.amslot">
+          <option value="empty" selected>No Slot</option>
+          <option>9.00 AM - 11.00 AM</option>
+          <option>9.30 AM - 11.30 AM</option>
+          <option>10.00 AM - 12.00 PM</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="block text-sm font-medium text-gray-700">Afternoon Slot</label>
+        <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                name="noonslot"
+                [(ngModel)]="slot.noonslot">
+          <option value="empty" selected>No Slot</option>
+          <option>1.00 PM - 3.00 PM</option>
+          <option>1.30 PM - 3.30 PM</option>
+          <option>2.00 PM - 4.00 PM</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="block text-sm font-medium text-gray-700">Evening Slot</label>
+        <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                name="pmslot"
+                [(ngModel)]="slot.pmslot">
+          <option value="empty" selected>No Slot</option>
+          <option>5.00 PM - 7.00 PM</option>
+          <option>5.30 PM - 7.30 PM</option>
+          <option>6.00 PM - 8.00 PM</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Patient Type -->
+    <div class="form-group">
+      <label class="block text-sm font-medium text-gray-700">Patient Type <span class="text-red-500">*</span></label>
+      <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+              name="patienttype"
+              [(ngModel)]="slot.patienttype"
+              required>
+        <option>IN Patients</option>
+        <option>OUT Patients</option>
+        <option selected>Both IN & OUT Patients</option>
+        <option>Emergency Operations</option>
+      </select>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="flex justify-end space-x-4 pt-4">
+      <button type="button"
+              (click)="toggleForm()"
+              class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+        Cancel
+      </button>
+      <button type="submit"
+              [disabled]="addslotform.form.invalid || isLoading"
+              class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 flex items-center">
+        <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        {{ isLoading ? 'Adding...' : 'Add Slot' }}
+      </button>
+    </div>
+  </form>
+</div>
 </div>
 
 <app-footer></app-footer>
