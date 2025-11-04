@@ -65,6 +65,76 @@
               </svg>
               Home
             </a>
+
+             <!-- admin link -->
+             <!-- Add Doctor -->
+<a *ngIf="currRole === 'admin'" 
+   class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
+   routerLink="/addDoctor">
+  <svg xmlns="http://www.w3.org/2000/svg" 
+       class="w-4 h-4 inline mr-2 text-blue-600" 
+       fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 4v16m8-8H4"/>
+  </svg>
+  Add Doctor
+</a>
+
+<!-- Doctor List -->
+<a *ngIf="currRole === 'admin'" 
+   class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
+   routerLink="/doctorlist">
+  <svg xmlns="http://www.w3.org/2000/svg" 
+       class="w-4 h-4 inline mr-2 text-green-600" 
+       fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M6 18a2 2 0 01-2-2V8a2 2 0 012-2h3.5a2 2 0 011.5.67L14 9h4a2 2 0 012 2v5a2 2 0 01-2 2H6z"/>
+  </svg>
+  Doctor List
+</a>
+
+<!-- User List -->
+<a *ngIf="currRole === 'admin'" 
+   class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
+   routerLink="/userlist">
+  <svg xmlns="http://www.w3.org/2000/svg" 
+       class="w-4 h-4 inline mr-2 text-purple-600" 
+       fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M17 20h5v-2a4 4 0 00-4-4h-1m-4 6v-2a4 4 0 00-4-4H8m8-6a4 4 0 11-8 0 4 4 0 018 0z"/>
+  </svg>
+  User List
+</a>
+
+<!-- Manage Patients -->
+<a *ngIf="currRole === 'admin'" 
+   class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
+   routerLink="/patientlist">
+  <svg xmlns="http://www.w3.org/2000/svg" 
+       class="w-4 h-4 inline mr-2 text-red-600" 
+       fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 12h6m2 8H7a2 2 0 01-2-2v-2a6 6 0 0112 0v2a2 2 0 01-2 2zM12 4a4 4 0 110 8 4 4 0 010-8z"/>
+  </svg>
+  Manage Patients
+</a>
+
+<!-- Approve Doctors -->
+<a *ngIf="currRole === 'admin'" 
+   class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
+   routerLink="/approvedoctors">
+  <svg xmlns="http://www.w3.org/2000/svg" 
+       class="w-4 h-4 inline mr-2 text-teal-600" 
+       fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M5 13l4 4L19 7"/>
+  </svg>
+  Approve Doctors
+</a>
+
+
+
+
             <a *ngIf="currRole === 'doctor'" 
                class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
                routerLink="/doctorprofile">
