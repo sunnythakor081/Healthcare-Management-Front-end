@@ -18,25 +18,21 @@ export class AddingdoctorComponent implements OnInit {
 
   doctor = new Doctor();
   
-  constructor(private _service : DoctorService, private _router : Router) { }
+  constructor(private _service: DoctorService, private _router: Router) { }
 
-  ngOnInit(): void 
-  {
-
+  ngOnInit(): void {
   }
 
-  addDoctor()
-  {
-    this._service.addDoctorFromRemote(this.doctor).subscribe(
-      data => {
-        console.log("Doctor added Successfully");
+  addDoctor() {
+    this._service.addDoctorFromRemote(this.doctor).subscribe({
+      next: (data) => {
+        console.log("Doctor added successfully");
         this._router.navigate(['/admindashboard']);
       },
-      error => {
-        console.log("process Failed");
-        console.log(error.error);
+      error: (error) => {
+        console.log("Process failed");
+        console.error(error);
       }
-    )
+    });
   }
-
 }

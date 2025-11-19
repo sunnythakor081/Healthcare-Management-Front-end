@@ -1,175 +1,198 @@
-/* Simple CSS for Add Doctor Page - Clean & Minimal */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* Global Typography - Professional Sans-Serif */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f7fa;
-  color: #333;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
+  color: #374151;
 }
 
-.container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+/* Custom Animations - Smooth and Subtle for Professional Feel */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(30px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
 }
 
-.textual {
-  text-align: center;
-  padding: 20px;
-  background: #4a90e2;
-  color: white;
-  font-size: 24px;
-  margin-bottom: 20px;
-  border-radius: 8px;
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
 }
 
-small[style*="color:rgb(179, 11, 11)"] {
-  display: block;
-  text-align: center;
-  margin: 10px 0;
-  padding: 10px;
-  background: #fff3cd;
-  border-left: 4px solid #ffc107;
-  border-radius: 4px;
-  color: #856404;
-  font-weight: bold;
+/* Enhanced Glassmorphism - Clean, Modern Professional Look */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-form {
-  padding: 20px;
+.glass-card:hover {
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.12),
+    0 4px 15px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
 }
 
-.form-group {
-  margin-bottom: 20px;
+/* Professional Gradient Buttons - Subtle Shine */
+.btn-gradient {
+  background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+  border: none;
+  position: relative;
+  overflow: hidden;
 }
 
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #555;
-}
-
-label b.text-danger {
-  color: #dc3545;
-}
-
-.form-control,
-select.form-control {
+.btn-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
 }
 
-.form-control:focus,
-select.form-control:focus {
-  border-color: #4a90e2;
-  outline: none;
-  box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+.btn-gradient:hover::before {
+  left: 100%;
 }
 
-.form-control.is-invalid {
-  border-color: #dc3545;
-  background: #f8d7da;
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+  transform: translateY(-1px);
 }
 
-small.text-danger {
-  color: #dc3545 !important;
-  font-size: 12px !important;
-  margin-top: 5px !important;
-  display: block !important;
-  font-weight: bold;
-}
-
-.d-none {
-  display: none;
-}
-
-small[style*="color: gray"] {
-  color: #6c757d !important;
-  font-size: 12px !important;
-  margin-top: 5px !important;
-  display: block !important;
-  font-style: italic;
-}
-
-.checkbox {
+/* Flex Center Utility */
+.flex-center {
   display: flex;
   align-items: center;
-  margin: 20px 0;
   justify-content: center;
 }
 
-.checkbox input[type="checkbox"] {
-  margin-right: 10px;
-  accent-color: #4a90e2;
+/* Form Inputs - Clean, Professional with Micro-Interactions */
+.form-input-enhanced {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-color: #d1d5db;
 }
 
-.checkbox small {
-  color: #6c757d;
-  font-size: 14px;
+.form-input-enhanced:focus {
+  border-color: #0d9488;
+  box-shadow: 
+    0 0 0 3px rgba(16, 185, 129, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
 }
 
-.btn.registerbtn {
+.form-input-enhanced.border-red-500 {
+  border-color: #dc2626;
+  background-color: #fef2f2;
+}
+
+/* Checkbox - Modern Toggle Style */
+.checkbox-enhanced {
+  accent-color: #0d9488;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.checkbox-enhanced:checked {
+  background: linear-gradient(135deg, #10b981 0%, #059669 50%);
+  border-color: #047857;
+  transform: scale(1.02);
+}
+
+/* Label Links - Underline on Hover for Professional Navigation */
+.label-link {
+  text-decoration: none;
+  position: relative;
+  color: #b45309;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.label-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #b45309;
+  transition: width 0.3s ease;
+}
+
+.label-link:hover::after {
   width: 100%;
-  padding: 12px;
-  background: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  font-weight: bold;
+}
+
+.label-link:hover {
+  color: #92400e;
+}
+
+/* Select Dropdown - Custom Arrow for Professional Consistency */
+.form-input-enhanced select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.25em 1.25em;
+  padding-right: 2.75rem;
   cursor: pointer;
-  transition: background 0.3s;
 }
 
-.btn.registerbtn:hover:not(:disabled) {
-  background: #218838;
+.form-input-enhanced select:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2310b981' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
 }
 
-.btn.registerbtn:disabled {
-  background: #6c757d;
-  cursor: not-allowed;
+/* Icon Styling - Consistent Professional Weights */
+.fas {
+  font-weight: 900;
 }
 
-.btn.registerbtn i {
-  margin-right: 8px;
+/* Form Labels - Enhanced Hierarchy */
+label {
+  font-weight: 500;
+  letter-spacing: 0.025em;
 }
 
-/* Responsive */
+/* Small Text Elements - Refined Spacing */
+small {
+  line-height: 1.4;
+}
+
+/* Overall Page Polish - Reduce Harsh Shadows, Add Subtle Borders */
+.rounded-xl {
+  border-radius: 1rem;
+}
+
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+
+/* Ensure Smooth Scrolling for Professional UX */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Responsive Design - Mobile-First Professional Layout */
 @media (max-width: 768px) {
-  .container {
-    margin: 10px;
-    padding: 15px;
+  .grid-cols-1.md\:grid-cols-2 {
+    grid-template-columns: 1fr;
   }
-
-  .textual {
-    font-size: 20px;
-    padding: 15px;
+  
+  .p-8.lg\:p-12 {
+    padding: 1.5rem;
   }
-
-  form {
-    padding: 15px;
-  }
-
-  .form-control,
-  select.form-control {
-    padding: 8px;
-    font-size: 16px; /* Prevent zoom on iOS */
-  }
-
-  .checkbox {
-    flex-direction: column;
-    text-align: center;
+  
+  .text-4xl.md\:text-5xl {
+    font-size: 2rem;
   }
 }

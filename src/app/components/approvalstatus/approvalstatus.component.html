@@ -1,123 +1,225 @@
 <app-header></app-header>
 
-<div class="message" id="messagecard">
-  <form #tempform="ngForm" (ngSubmit)="searchPatient()">
-  <div class="form-group">
-      <label for="patientname">Patient Email Address: <b class="text-danger">*</b></label>
-      <input type="text" class="form-control" placeholder="enter patient email" name="patientname" [(ngModel)]="this.mail" required 
-      #patientname="ngModel"
-      [class.is-invalid]="patientname.invalid && patientname.touched">
-     <small class="text-danger" [class.d-none]="patientname.valid || patientname.untouched"><b>required field</b></small>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Professional Header Section -->
+    <div class="text-center mb-12 animate-fade-in">
+      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+        Approval Status Dashboard
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Monitor and manage your verification and appointment approvals securely.
+      </p>
+    </div>
+
+    <!-- Dynamic Content Based on Role -->
+    <div *ngIf="currRole === 'doctor' || currRole === 'DOCTOR'" class="space-y-8">
+      <!-- Doctor Approval Card -->
+      <div class="glass-card rounded-3xl overflow-hidden shadow-xl">
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-6 text-white">
+          <h2 class="text-2xl font-bold flex items-center justify-center">
+            <i class="fas fa-user-md mr-3"></i>
+            Doctor Verification Status
+          </h2>
+          <div *ngFor="let doctor of approval | async" class="mt-4 text-center">
+            <div *ngIf="doctor.status === 'accept'" class="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
+              <i class="fas fa-check-circle mr-2"></i>Verified & Accepted
+            </div>
+            <div *ngIf="doctor.status === 'false'" class="inline-flex items-center px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full text-sm font-semibold">
+              <i class="fas fa-clock mr-2"></i>Not Yet Verified
+            </div>
+            <div *ngIf="doctor.status === 'reject'" class="inline-flex items-center px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm font-semibold">
+              <i class="fas fa-times-circle mr-2"></i>Verified & Rejected
+            </div>
+          </div>
+        </div>
+        <div class="p-6 overflow-x-auto">
+          <table class="w-full table-auto bg-white">
+            <thead>
+              <tr class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Identity</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Name</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Email</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Gender</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Experience</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Specialization</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Previous Hospital</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Mobile</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr *ngFor="let doctor of approval | async" class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <img *ngIf="doctor.gender === 'Male' || doctor.gender === 'male'" 
+                       class="w-16 h-16 rounded-full object-cover border-2 border-indigo-300" 
+                       src="assets/img/maledoctor.png" 
+                       alt="Male Doctor">
+                  <img *ngIf="doctor.gender === 'Female' || doctor.gender === 'female'" 
+                       class="w-16 h-16 rounded-full object-cover border-2 border-indigo-300" 
+                       src="assets/img/femaledoctor.png" 
+                       alt="Female Doctor">
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{doctor.doctorname}}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{doctor.email}}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                    {{doctor.gender}}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-600">{{doctor.experience}} years</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-purple-600">{{doctor.specialization}}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{doctor.previoushospital}} Hospital</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{doctor.mobile}}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span *ngIf="currRole === 'doctor' || currRole === 'DOCTOR' && doctor.email === loggedUser" 
+                        [ngClass]="{
+                          'bg-green-100 text-green-800': doctor.status === 'accept',
+                          'bg-yellow-100 text-yellow-800': doctor.status === 'false',
+                          'bg-red-100 text-red-800': doctor.status === 'reject'
+                        }" 
+                        class="inline-flex px-3 py-1 text-xs font-semibold rounded-full">
+                    <i *ngIf="doctor.status === 'accept'" class="fas fa-check mr-1"></i>
+                    <i *ngIf="doctor.status === 'false'" class="fas fa-clock mr-1"></i>
+                    <i *ngIf="doctor.status === 'reject'" class="fas fa-times mr-1"></i>
+                    {{ doctor.status === 'accept' ? 'Accepted' : doctor.status === 'false' ? 'Pending' : 'Rejected' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="currRole === 'user' || currRole === 'USER'" class="space-y-8">
+      <!-- Search Form Card -->
+      <div class="glass-card rounded-3xl p-8 max-w-2xl mx-auto shadow-xl" *ngIf="showSearchForm">
+        <div class="text-center mb-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-2 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+            Search Patient Prescription
+          </h2>
+          <p class="text-gray-600">Enter the patient's email to view approval status.</p>
+        </div>
+        <form #tempform="ngForm" (ngSubmit)="searchPatient()" class="space-y-6">
+          <div class="space-y-2">
+            <label for="patientname" class="block text-sm font-bold text-gray-700 flex items-center">
+              <i class="fas fa-envelope text-green-600 mr-2"></i>Patient Email Address <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="email" 
+              id="patientname"
+              class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500"
+              placeholder="enter patient email" 
+              name="patientname" 
+              [(ngModel)]="mail" 
+              required 
+              pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+              #patientname="ngModel"
+              [class.border-red-500]="patientname.invalid && patientname.touched">
+            <small *ngIf="patientname.invalid && patientname.touched" class="block text-red-500 text-xs font-bold flex items-center">
+              <i class="fas fa-times-circle mr-1"></i> {{ patientname.errors?.['required'] ? 'Email is required' : 'Enter a valid email' }}
+            </small>
+          </div>
+          <button 
+            type="submit" 
+            [disabled]="tempform.invalid" 
+            class="w-full btn-gradient text-white font-bold py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex-center space-x-2">
+            <i class="fas fa-search"></i>
+            <span>Search Prescription</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Patient Approval Card -->
+      <div class="glass-card rounded-3xl overflow-hidden shadow-xl" *ngIf="!showSearchForm">
+        <div class="bg-gradient-to-r from-green-600 to-emerald-600 px-8 py-6 text-white">
+          <h2 class="text-2xl font-bold flex items-center justify-center">
+            <i class="fas fa-user-injured mr-3"></i>
+            Patient Appointment Status
+          </h2>
+          <p class="text-center text-green-100 mt-2">Verified by the Doctor</p>
+        </div>
+        <div class="p-6 overflow-x-auto">
+          <table class="w-full table-auto bg-white">
+            <thead>
+              <tr class="bg-gradient-to-r from-green-500 to-emerald-500 text-white">
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Identity</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Patient ID</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Name</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Age</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Slot</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Date</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Problem</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Approval</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Admission</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr *ngFor="let patient of appointment | async" class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <img *ngIf="patient.gender === 'Male' || patient.gender === 'male'" 
+                       class="w-16 h-16 rounded-full object-cover border-2 border-green-300" 
+                       src="assets/img/maleuser.png" 
+                       alt="Male Patient">
+                  <img *ngIf="patient.gender === 'Female' || patient.gender === 'female'" 
+                       class="w-16 h-16 rounded-full object-cover border-2 border-green-300" 
+                       src="assets/img/femaleuser.png" 
+                       alt="Female Patient">
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="inline-flex px-3 py-1 text-sm font-semibold bg-blue-100 text-blue-800 rounded-full">
+                    {{patient.patientid}}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{patient.patientname}}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{patient.age}}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="inline-flex px-3 py-1 text-sm font-semibold bg-orange-100 text-orange-800 rounded-full">
+                    {{patient.slot}}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="inline-flex px-3 py-1 text-sm font-semibold bg-indigo-100 text-indigo-800 rounded-full">
+                    {{patient.date}}
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{patient.problem}}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span *ngIf="currRole === 'user' || currRole === 'USER' && patient.email === loggedUser" 
+                        [ngClass]="{
+                          'bg-green-100 text-green-800': patient.appointmentstatus === 'accept',
+                          'bg-yellow-100 text-yellow-800': patient.appointmentstatus === 'false',
+                          'bg-red-100 text-red-800': patient.appointmentstatus === 'reject'
+                        }" 
+                        class="inline-flex px-3 py-1 text-xs font-semibold rounded-full">
+                    <i *ngIf="patient.appointmentstatus === 'accept'" class="fas fa-check mr-1"></i>
+                    <i *ngIf="patient.appointmentstatus === 'false'" class="fas fa-clock mr-1"></i>
+                    <i *ngIf="patient.appointmentstatus === 'reject'" class="fas fa-times mr-1"></i>
+                    {{ patient.appointmentstatus === 'accept' ? 'Accepted' : patient.appointmentstatus === 'false' ? 'Pending' : 'Rejected' }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span 
+                    [ngClass]="{
+                      'bg-green-100 text-green-800': patient.admissionstatus === 'accept',
+                      'bg-yellow-100 text-yellow-800': patient.admissionstatus === 'false',
+                      'bg-red-100 text-red-800': patient.admissionstatus === 'reject'
+                    }" 
+                    class="inline-flex px-3 py-1 text-xs font-semibold rounded-full">
+                    <i *ngIf="patient.admissionstatus === 'accept'" class="fas fa-hospital mr-1"></i>
+                    <i *ngIf="patient.admissionstatus === 'false'" class="fas fa-clock mr-1"></i>
+                    <i *ngIf="patient.admissionstatus === 'reject'" class="fas fa-times mr-1"></i>
+                    {{ patient.admissionstatus === 'accept' ? 'Admitted' : patient.admissionstatus === 'false' ? 'Pending' : 'Not Admitted' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
-  <button style="margin-top: 15px;" [disabled]="tempform.form.invalid" type="submit" class="btn registerbtn"><i class="fa fa-check"></i>&nbsp; search Prescription </button>
-</form>
 </div>
 
-<div class="panel panel-primary" id="doctorapproval">
-    <div class="panel-heading">
-      <h2 style="text-align: center; font-family: 'Oswald', sans-serif;color: maroon; margin-top: 3%; margin-bottom: 3%;"> Your approval status 
-        <div *ngFor="let doctor of approval | async">
-            <div *ngIf="doctor.status === 'accept'"><h2><small style="color: green;">(Verified & Accepted)</small></h2></div>
-            <div *ngIf="doctor.status === 'false'"><h2><small style="color: rgb(161, 106, 34);">(Not yet Verified)</small></h2></div>
-            <div *ngIf="doctor.status === 'reject'"><h2><small style="color: rgb(184, 36, 36);">(Verified & Rejected)</small></h2></div>
-        </div>
-      </h2>
-    </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Idendity</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Gender</th>
-            <th>Experience</th>
-            <th>Specialization</th>
-            <th>Worked at</th>
-            <th>mobile</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let doctor of approval | async">
-            <td><img *ngIf="doctor.gender === 'Male' || doctor.gender === 'male'" class="bloodimg" [src]="'assets/img/maledoctor.png'" width="80" height="80">
-              <img *ngIf="doctor.gender === 'Female' || doctor.gender === 'female'" class="bloodimg" [src]="'assets/img/femaledoctor.png'" width="80" height="80">
-              </td>
-            <td>{{doctor.doctorname}}</td>
-            <td>{{doctor.email}}</td>
-            <td>{{doctor.gender}}</td>
-            <td style="color: maroon; font-size: 25px;">{{doctor.experience}} years</td>
-            <td style="color: maroon; font-size: 25px;">{{doctor.specialization}} </td>
-            <td style="color: navy;">{{doctor.previoushospital}} hospital</td>
-            <td>{{doctor.mobile}}</td>
-            <td>
-                <div *ngIf="currRole === 'doctor' || currRole === 'DOCTOR' && doctor.email === loggedUser">
-                    <div *ngIf="doctor.status === 'accept'" class="accepted">Accepted</div>
-                    <div *ngIf="doctor.status === 'false'" class="pending">Pending</div>
-                    <div *ngIf="doctor.status === 'reject'" class="rejected">Rejected</div>
-                </div>
-              </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="panel panel-primary" id="patientapproval">
-    <div class="panel-heading">
-      <h2 style="text-align: center; font-family: 'Oswald', sans-serif;color: darkgreen; margin-top: 3%; margin-bottom: 3%;"> Your approval status <small>(verified by the doctor)</small></h2>
-    </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Idendity</th>
-            <th>Patient ID</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Slot</th>
-            <th>Date</th>
-            <th>Problem</th>
-            <th>Approval</th>
-            <th>Admission</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let patient of appointment | async">
-            <td><img *ngIf="patient.gender === 'Male' || patient.gender === 'male'" class="bloodimg" [src]="'assets/img/maleuser.png'" width="80" height="80">
-              <img *ngIf="patient.gender === 'Female' || patient.gender === 'female'" class="bloodimg" [src]="'assets/img/femaleuser.png'" width="80" height="80">
-              </td>
-            <td>
-              <div class="date-cover">{{patient.patientid}}</div>
-            </td>
-            <td>{{patient.patientname}}</td>
-            <td>{{patient.age}}</td>
-            <td>
-              <div class="slotcover">{{patient.slot}}</div>
-            </td>
-            <td>
-              <div class="date-cover">{{patient.date}}</div>
-            </td>
-            <td>{{patient.problem}}</td>
-            <td>
-                <div *ngIf="currRole === 'user' || currRole === 'USER' && patient.email === loggedUser">
-                    <div *ngIf="patient.appointmentstatus === 'accept'" class="accepted">Accepted</div>
-                    <div *ngIf="patient.appointmentstatus === 'false'" class="pending">Pending</div>
-                    <div *ngIf="patient.appointmentstatus === 'reject'" class="rejected">Rejected</div>
-                </div>
-              </td>
-              <td>
-                <div>
-                    <div *ngIf="patient.admissionstatus === 'accept'" class="accepted">Admitted</div>
-                    <div *ngIf="patient.admissionstatus === 'false'" class="pending">Pending</div>
-                    <div *ngIf="patient.admissionstatus === 'reject'" class="rejected">Not Admitted</div>
-                </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-<br><br><br><br><br><br><br><br>
 <app-footer></app-footer>

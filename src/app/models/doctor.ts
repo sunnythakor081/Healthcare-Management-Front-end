@@ -10,6 +10,9 @@ export class Doctor
     specialization: string = '';
     previoushospital: string = '';
     password: string = '';
+    confirmPassword: string = '';
+    license: string = '';
+    termsAccepted: boolean = false;
     status: string = 'false';
     qualification: string = '';
     consultationFee: number = 0;

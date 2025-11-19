@@ -1,76 +1,95 @@
-@import url('https://fonts.googleapis.com/css2?family=Mate+SC&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-.panel-body {
-  margin-left: 1%;
-  margin-right: 2%;
+/* Global Typography */
+body {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  color: #374151;
 }
 
-thead {
-  background-color: rgb(35, 136, 106);
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-table, td {
-  text-align: center;
-  align-items: center;
-  vertical-align: middle;
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
 }
 
-table, td, tr {
-  border: 1px solid rgb(163, 161, 161);
-  font-family: serif;
-  font-weight: bold;
-  font-style: normal;
-  font-size: large;
+/* Glassmorphism Cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-th {
-  text-transform: uppercase;
-  color: white;
-  font-family: Helvetica;
-  font-style: italic;
-  font-size: normal;
+.glass-card:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
-td {
-  text-transform: none;
-}
-
+/* Status Badges and Buttons */
 .accepted {
-  border: 1px solid black;
-  border-radius: 10px;
-  background-color: rgb(30, 116, 30);
-  padding: 5px 10px 5px 10px;
+  background: linear-gradient(135deg, #10b981, #059669);
   color: white;
-  font-weight: bolder;
 }
 
 .pending {
-  border: 1px solid black;
-  border-radius: 10px;
-  background-color: rgb(196, 137, 28);
-  padding: 5px 10px 5px 10px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
   color: white;
-  font-weight: bolder;
 }
 
 .rejected {
-  border: 1px solid black;
-  border-radius: 10px;
-  background-color: red;
-  padding: 5px 10px 5px 10px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
   color: white;
-  font-weight: bolder;
 }
 
-/* Add click effect */
 .btn-effect {
-  transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-effect:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-effect:active {
-  transform: scale(0.95);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  transform: scale(0.98);
 }
 
-/* Smooth transition for status changes */
+/* Table Styles */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .px-6 { padding-left: 0.75rem; padding-right: 0.75rem; }
+  table { font-size: 0.875rem; }
+  .space-y-2 { space-y: 1rem; }
+}
+
+/* Icons */
+.fas {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+}

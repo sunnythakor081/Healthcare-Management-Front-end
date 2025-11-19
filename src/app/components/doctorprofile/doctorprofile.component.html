@@ -1,87 +1,371 @@
 <app-header></app-header>
 
-<div class="row" id="profilecard">
-  <a><img style="margin-top: 2%;" *ngIf="doctor.gender === 'Male' || doctor.gender === 'male'" class="bloodimg" [src]="'assets/img/maledoctor.png'" width="130" height="140"></a>
-  <a><img style="margin-top: 2%;" *ngIf="doctor.gender === 'Female' || doctor.gender === 'female'" class="bloodimg" [src]="'assets/img/femaledoctor.png'" width="130" height="140"></a>
-  <div class="card-block">
-    <div class="text"><b style="color: navy;">Doctor Name : </b><b class="element" style="margin-left: 57px;"> {{doctor.doctorname}}</b> </div>
-    <div class="text"><b style="color: navy;">Mobile Number : </b><b class="element" style="margin-left: 35px;"> {{doctor.mobile}}</b> </div>
-    <div class="text"><b style="color: navy;">Gender : </b><b class="element" style="margin-left: 102px;"> {{doctor.gender}}</b> </div>
-    <div class="text"><b style="color: navy;">Experience : </b><b class="element" style="margin-left: 73px;"> {{doctor.experience}} years</b> </div>
-    <div class="text"><b style="color: navy;">Specialization : </b><b class="element" style="margin-left: 50px;"> {{doctor.specialization}}</b> </div>
-    <div class="text"><b style="color: navy;">Previous Hospital : </b><b class="element" style="margin-left: 21px;"> {{doctor.previoushospital}}</b> </div>
-    <div class="text"><b style="color: navy;">Mail ID : </b><b class="element" style="margin-left: 102px;"> {{doctor.email}}</b> </div>
-    <div class="text"><b style="color: navy;">Address : </b><b class="element" style="margin-left: 102px;"> {{doctor.address}}</b> </div>
-    <div class="btndiv" style="align-items: center;"><button class="editbtn" (click)="editProfile()"><i class="fa fa-edit"></i> edit</button></div>
-    <small id="message" *ngIf="temp === true" style="text-align: center; margin-top: 3%; color: green;"><b>Profile Updated Successfully !!!</b></small> 
+<!-- Doctor Profile View Card -->
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-cyan-50 py-12 px-4" id="profilecard">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header Section -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-3">Doctor Profile</h1>
+      <p class="text-lg text-gray-600">Professional Medical Credentials</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Left Side - Profile Card -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden sticky top-8">
+          <!-- Profile Image -->
+          <div class="bg-gradient-to-r from-teal-500 to-cyan-500 h-32 relative">
+            <div class="absolute -bottom-16 left-1/2 transform -translate-x-1/2">
+              <div class="w-32 h-32 bg-white rounded-full border-4 border-white shadow-lg flex items-center justify-center overflow-hidden">
+                <img 
+                  *ngIf="doctor.gender === 'Male' || doctor.gender === 'male'" 
+                  [src]="'assets/img/maledoctor.png'" 
+                  alt="Doctor" 
+                  class="w-full h-full object-cover"
+                >
+                <img 
+                  *ngIf="doctor.gender === 'Female' || doctor.gender === 'female'" 
+                  [src]="'assets/img/femaledoctor.png'" 
+                  alt="Doctor" 
+                  class="w-full h-full object-cover"
+                >
+                <div *ngIf="doctor.gender !== 'Male' && doctor.gender !== 'Female' && doctor.gender !== 'male' && doctor.gender !== 'female'" class="bg-gray-300 w-full h-full flex items-center justify-center">
+                  <i class="fas fa-user-md text-gray-500 text-4xl"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Info -->
+          <div class="pt-20 px-6 pb-8 text-center">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">{{doctor.doctorname}}</h2>
+            <p class="text-teal-600 font-semibold mb-4">{{doctor.specialization}}</p>
+            
+            <div class="flex justify-center gap-4 mb-6">
+              <div class="text-center">
+                <div class="text-2xl font-bold text-teal-600">{{doctor.experience}}</div>
+                <div class="text-xs text-gray-600">Years Exp.</div>
+              </div>
+              <div class="border-l border-gray-300"></div>
+              <div class="text-center">
+                <div class="text-2xl font-bold text-teal-600">●</div>
+                <div class="text-xs text-gray-600">
+                  <span *ngIf="doctor.status === 'Active' || doctor.status === 'active'" class="text-green-600">Active</span>
+                  <span *ngIf="doctor.status !== 'Active' && doctor.status !== 'active'" class="text-gray-600">Inactive</span>
+                </div>
+              </div>
+            </div>
+
+            <button 
+              (click)="editProfile()" 
+              class="w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-semibold py-3 rounded-lg transition duration-300 flex items-center justify-center gap-2"
+            >
+              <i class="fas fa-edit"></i> Edit Profile
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side - Details -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Contact Information -->
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+          <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+            <i class="fas fa-phone text-teal-600 text-xl"></i>Contact Information
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="pb-6 border-b md:border-b-0">
+              <label class="text-sm font-semibold text-gray-600 mb-2 block">Email Address</label>
+              <p class="text-lg text-gray-900">{{doctor.email}}</p>
+            </div>
+            
+            <div class="pb-6 border-b md:border-b-0">
+              <label class="text-sm font-semibold text-gray-600 mb-2 block">Mobile Number</label>
+              <p class="text-lg text-gray-900">
+                <i class="fas fa-phone-alt text-teal-600 mr-2"></i>{{doctor.mobile}}
+              </p>
+            </div>
+
+            <div>
+              <label class="text-sm font-semibold text-gray-600 mb-2 block">Gender</label>
+              <p class="text-lg text-gray-900 flex items-center gap-2">
+                <i *ngIf="doctor.gender === 'Male' || doctor.gender === 'male'" class="fas fa-mars text-blue-500"></i>
+                <i *ngIf="doctor.gender === 'Female' || doctor.gender === 'female'" class="fas fa-venus text-pink-500"></i>
+                {{doctor.gender}}
+              </p>
+            </div>
+
+            <div>
+              <label class="text-sm font-semibold text-gray-600 mb-2 block">Address</label>
+              <p class="text-lg text-gray-900">
+                <i class="fas fa-map-marker-alt text-teal-600 mr-2"></i>{{doctor.address}}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Professional Information -->
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+          <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+            <i class="fas fa-stethoscope text-teal-600 text-xl"></i>Professional Information
+          </h3>
+
+          <div class="space-y-6">
+            <div class="border-l-4 border-teal-600 pl-4">
+              <label class="text-sm font-semibold text-gray-600 mb-2 block">Specialization</label>
+              <p class="text-lg font-semibold text-gray-900">{{doctor.specialization}}</p>
+            </div>
+
+            <div class="border-l-4 border-cyan-600 pl-4">
+              <label class="text-sm font-semibold text-gray-600 mb-2 block">Years of Experience</label>
+              <p class="text-lg font-semibold text-gray-900">{{doctor.experience}} Years</p>
+            </div>
+
+            <div class="border-l-4 border-blue-600 pl-4">
+              <label class="text-sm font-semibold text-gray-600 mb-2 block">Previous Hospital/Organization</label>
+              <p class="text-lg font-semibold text-gray-900">{{doctor.previoushospital}}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success Message -->
+        <div *ngIf="temp === true" class="bg-green-50 border-l-4 border-green-600 p-6 rounded-lg">
+          <div class="flex gap-3">
+            <i class="fas fa-check-circle text-green-600 text-xl mt-1"></i>
+            <div>
+              <h4 class="font-semibold text-green-900 mb-1">Success!</h4>
+              <p class="text-green-700">Your profile has been updated successfully.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="container" id="profileform">
-  <h3 class="textual">Update Doctor Profile</h3>
-  <form #Updateform="ngForm" (ngSubmit)="updateDoctorProfile()">
-    <small *ngIf="temp === false" style="text-align: center; color: navy;"><b>Dear {{loggedUser}}, update your profile here</b></small>
-    <small *ngIf="temp === true" style="text-align: center; color: green;"><b>Profile Updated Successfully !!!</b></small>  
-
-    <div class="form-group">
-      <label for="doctorname">Doctor Name: <b class="text-danger">*</b></label>
-      <input type="text" class="form-control" placeholder="enter doctor name" name="doctorname" required [(ngModel)]="doctor.doctorname"
-      #doctorname="ngModel"
-      [class.is-invalid]="doctorname.invalid && doctorname.touched">
-      <small class="text-danger" [class.d-none]="doctorname.valid || doctorname.untouched"><b>required field</b></small>
+<!-- Doctor Profile Edit Form -->
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-cyan-50 py-12 px-4" id="profileform" style="display: none;">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-3">Update Your Profile</h1>
+      <p class="text-lg text-gray-600">Dear {{loggedUser}}, update your professional information</p>
     </div>
 
-    <div class="form-group">
-      <label for="gender">Gender: <b class="text-danger">*</b></label>
-      <select class="form-control" id="sel1" name="gender" [(ngModel)]="doctor.gender" required
-          #gender="ngModel">
-              <option *ngFor="let option of ['Male', 'Female', 'Others']" [value]="option">{{option}}</option>
-      </select>
-      <small class="text-danger" [class.d-none]="gender.valid || gender.untouched"><b>required field</b></small>
-    </div>
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+      <form #Updateform="ngForm" (ngSubmit)="updateDoctorProfile()" class="space-y-8">
+        
+        <!-- Success Message -->
+        <div *ngIf="temp === true" class="bg-green-50 border-l-4 border-green-600 p-6 rounded-lg">
+          <div class="flex gap-3">
+            <i class="fas fa-check-circle text-green-600 text-xl mt-1"></i>
+            <div>
+              <h4 class="font-semibold text-green-900 mb-1">Success!</h4>
+              <p class="text-green-700">Your profile has been updated successfully.</p>
+            </div>
+          </div>
+        </div>
 
-    <div class="form-group">
-      <label for="mobile">Mobile Number: <b class="text-danger">*</b></label>
-      <input type="tel" class="form-control" placeholder="enter mobile number" name="mobile" [(ngModel)]="doctor.mobile" required
-      #mobile="ngModel"
-      [class.is-invalid]="mobile.invalid && mobile.touched">
-      <small class="text-danger" [class.d-none]="mobile.valid || mobile.untouched"><b>required field</b></small>
-    </div>
+        <!-- Row 1: Name and Gender -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Doctor Name -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-3">
+              <i class="fas fa-user-md text-teal-600 mr-2"></i>Doctor Name <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+              placeholder="Enter your full name" 
+              name="doctorname" 
+              required 
+              [(ngModel)]="doctor.doctorname"
+              #doctorname="ngModel"
+              [class.border-red-500]="doctorname.invalid && doctorname.touched"
+            >
+            <small 
+              *ngIf="doctorname.invalid && doctorname.touched"
+              class="block text-red-500 text-xs font-semibold mt-2"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Doctor name is required
+            </small>
+          </div>
 
-    <div class="form-group">
-      <label for="experience">Experience : <b class="text-danger">*</b></label>
-      <input type="text" class="form-control" placeholder="enter experience (in years)" name="experience" [(ngModel)]="doctor.experience" required
-      #experience="ngModel"
-      [class.is-invalid]="experience.invalid && experience.touched">  <!-- Changed back to type="text" -->
-      <small class="text-danger" [class.d-none]="experience.valid || experience.untouched"><b>required field</b></small>
-    </div>
+          <!-- Gender -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-3">
+              <i class="fas fa-venus-mars text-teal-600 mr-2"></i>Gender <span class="text-red-500">*</span>
+            </label>
+            <select 
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition bg-white"
+              name="gender" 
+              [(ngModel)]="doctor.gender" 
+              required
+              #gender="ngModel"
+              [class.border-red-500]="gender.invalid && gender.touched"
+            >
+              <option value="" disabled>Select your gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Others">Others</option>
+            </select>
+            <small 
+              *ngIf="gender.invalid && gender.touched"
+              class="block text-red-500 text-xs font-semibold mt-2"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Gender is required
+            </small>
+          </div>
+        </div>
 
-    <div class="form-group">
-      <label for="specialization">Specialization : <b class="text-danger">*</b></label>
-      <input type="text" class="form-control" placeholder="enter your specialization" name="specialization" [(ngModel)]="doctor.specialization" required
-      #specialization="ngModel"
-      [class.is-invalid]="specialization.invalid && specialization.touched">
-      <small class="text-danger" [class.d-none]="specialization.valid || specialization.untouched"><b>required field</b></small>
-    </div>
+        <!-- Row 2: Mobile and Experience -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Mobile -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-3">
+              <i class="fas fa-phone text-teal-600 mr-2"></i>Mobile Number <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="tel" 
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+              placeholder="Enter mobile number" 
+              name="mobile" 
+              [(ngModel)]="doctor.mobile" 
+              required
+              maxlength="10"
+              minlength="10"
+              #mobile="ngModel"
+              [class.border-red-500]="mobile.invalid && mobile.touched"
+            >
+            <small 
+              *ngIf="mobile.invalid && mobile.touched"
+              class="block text-red-500 text-xs font-semibold mt-2"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Valid 10-digit mobile is required
+            </small>
+          </div>
 
-    <div class="form-group">
-      <label for="previoushospital">Previous Working Hospital : <b class="text-danger">*</b></label>
-      <input type="text" class="form-control" placeholder="enter your previous working hospital" name="previoushospital" [(ngModel)]="doctor.previoushospital" required
-      #previoushospital="ngModel"
-      [class.is-invalid]="previoushospital.invalid && previoushospital.touched">
-      <small class="text-danger" [class.d-none]="previoushospital.valid || previoushospital.untouched"><b>required field</b></small>
-    </div>
+          <!-- Experience -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-3">
+              <i class="fas fa-briefcase text-teal-600 mr-2"></i>Years of Experience <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="number" 
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+              placeholder="Enter years of experience" 
+              name="experience" 
+              [(ngModel)]="doctor.experience" 
+              required
+              min="0"
+              max="60"
+              #experience="ngModel"
+              [class.border-red-500]="experience.invalid && experience.touched"
+            >
+            <small 
+              *ngIf="experience.invalid && experience.touched"
+              class="block text-red-500 text-xs font-semibold mt-2"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Experience is required
+            </small>
+          </div>
+        </div>
 
-    <div class="form-group">
-      <label for="address">Address : <b class="text-danger">*</b></label>
-      <input type="text" class="form-control" placeholder="enter your address" name="address" [(ngModel)]="doctor.address" required
-      #address="ngModel"
-      [class.is-invalid]="address.invalid && address.touched">
-      <small class="text-danger" [class.d-none]="address.valid || address.untouched"><b>required field</b></small>
-    </div>
+        <!-- Row 3: Specialization and Previous Hospital -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Specialization -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-3">
+              <i class="fas fa-stethoscope text-teal-600 mr-2"></i>Specialization <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+              placeholder="e.g., Cardiology, Surgery" 
+              name="specialization" 
+              [(ngModel)]="doctor.specialization" 
+              required
+              #specialization="ngModel"
+              [class.border-red-500]="specialization.invalid && specialization.touched"
+            >
+            <small 
+              *ngIf="specialization.invalid && specialization.touched"
+              class="block text-red-500 text-xs font-semibold mt-2"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Specialization is required
+            </small>
+          </div>
 
-    <button [disabled]="Updateform.form.invalid" type="submit" class="btn registerbtn">Update</button>
-  </form>
+          <!-- Previous Hospital -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-3">
+              <i class="fas fa-hospital text-teal-600 mr-2"></i>Previous Hospital/Organization <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+              placeholder="Enter previous workplace" 
+              name="previoushospital" 
+              [(ngModel)]="doctor.previoushospital" 
+              required
+              #previoushospital="ngModel"
+              [class.border-red-500]="previoushospital.invalid && previoushospital.touched"
+            >
+            <small 
+              *ngIf="previoushospital.invalid && previoushospital.touched"
+              class="block text-red-500 text-xs font-semibold mt-2"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Previous hospital is required
+            </small>
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-3">
+            <i class="fas fa-map-marker-alt text-teal-600 mr-2"></i>Address <span class="text-red-500">*</span>
+          </label>
+          <textarea 
+            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+            placeholder="Enter your clinic/office address" 
+            name="address" 
+            [(ngModel)]="doctor.address" 
+            required
+            rows="3"
+            #address="ngModel"
+            [class.border-red-500]="address.invalid && address.touched"
+          ></textarea>
+          <small 
+            *ngIf="address.invalid && address.touched"
+            class="block text-red-500 text-xs font-semibold mt-2"
+          >
+            <i class="fas fa-times-circle mr-1"></i>Address is required
+          </small>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-4 pt-8">
+          <button 
+            type="submit"
+            [disabled]="Updateform.form.invalid"
+            class="flex-1 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 disabled:from-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition duration-300 flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-save"></i> Update Profile
+          </button>
+          
+          <button 
+            type="button"
+            (click)="cancelEdit()"
+            class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-900 font-semibold py-3 rounded-lg transition duration-300 flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <app-footer></app-footer>

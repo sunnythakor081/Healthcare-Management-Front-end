@@ -1,121 +1,319 @@
 <app-header></app-header>
 
-<div class="container">
-    <h2 class="textual"><i class="fa fa-user-md"></i> New Doctor </h2>
-    <small style="color:rgb(179, 11, 11); font-weight: bold;">On adding a doctor, he will be approved to work in the hospital management by default</small>
-    <form #addDoctorform="ngForm" (ngSubmit)="addDoctor()">
-        
-        <div class="form-group">
-            <label for="doctorname">Doctor Name: <b class="text-danger">*</b></label>
-            <input type="text" class="form-control" placeholder="enter doctor name" name="doctorname" [(ngModel)]="doctor.doctorname" required 
-            #doctorname="ngModel"
-            [class.is-invalid]="doctorname.invalid && doctorname.touched">
-           <small class="text-danger" [class.d-none]="doctorname.valid || doctorname.untouched"><b>required field</b></small>
-        </div>
-        <small style="color: gray; font-size: 10px;">Please enter full name of the doctor with initial</small>
+<div class="min-h-screen bg-gradient-to-br from-cyan-50 via-teal-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Professional Hero Section -->
+    <div class="text-center mb-12 animate-fade-in">
+      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-4">
+        <i class="fas fa-user-md mr-3"></i>Add New Doctor
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Onboard qualified healthcare professionals to your network. All added doctors are pre-approved for hospital management.
+      </p>
+      <!-- <div class="mt-6 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-lg max-w-2xl mx-auto">
+        <p class="text-amber-800 font-semibold flex items-center justify-center">
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          Adding proxy doctors violates management Terms & Conditions.
+        </p>
+      </div> -->
+    </div>
 
-        <div class="form-group">
-            <label for="email">Doctor Email address: <b class="text-danger">*</b></label>
-            <input type="email" class="form-control" placeholder="enter email address" name="email" [(ngModel)]="doctor.email" required pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
-            #email="ngModel"
-            [class.is-invalid]="email.invalid && email.touched">
-            <div *ngIf="email.errors && (email.invalid && email.touched)">
-                <small class="text-danger" *ngIf="email.errors['required']"><b>required field</b></small>
-                <small class="text-danger" *ngIf="email.errors['pattern']"><b>Invalid email Id</b></small>
+    <!-- Form Card -->
+    <div class="glass-card rounded-3xl overflow-hidden shadow-2xl">
+      <form #addDoctorform="ngForm" (ngSubmit)="addDoctor()" class="p-8 lg:p-12 space-y-8">
+        <!-- Row 1: Name and Email -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Doctor Name -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-700 flex items-center">
+              <i class="fas fa-user-md text-teal-600 mr-2"></i>Doctor Name <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+              placeholder="Enter doctor full name with initials"
+              name="doctorname"
+              [(ngModel)]="doctor.doctorname"
+              required
+              #doctorname="ngModel"
+              [class.border-red-500]="doctorname.invalid && doctorname.touched"
+            />
+            <small 
+              *ngIf="doctorname.invalid && doctorname.touched"
+              class="block text-red-500 text-xs font-bold flex items-center"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Required field
+            </small>
+            <small class="block text-gray-500 text-xs italic flex items-center">
+              <i class="fas fa-info-circle mr-1 text-teal-500"></i>Enter full name with initials
+            </small>
+          </div>
+
+          <!-- Email -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-700 flex items-center">
+              <i class="fas fa-envelope text-teal-600 mr-2"></i>Email Address <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+              placeholder="doctor@hospital.com"
+              name="email"
+              [(ngModel)]="doctor.email"
+              required
+              pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+              #email="ngModel"
+              [class.border-red-500]="email.invalid && email.touched"
+            />
+            <div *ngIf="email.errors && email.invalid && email.touched">
+              <small *ngIf="email.errors['required']" class="block text-red-500 text-xs font-bold flex items-center">
+                <i class="fas fa-times-circle mr-1"></i>Required field
+              </small>
+              <small *ngIf="email.errors['pattern']" class="block text-red-500 text-xs font-bold flex items-center">
+                <i class="fas fa-times-circle mr-1"></i>Invalid email format
+              </small>
             </div>
+          </div>
         </div>
 
-        <div class="form-group">
-            <label for="mobile">Doctor Mobile Number: <b class="text-danger">*</b></label>
-            <input type="tel" class="form-control" placeholder="enter mobile number" name="mobile" [(ngModel)]="doctor.mobile" required 
-            #mobile="ngModel"
-            [class.is-invalid]="mobile.invalid && mobile.touched">
-           <small class="text-danger" [class.d-none]="mobile.valid || mobile.untouched"><b>required field</b></small>
-        </div>
-        <small style="color: gray; font-size: 10px;">Please enter 10 digit valid mobile number</small>
+        <!-- Row 2: Mobile and Gender -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Mobile -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-700 flex items-center">
+              <i class="fas fa-mobile-alt text-teal-600 mr-2"></i>Mobile Number <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="tel"
+              maxlength="10"
+              class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+              placeholder="Enter 10-digit mobile number"
+              name="mobile"
+              [(ngModel)]="doctor.mobile"
+              required
+              pattern="[0-9]{10}"
+              #mobile="ngModel"
+              [class.border-red-500]="mobile.invalid && mobile.touched"
+            />
+            <small 
+              *ngIf="mobile.invalid && mobile.touched"
+              class="block text-red-500 text-xs font-bold flex items-center"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Required 10-digit number
+            </small>
+            <small class="block text-gray-500 text-xs italic flex items-center">
+              <i class="fas fa-info-circle mr-1 text-teal-500"></i>Enter valid 10-digit mobile
+            </small>
+          </div>
 
-        <div class="form-group">
-            <label for="gender">Doctor Gender: <b class="text-danger">*</b></label>
-            <select class="form-control" id="sel1" name="gender" [(ngModel)]="doctor.gender"
-            #gender="ngModel">
-                <option selected>Male</option>
-                <option>Female</option>
-                <option>Others</option>
+          <!-- Gender -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-700 flex items-center">
+              <i class="fas fa-venus-mars text-teal-600 mr-2"></i>Gender <span class="text-red-500">*</span>
+            </label>
+            <select
+              class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 appearance-none bg-white"
+              name="gender"
+              [(ngModel)]="doctor.gender"
+              required
+              #gender="ngModel"
+            >
+              <option value="" disabled>Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Others">Others</option>
             </select>
+            <small 
+              *ngIf="gender.invalid && gender.touched"
+              class="block text-red-500 text-xs font-bold flex items-center"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Gender selection required
+            </small>
+          </div>
         </div>
 
-        <div class="form-group">
-            <label for="experience">Doctor Experience: <b class="text-danger">*</b></label>
-            <input type="number" class="form-control" placeholder="enter experience (in years)" name="experience" [(ngModel)]="doctor.experience" required 
-            #experience="ngModel"
-            [class.is-invalid]="experience.invalid && experience.touched">
-           <small class="text-danger" [class.d-none]="experience.valid || experience.untouched"><b>required field</b></small>
-        </div>
-        <small style="color: rgb(179, 11, 11); font-size: 10px; font-weight: bold;">Should have a minimum experience of 3 years</small>
+        <!-- Row 3: Experience and Specialization -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Experience -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-700 flex items-center">
+              <i class="fas fa-briefcase-medical text-teal-600 mr-2"></i>Experience (Years) <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="number"
+              min="3"
+              class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+              placeholder="Minimum 3 years"
+              name="experience"
+              [(ngModel)]="doctor.experience"
+              required
+              #experience="ngModel"
+              [class.border-red-500]="experience.invalid && experience.touched"
+            />
+            <small 
+              *ngIf="experience.invalid && experience.touched"
+              class="block text-red-500 text-xs font-bold flex items-center"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Required field (min 3 years)
+            </small>
+            <small class="block text-amber-700 text-xs font-bold flex items-center">
+              <i class="fas fa-exclamation-triangle mr-1"></i>Minimum 3 years experience required
+            </small>
+          </div>
 
-        <div class="form-group">
-            <label for="specialization">Doctor Specialization: <b class="text-danger">*</b></label>
-            <select class="form-control" name="specialization" [(ngModel)]="doctor.specialization" required 
-            #specialization="ngModel"
-            [class.is-invalid]="specialization.invalid && specialization.touched">
-                <option value="">Select Specialization</option>
-                <option value="General Physician">General Physician</option>
-                <option value="Cardiologist (Heart Specialist)">Cardiologist (Heart Specialist)</option>
-                <option value="Neurologist (Brain & Nervous System)">Neurologist (Brain & Nervous System)</option>
-                <option value="Orthopedic Surgeon (Bones & Joints)">Orthopedic Surgeon (Bones & Joints)</option>
-                <option value="Pediatrician (Child Specialist)">Pediatrician (Child Specialist)</option>
-                <option value="Dermatologist (Skin Specialist)">Dermatologist (Skin Specialist)</option>
-                <option value="Gynecologist / Obstetrician (Women's Health)">Gynecologist / Obstetrician (Women's Health)</option>
-                <option value="ENT Specialist (Ear, Nose, Throat)">ENT Specialist (Ear, Nose, Throat)</option>
-                <option value="Psychiatrist (Mental Health)">Psychiatrist (Mental Health)</option>
-                <option value="Ophthalmologist (Eye Specialist)">Ophthalmologist (Eye Specialist)</option>
-                <option value="Oncologist (Cancer Specialist)">Oncologist (Cancer Specialist)</option>
-                <option value="Pulmonologist (Lungs & Respiratory)">Pulmonologist (Lungs & Respiratory)</option>
-                <option value="Gastroenterologist (Digestive System)">Gastroenterologist (Digestive System)</option>
-                <option value="Urologist (Urinary & Male Reproductive)">Urologist (Urinary & Male Reproductive)</option>
-                <option value="Endocrinologist (Hormone Specialist)">Endocrinologist (Hormone Specialist)</option>
-                <option value="Nephrologist (Kidney Specialist)">Nephrologist (Kidney Specialist)</option>
-                <option value="Rheumatologist (Joint & Autoimmune Diseases)">Rheumatologist (Joint & Autoimmune Diseases)</option>
-                <option value="Anesthesiologist (Surgery Support)">Anesthesiologist (Surgery Support)</option>
-                <option value="Radiologist (Imaging & Scans)">Radiologist (Imaging & Scans)</option>
-                <option value="Dentist">Dentist</option>
+          <!-- Specialization -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-700 flex items-center">
+              <i class="fas fa-stethoscope text-teal-600 mr-2"></i>Specialization <span class="text-red-500">*</span>
+            </label>
+            <select
+              class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 appearance-none bg-white"
+              name="specialization"
+              [(ngModel)]="doctor.specialization"
+              required
+              #specialization="ngModel"
+              [class.border-red-500]="specialization.invalid && specialization.touched"
+            >
+              <option value="" disabled>Select Specialization</option>
+              <option value="General Physician">General Physician</option>
+              <option value="Cardiologist (Heart Specialist)">Cardiologist (Heart Specialist)</option>
+              <option value="Neurologist (Brain & Nervous System)">Neurologist (Brain & Nervous System)</option>
+              <option value="Orthopedic Surgeon (Bones & Joints)">Orthopedic Surgeon (Bones & Joints)</option>
+              <option value="Pediatrician (Child Specialist)">Pediatrician (Child Specialist)</option>
+              <option value="Dermatologist (Skin Specialist)">Dermatologist (Skin Specialist)</option>
+              <option value="Gynecologist / Obstetrician (Women's Health)">Gynecologist / Obstetrician (Women's Health)</option>
+              <option value="ENT Specialist (Ear, Nose, Throat)">ENT Specialist (Ear, Nose, Throat)</option>
+              <option value="Psychiatrist (Mental Health)">Psychiatrist (Mental Health)</option>
+              <option value="Ophthalmologist (Eye Specialist)">Ophthalmologist (Eye Specialist)</option>
+              <option value="Oncologist (Cancer Specialist)">Oncologist (Cancer Specialist)</option>
+              <option value="Pulmonologist (Lungs & Respiratory)">Pulmonologist (Lungs & Respiratory)</option>
+              <option value="Gastroenterologist (Digestive System)">Gastroenterologist (Digestive System)</option>
+              <option value="Urologist (Urinary & Male Reproductive)">Urologist (Urinary & Male Reproductive)</option>
+              <option value="Endocrinologist (Hormone Specialist)">Endocrinologist (Hormone Specialist)</option>
+              <option value="Nephrologist (Kidney Specialist)">Nephrologist (Kidney Specialist)</option>
+              <option value="Rheumatologist (Joint & Autoimmune Diseases)">Rheumatologist (Joint & Autoimmune Diseases)</option>
+              <option value="Anesthesiologist (Surgery Support)">Anesthesiologist (Surgery Support)</option>
+              <option value="Radiologist (Imaging & Scans)">Radiologist (Imaging & Scans)</option>
+              <option value="Dentist">Dentist</option>
             </select>
-            <small class="text-danger" [class.d-none]="specialization.valid || specialization.untouched"><b>required field</b></small>
+            <small 
+              *ngIf="specialization.invalid && specialization.touched"
+              class="block text-red-500 text-xs font-bold flex items-center"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Required field
+            </small>
+            <small class="block text-gray-500 text-xs italic flex items-center">
+              <i class="fas fa-info-circle mr-1 text-teal-500"></i>Select from the dropdown
+            </small>
+          </div>
         </div>
-        <small style="color: gray; font-size: 10px;">Please select the doctor's medical specialization from the dropdown</small>
 
-        <div class="form-group">
-            <label for="previoushospital">Doctor's Previous Hospital: <b class="text-danger">*</b></label>
-            <input type="text" class="form-control" placeholder="enter previous working hospital" name="previoushospital" [(ngModel)]="doctor.previoushospital" required 
-            #previoushospital="ngModel"
-            [class.is-invalid]="previoushospital.invalid && previoushospital.touched">
-           <small class="text-danger" [class.d-none]="previoushospital.valid || previoushospital.untouched"><b>required field</b></small>
+        <!-- Row 4: Previous Hospital and Address -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Previous Hospital -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-700 flex items-center">
+              <i class="fas fa-hospital text-teal-600 mr-2"></i>Previous Hospital <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+              placeholder="Enter previous working hospital"
+              name="previoushospital"
+              [(ngModel)]="doctor.previoushospital"
+              required
+              #previoushospital="ngModel"
+              [class.border-red-500]="previoushospital.invalid && previoushospital.touched"
+            />
+            <small 
+              *ngIf="previoushospital.invalid && previoushospital.touched"
+              class="block text-red-500 text-xs font-bold flex items-center"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Required field
+            </small>
+          </div>
+
+          <!-- Address -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-700 flex items-center">
+              <i class="fas fa-map-marker-alt text-teal-600 mr-2"></i>Clinic Address <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+              placeholder="Enter clinic address"
+              name="address"
+              [(ngModel)]="doctor.address"
+              required
+              #address="ngModel"
+              [class.border-red-500]="address.invalid && address.touched"
+            />
+            <small 
+              *ngIf="address.invalid && address.touched"
+              class="block text-red-500 text-xs font-bold flex items-center"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Required field
+            </small>
+            <small class="block text-gray-500 text-xs italic flex items-center">
+              <i class="fas fa-info-circle mr-1 text-teal-500"></i>Mention proper address for reference
+            </small>
+          </div>
         </div>
 
-        <div class="form-group">
-            <label for="address">Doctor Address: <b class="text-danger">*</b></label>
-            <input type="text" class="form-control" placeholder="enter doctor address" name="address" [(ngModel)]="doctor.address" required 
-            #address="ngModel"
-            [class.is-invalid]="address.invalid && address.touched">
-           <small class="text-danger" [class.d-none]="address.valid || address.untouched"><b>required field</b></small>
-        </div>
-        <small style="color: gray; font-size: 10px;">Please mention proper donor address for reference purpose</small>
-        
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder="password *" name="pwd" [(ngModel)]="doctor.password" required 
+        <!-- Password -->
+        <div class="space-y-2">
+          <label class="block text-sm font-bold text-gray-700 flex items-center">
+            <i class="fas fa-lock text-teal-600 mr-2"></i>Temporary Password <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="password"
+            class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 pr-12"
+            placeholder="Use '1234' as temporary password"
+            name="pwd"
+            [(ngModel)]="doctor.password"
+            required
             #doctorpassword="ngModel"
-            [class.is-invalid]="doctorpassword.invalid && doctorpassword.touched">
-            <div style="margin-top: -4%; margin-bottom: 3%;" *ngIf="doctorpassword.errors && doctorpassword.invalid && doctorpassword.touched">
-              <small class="text-danger" *ngIf="doctorpassword.errors['required']"><b>required field</b></small>
-            </div>
-            <small style="color: gray; font-size: 10px;">use "1234" as temporary password for now and inform doctor to update password later</small>
+            [class.border-red-500]="doctorpassword.invalid && doctorpassword.touched"
+          />
+          <small 
+            *ngIf="doctorpassword.invalid && doctorpassword.touched"
+            class="block text-red-500 text-xs font-bold flex items-center"
+          >
+            <i class="fas fa-times-circle mr-1"></i>Required field
+          </small>
+          <small class="block text-gray-500 text-xs italic flex items-center">
+            <i class="fas fa-info-circle mr-1 text-teal-500"></i>Use "1234" as temporary; instruct doctor to update later
+          </small>
         </div>
 
-       <div class="checkbox" style="margin-top: 5px;">
-        <small style="color: gray;"><input type="checkbox" name="remember" required> Is he/she is an Authorized Doctor </small><small style="color:rgb(179, 11, 11); font-weight: bold;"> (adding proxy doctors is against to management's T&C !!!)</small>
-      </div>
-      <button style="margin-top: 15px;" [disabled]="addDoctorform.form.invalid" type="submit" class="btn registerbtn"><i class="fa fa-plus"></i>&nbsp; Add Doctor</button>
-    </form>
-  </div>
+        <!-- Authorization Checkbox -->
+        <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-6 rounded-2xl border-2 border-teal-200/50 space-y-3">
+          <div class="flex items-start gap-3">
+            <input
+              type="checkbox"
+              name="remember"
+              required
+              class="checkbox-enhanced mt-1 w-5 h-5 rounded border-2 border-gray-300 focus:ring-teal-500 focus:ring-2 cursor-pointer transition-all duration-300"
+            />
+            <label class="text-sm text-gray-700 cursor-pointer leading-relaxed flex-1">
+              Confirm this is an authorized doctor <a href="#" class="label-link text-amber-600 font-bold"> (Proxy additions violate T&C)</a>
+            </label>
+          </div>
+        </div>
 
-  <app-footer></app-footer>
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="addDoctorform.invalid"
+          class="w-full btn-gradient text-white font-bold py-5 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl disabled:shadow-none disabled:transform-none flex-center space-x-2"
+        >
+          <i class="fas fa-user-plus"></i>
+          <span>Add Doctor</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

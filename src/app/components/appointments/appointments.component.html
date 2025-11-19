@@ -1,96 +1,131 @@
 <app-header></app-header>
 
-<div class="appointments-hero">
-  <h1 class="appointments-title">Manage Your Appointments</h1>
-  <p class="appointments-subtitle">Schedule, view, or cancel appointments seamlessly with just a few clicks.</p>
-  <div class="appointments-actions">
-    <a class="action-btn secondary" [routerLink]="['/appointmentshistory']">
-      <i class="fa fa-history"></i>
-      View Appointment History
-    </a>
-  </div>
-</div>
-
-<div class="appointments-container">
-  <div class="appointments-header">
-    <h2>Today's Appointments</h2>
-    <p class="appointments-note">All patient details have been verified</p>
-  </div>
-
-  <div class="appointments-grid">
-    <div *ngFor="let patient of appointments | async" class="appointment-card">
-      <div class="appointment-avatar">
-        <img *ngIf="patient.gender === 'Male' || patient.gender === 'male'" src="assets/img/maleuser.png" alt="Patient" />
-        <img *ngIf="patient.gender === 'Female' || patient.gender === 'female'" src="assets/img/femaleuser.png" alt="Patient" />
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Professional Hero Section -->
+    <div class="text-center mb-12 animate-fade-in">
+      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+        Manage Your Appointments
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+        Schedule, view, or cancel appointments seamlessly with just a few clicks. All patient details verified.
+      </p>
+      <div class="flex justify-center">
+        <a class="action-btn secondary" [routerLink]="['/appointmentshistory']">
+          <i class="fas fa-history mr-2"></i>
+          View Appointment History
+        </a>
       </div>
-      
-      <div class="appointment-details">
-        <div class="patient-info">
-          <h3>{{patient.patientname}}</h3>
-          <p class="patient-id">ID: {{patient.patientid}}</p>
-          <p class="patient-email">{{patient.email}}</p>
-        </div>
-        
-        <div class="appointment-info">
-          <div class="info-row">
-            <span class="label">Age:</span>
-            <span class="value">{{patient.age}}</span>
-          </div>
-          <div class="info-row">
-            <span class="label">Gender:</span>
-            <span class="value">{{patient.gender}}</span>
-          </div>
-          <div class="info-row">
-            <span class="label">Problem:</span>
-            <span class="value">{{patient.problem}}</span>
-          </div>
-        </div>
+    </div>
 
-        <div class="slot-info" *ngFor="let slot of slots | async">
-          <div *ngIf="patient.slot === 'AM slot' && slot.amstatus === 'booked' && patient.date === slot.date">
-            <span class="label">Time:</span>
-            <span class="value slot-time">{{slot.amslot}}</span>
-          </div>
-          <div *ngIf="patient.slot === 'Noon slot' && slot.noonstatus === 'booked' && patient.date === slot.date">
-            <span class="label">Time:</span>
-            <span class="value slot-time">{{slot.noonslot}}</span>
-          </div>
-          <div *ngIf="patient.slot === 'PM slot' && slot.pmstatus === 'booked' && patient.date === slot.date">
-            <span class="label">Time:</span>
-            <span class="value slot-time">{{slot.pmslot}}</span>
-          </div>
-        </div>
+    <!-- Appointments Container -->
+    <div class="space-y-8">
+      <!-- Header -->
+      <div class="glass-card rounded-3xl p-6 text-center">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+          Today's Appointments
+        </h2>
+        <p class="text-gray-600">Monitor your scheduled consultations and patient details securely.</p>
       </div>
 
-      <div class="appointment-status">
-        <div *ngIf="patient.admissionstatus === 'false'" class="status-badge pending">
-          <i class="fa fa-clock-o"></i>
-          Admission Pending
-        </div>
-        
-        <div *ngIf="patient.appointmentstatus === 'accept' && (currRole === 'doctor' || currRole === 'DOCTOR')" class="status-badge accepted">
-          <i class="fa fa-check"></i>
-          Accepted
-        </div>
-        
-        <div *ngIf="patient.appointmentstatus === 'reject' && (currRole === 'doctor' || currRole === 'DOCTOR')" class="status-badge rejected">
-          <i class="fa fa-times"></i>
-          Rejected
-        </div>
-        
-        <div *ngIf="patient.appointmentstatus === 'false' && (currRole === 'doctor' || currRole === 'DOCTOR')" class="status-badge pending">
-          <i class="fa fa-clock-o"></i>
-          Approval Pending
+      <!-- Appointments Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let patient of appointments | async" class="glass-card rounded-3xl overflow-hidden shadow-xl">
+          <!-- Status Badge -->
+          <div class="absolute top-4 right-4 z-10">
+            <span 
+              [ngClass]="{
+                'bg-green-100 text-green-800': patient.appointmentstatus === 'accept' || patient.admissionstatus === 'accept',
+                'bg-yellow-100 text-yellow-800': patient.appointmentstatus === 'false' || patient.admissionstatus === 'false',
+                'bg-red-100 text-red-800': patient.appointmentstatus === 'reject' || patient.admissionstatus === 'reject'
+              }" 
+              class="status-badge inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full">
+              <i 
+                [ngClass]="{
+                  'fas fa-check': patient.appointmentstatus === 'accept' || patient.admissionstatus === 'accept',
+                  'fas fa-clock': patient.appointmentstatus === 'false' || patient.admissionstatus === 'false',
+                  'fas fa-times': patient.appointmentstatus === 'reject' || patient.admissionstatus === 'reject'
+                }" 
+                class="mr-1"></i>
+              {{ getStatusText(patient.appointmentstatus || patient.admissionstatus) }}
+            </span>
+          </div>
+
+          <!-- Card Content -->
+          <div class="relative p-6">
+            <!-- Avatar -->
+            <div class="appointment-avatar mb-4">
+              <img 
+                *ngIf="patient.gender === 'Male' || patient.gender === 'male'" 
+                class="w-20 h-20 rounded-full object-cover border-4 border-indigo-200 mx-auto shadow-lg" 
+                src="assets/img/maleuser.png" 
+                alt="Patient Avatar" />
+              <img 
+                *ngIf="patient.gender === 'Female' || patient.gender === 'female'" 
+                class="w-20 h-20 rounded-full object-cover border-4 border-indigo-200 mx-auto shadow-lg" 
+                src="assets/img/femaleuser.png" 
+                alt="Patient Avatar" />
+            </div>
+
+            <!-- Patient Info -->
+            <div class="text-center mb-4">
+              <h3 class="text-xl font-bold text-gray-900 mb-1">{{patient.patientname}}</h3>
+              <p class="text-sm text-gray-500 mb-1">ID: {{patient.patientid}}</p>
+              <p class="text-sm font-medium text-indigo-600">{{patient.email}}</p>
+            </div>
+
+            <!-- Details Grid -->
+            <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
+              <div class="info-item">
+                <span class="label block text-gray-600 font-medium mb-1">Age</span>
+                <span class="value block text-gray-900 font-semibold">{{patient.age}}</span>
+              </div>
+              <div class="info-item">
+                <span class="label block text-gray-600 font-medium mb-1">Gender</span>
+                <span class="value block text-gray-900 font-semibold">{{patient.gender}}</span>
+              </div>
+              <div class="info-item">
+                <span class="label block text-gray-600 font-medium mb-1">Problem</span>
+                <span class="value block text-gray-900 font-semibold line-clamp-2">{{patient.problem}}</span>
+              </div>
+              <div class="info-item col-span-2">
+                <span class="label block text-gray-600 font-medium mb-1">Date</span>
+                <span class="value block text-gray-900 font-semibold bg-indigo-100 px-2 py-1 rounded-lg inline-block">{{patient.date}}</span>
+              </div>
+            </div>
+
+            <!-- Slot Info -->
+            <div *ngFor="let slot of slots | async" class="mb-4">
+              <div *ngIf="patient.slot === 'AM slot' && slot.amstatus === 'booked' && patient.date === slot.date" class="slot-info">
+                <span class="label inline-block text-gray-600 font-medium mr-2">Time:</span>
+                <span class="value inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold">{{slot.amslot}}</span>
+              </div>
+              <div *ngIf="patient.slot === 'Noon slot' && slot.noonstatus === 'booked' && patient.date === slot.date" class="slot-info">
+                <span class="label inline-block text-gray-600 font-medium mr-2">Time:</span>
+                <span class="value inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold">{{slot.noonslot}}</span>
+              </div>
+              <div *ngIf="patient.slot === 'PM slot' && slot.pmstatus === 'booked' && patient.date === slot.date" class="slot-info">
+                <span class="label inline-block text-gray-600 font-medium mr-2">Time:</span>
+                <span class="value inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold">{{slot.pmslot}}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div *ngIf="!(appointments | async)?.length" class="no-appointments">
-    <i class="fa fa-calendar-o"></i>
-    <h3>No appointments today</h3>
-    <p>You have no scheduled appointments for today.</p>
-    
+    <!-- No Appointments Message -->
+    <div *ngIf="!(appointments | async)?.length" class="text-center py-16">
+      <div class="glass-card rounded-3xl p-12 max-w-md mx-auto shadow-xl">
+        <i class="fas fa-calendar-times text-6xl text-gray-300 mb-6"></i>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">No Appointments Today</h3>
+        <p class="text-gray-600 mb-6">You have no scheduled appointments for today. Check back later or schedule a new one.</p>
+        <a class="action-btn primary" [routerLink]="['/book-appointment']">
+          <i class="fas fa-plus mr-2"></i>
+          Schedule New Appointment
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 

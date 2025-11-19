@@ -19,7 +19,7 @@ const $ = jQuery;
 })
 export class DoctorprofileComponent implements OnInit, OnDestroy {
 
-  profileDetails: Observable<Doctor[]> | undefined;
+  profileDetails: Observable<Doctor> | undefined; // FIXED: Single Doctor (not array)
   doctor: Doctor = new Doctor();
   msg = ' ';
   currRole = '';
@@ -30,20 +30,26 @@ export class DoctorprofileComponent implements OnInit, OnDestroy {
   constructor(private _service: DoctorService, private activatedRoute: ActivatedRoute, private _router: Router) { }
 
   ngOnInit(): void {
-    // Existing parsing (user jaisa)
-    this.loggedUser = JSON.stringify(sessionStorage.getItem('loggedUser') || '{}');
-    this.loggedUser = this.loggedUser.replace(/"/g, '');
+    // FIXED: Safer parsing (no JSON.stringify - direct getItem)
+    const rawLoggedUser = sessionStorage.getItem('loggedUser');
+    if (!rawLoggedUser) {
+      console.error('No loggedUser - redirect to login');
+      this._router.navigate(['/login']);
+      return;
+    }
+    this.loggedUser = rawLoggedUser.replace(/"/g, ''); // Clean quotes if any
+    console.log('Raw loggedUser from session:', rawLoggedUser);
+    console.log('Component: Parsed loggedUser:', this.loggedUser); // e.g., "devanshi@gmail.com"
 
-    this.currRole = JSON.stringify(sessionStorage.getItem('ROLE') || '{}');
-    this.currRole = this.currRole.replace(/"/g, '');
-
-    console.log('Raw loggedUser from session:', sessionStorage.getItem('loggedUser'));  // Add yeh line yahaan (debug ke liye)
+    const rawRole = sessionStorage.getItem('ROLE');
+    if (rawRole) {
+      this.currRole = rawRole.replace(/"/g, '');
+    }
 
     $("#profilecard").show();
     $("#profileform").hide();
-    this.getProfileDetails();  // Existing call
-
-    this.fetchDoctorId();  // Add new method call yahaan (end mein)
+    this.getProfileDetails();  // Fetch single Doctor from backend
+    this.fetchDoctorId();  // Optional for ID
   }
 
   ngOnDestroy(): void {
@@ -57,33 +63,53 @@ export class DoctorprofileComponent implements OnInit, OnDestroy {
     $("#profileform").show();
   }
 
+  cancelEdit() {
+    $("#profilecard").show();
+    $("#profileform").hide();
+  }
+
+  // FIXED: Single Doctor handling (no length/[0] - direct assign)
   getProfileDetails() {
     this.profileDetails = this._service.getProfileDetails(this.loggedUser);
     this.subscription = this.profileDetails.subscribe({
-      next: (data: Doctor[]) => {
-        console.log('Full fetched data:', data);  // Add: Full array log
-        console.log('Data length:', data.length);  // Add: Length check
-        if (data && data.length > 0) {
-          console.log('First doctor full object:', data[0]);  // Add: Full first object
-          this.doctor = { ...data[0] };
-          this.doctor.email = this.loggedUser;
-          console.log('Cloned doctor ID:', this.doctor.id);  // Existing log
+      next: (data: Doctor) => { // FIXED: Single Doctor (not Doctor[])
+        console.log('Component: Full fetched Doctor:', data);  // Single object log
+        console.log('Component: Key fields:', { // Log all fields for debug
+          id: data.id,
+          name: data.doctorname,
+          email: data.email,
+          gender: data.gender,
+          mobile: data.mobile,
+          experience: data.experience,
+          specialization: data.specialization,
+          previoushospital: data.previoushospital,
+          address: data.address,
+          status: data.status
+        });
+        if (data && data.doctorname && data.doctorname.trim() !== '') { // Valid check (trim for safety)
+          this.doctor = { ...data }; // Direct clone/assign - all fields copied
+          this.doctor.email = this.loggedUser; // Ensure email
+          console.log('Component: Assigned to this.doctor:', this.doctor);  // Full assigned object
         } else {
-          console.warn('No doctor data found for email:', this.loggedUser);  // Existing
+          console.warn('Component: Empty/invalid Doctor for:', this.loggedUser);
+          this.doctor = new Doctor(); // Empty fallback
+          this.msg = 'No profile data found in database. Create one?';
         }
       },
       error: (err) => {
-        console.error('Error fetching profile:', err);
+        console.error('Component: Fetch error:', err);
+        this.msg = 'Failed to fetch profile from DB.';
+        this.doctor = new Doctor();
       }
     });
   }
 
-  fetchDoctorId() {  // Add yeh pura method class mein
+  fetchDoctorId() {
     this._service.getDoctorListByEmail(this.loggedUser).subscribe({
       next: (data: any) => {
         console.log('Doctor list by email:', data);
         if (data && data.length > 0) {
-          this.doctor.id = data[0].id;  // Set ID from this endpoint
+          this.doctor.id = data[0].id || undefined; // Fallback if no id
           console.log('Set ID from list:', this.doctor.id);
         }
       },
@@ -94,9 +120,8 @@ export class DoctorprofileComponent implements OnInit, OnDestroy {
   }
 
   updateDoctorProfile() {
-    console.log('Full doctor object before update:', this.doctor);  // Add: Full object log
+    console.log('Full doctor object before update:', this.doctor);
     console.log('Sending doctor for update, ID:', this.doctor.id);
-    // ID check remove kiya - backend email se handle karega
     this._service.updateDoctorProfile(this.doctor).subscribe(
       data => {
         console.log("Profile Updated successfully");
@@ -106,14 +131,14 @@ export class DoctorprofileComponent implements OnInit, OnDestroy {
         this.temp = true;
         $("#profilecard").show();
         $("#profileform").hide();
-        this.getProfileDetails();  // Refresh
+        this.getProfileDetails();  // Refresh single from backend
         setTimeout(() => {
           this._router.navigate(['/userdashboard']);
         }, 6000);
       },
       error => {
         console.log("Profile Updation Failed");
-        console.log('Full error:', error);  // Better logging
+        console.log('Full error:', error);
         this.msg = "Profile Updation Failed !!!";
       }
     );

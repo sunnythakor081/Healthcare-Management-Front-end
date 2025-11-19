@@ -20,39 +20,30 @@ export class ApprovalstatusComponent implements OnInit {
   currRole = '';
   loggedUser = '';
   mail = '';
-  approval : Observable<Doctor[]> | undefined;
-  appointment : Observable<Appointment[]> | undefined;
+  approval: Observable<Doctor[]> | undefined;
+  appointment: Observable<Appointment[]> | undefined;
+  showSearchForm = true;
 
-  constructor(private _service : DoctorService) { }
+  constructor(private _service: DoctorService) { }
 
-  ngOnInit(): void
-  {
-    this.loggedUser = JSON.stringify(sessionStorage.getItem('loggedUser')|| '{}');
+  ngOnInit(): void {
+    this.loggedUser = JSON.stringify(sessionStorage.getItem('loggedUser') || '{}');
     this.loggedUser = this.loggedUser.replace(/"/g, '');
 
-    this.currRole = JSON.stringify(sessionStorage.getItem('ROLE')|| '{}'); 
+    this.currRole = JSON.stringify(sessionStorage.getItem('ROLE') || '{}');
     this.currRole = this.currRole.replace(/"/g, '');
 
-    this.approval = this._service.getDoctorListByEmail(this.loggedUser);
-
-    if(this.currRole === 'doctor')
-    {
-      $("#patientapproval").hide();
-      $("#messagecard").hide();
-      $("#doctorapproval").show();
-    }
-    else if(this.currRole === 'user')
-    {
-      $("#messagecard").show();
-      $("#patientapproval").hide();
-      $("#doctorapproval").hide();
+    if (this.currRole === 'doctor' || this.currRole === 'DOCTOR') {
+      this.approval = this._service.getDoctorListByEmail(this.loggedUser);
+    } else if (this.currRole === 'user' || this.currRole === 'USER') {
+      this.showSearchForm = true;
     }
   }
 
-  searchPatient()
-  {
-    this.appointment = this._service.getPatientListByEmail(this.mail);
-    $("#messagecard").hide();
-    $("#patientapproval").show();
+  searchPatient() {
+    if (this.mail) {
+      this.appointment = this._service.getPatientListByEmail(this.mail);
+      this.showSearchForm = false;
+    }
   }
 }

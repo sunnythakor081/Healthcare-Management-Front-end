@@ -16,7 +16,6 @@
           <th class="py-3 px-4 uppercase font-semibold text-sm">Date</th>
           <th class="py-3 px-4 uppercase font-semibold text-sm">Problem</th>
           <th class="py-3 px-4 uppercase font-semibold text-sm">Approval</th>
-          <th class="py-3 px-4 uppercase font-semibold text-sm">Admission</th>
         </tr>
       </thead>
       <tbody>
@@ -82,13 +81,6 @@
               <div *ngIf="patient.appointmentstatus === 'processing'" class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">
                 Processing...
               </div>
-            </div>
-          </td>
-          <td class="py-3 px-4">
-            <div>
-              <div *ngIf="patient.admissionstatus === 'accept'" class="bg-green-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Admitted</div>
-              <div *ngIf="patient.admissionstatus === 'false'" class="bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Pending</div>
-              <div *ngIf="patient.admissionstatus === 'reject'" class="bg-red-600 text-white px-3 py-1 rounded-lg font-medium text-sm inline-block">Not Admitted</div>
             </div>
           </td>
         </tr>

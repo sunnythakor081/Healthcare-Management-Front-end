@@ -1,13 +1,13 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of, throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Doctor } from '../models/doctor';
 import { Prescription } from '../models/prescription';
 import { Slots } from '../models/slots';
 import { User } from '../models/user';
 import { Department } from '../models/department';
-import { tap } from 'rxjs/operators';
 
 const NAV_URL = environment.apiURL;
 
@@ -16,126 +16,121 @@ const NAV_URL = environment.apiURL;
 })
 export class DoctorService {
 
-  
   user = new User();
   doctor = new Doctor();
 
-  constructor(private _http : HttpClient) { }
+  constructor(private _http: HttpClient) { }
 
-  addDoctorFromRemote(doctor : Doctor) : Observable<any>
-  {
-      return this._http.post<any>(`${NAV_URL}/addDoctor`,doctor)
+  addDoctorFromRemote(doctor: Doctor): Observable<any> {
+    return this._http.post<any>(`${NAV_URL}/addDoctor`, doctor);
   }
 
-  getDoctorList() : Observable<any>
-  {
+  getDoctorList(): Observable<any> {
     return this._http.get<any>(`${NAV_URL}/doctorlist`);
   }
 
-  getSlotList() : Observable<Slots[]>
-  {
+  getSlotList(): Observable<Slots[]> {
     return this._http.get<Slots[]>(`${NAV_URL}/slotDetails`);
   }
 
-  getSlotListWithUniqueDoctors() : Observable<any>
-  {
+  getSlotListWithUniqueDoctors(): Observable<any> {
     return this._http.get<any>(`${NAV_URL}/slotDetailsWithUniqueDoctors`);
   }
 
-  getSlotListWithUniqueSpecializations() : Observable<any>
-  {
+  getSlotListWithUniqueSpecializations(): Observable<any> {
     return this._http.get<any>(`${NAV_URL}/slotDetailsWithUniqueSpecializations`);
   }
 
   getSlotDetails(email: string): Observable<Slots[]> {
-  return this._http.get<Slots[]>(`${NAV_URL}/slotDetails/${email}`).pipe(
-    catchError((error: HttpErrorResponse) => {
-      console.error('Error fetching slot details:', error);
-      if (error.status === 404) {
-        console.warn('No slots found for email:', email);
-        return of([]); // Empty array return karo agar slots nahi
-      }
-      throw error; // Other errors ke liye throw
-    })
-  );
-}
-
-  getDoctorListByEmail(loggedUser : string) : Observable<any>
-  {
-    return this._http.get<any>(`${NAV_URL}/doctorlistbyemail/`+loggedUser);
+    return this._http.get<Slots[]>(`${NAV_URL}/slotDetails/${email}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error fetching slot details:', error);
+        if (error.status === 404) {
+          console.warn('No slots found for email:', email);
+          return of([]);
+        }
+        throw error;
+      })
+    );
   }
 
-  getPatientListByEmail(email : string) : Observable<any>
-  {
-    return this._http.get<any>(`${NAV_URL}/patientlistbyemail/`+email);
+  getDoctorListByEmail(loggedUser: string): Observable<any> {
+    return this._http.get<any>(`${NAV_URL}/doctorlistbyemail/` + loggedUser);
   }
 
- getPatientListByDoctorEmail(loggedUser: string): Observable<any> {
-  return this._http.get<any>(`${NAV_URL}/patientlistbydoctoremail/` + loggedUser).pipe(
-    tap((data: any) => console.log('Service: Doctor patients:', data))
-  );
-}
-
-getPatientList(): Observable<any> {
-  return this._http.get<any>(`${NAV_URL}/patientlist`).pipe(
-    tap((data: any) => console.log('Service: All patients:', data))
-  );
-}
-  getPatientListByDoctorEmailAndDate(loggedUser : string) : Observable<any>
-  {
-    return this._http.get<any>(`${NAV_URL}/patientlistbydoctoremailanddate/`+loggedUser);
+  getPatientListByEmail(email: string): Observable<any> {
+    return this._http.get<any>(`${NAV_URL}/patientlistbyemail/` + email);
   }
 
-  public acceptRequestForDoctorApproval(email : string) : Observable<any>
-  {
+  getPatientListByDoctorEmail(loggedUser: string): Observable<any> {
+    return this._http.get<any>(`${NAV_URL}/patientlistbydoctoremail/` + loggedUser).pipe(
+      tap((data: any) => console.log('Service: Doctor patients:', data))
+    );
+  }
+
+  getPatientList(): Observable<any> {
+    return this._http.get<any>(`${NAV_URL}/patientlist`).pipe(
+      tap((data: any) => console.log('Service: All patients:', data))
+    );
+  }
+
+  getPatientListByDoctorEmailAndDate(loggedUser: string): Observable<any> {
+    return this._http.get<any>(`${NAV_URL}/patientlistbydoctoremailanddate/` + loggedUser);
+  }
+
+  public acceptRequestForDoctorApproval(email: string): Observable<any> {
     console.log("accepted");
-    return this._http.get<any>(`${NAV_URL}/acceptstatus/`+email);
+    return this._http.get<any>(`${NAV_URL}/acceptstatus/` + email);
   }
 
-  public rejectRequestForDoctorApproval(email : string) : Observable<any>
-  {
-    return this._http.get<any>(`${NAV_URL}/rejectstatus/`+email)
+  public rejectRequestForDoctorApproval(email: string): Observable<any> {
+    return this._http.get<any>(`${NAV_URL}/rejectstatus/` + email);
   }
 
-  public acceptRequestForPatientApproval(slot : string) : Observable<any>
-  {
+  public acceptRequestForPatientApproval(slot: string): Observable<any> {
     console.log("accepted");
-    return this._http.get<any>(`${NAV_URL}/acceptpatient/`+slot);
+    return this._http.get<any>(`${NAV_URL}/acceptpatient/` + slot);
   }
 
-  public rejectRequestForPatientApproval(slot : string) : Observable<any>
-  {
-    return this._http.get<any>(`${NAV_URL}/rejectpatient/`+slot);
+  public rejectRequestForPatientApproval(slot: string): Observable<any> {
+    return this._http.get<any>(`${NAV_URL}/rejectpatient/` + slot);
   }
 
   public addBookingSlots(slot: Slots): Observable<any> {
-    // Set default status for new slots (already handled in component, but safe here too)
     slot.amstatus = 'unbooked';
     slot.noonstatus = 'unbooked';
     slot.pmstatus = 'unbooked';
     
-    // Key fix: Add responseType: 'text' to accept plain text response from backend
-    // Also ensure Content-Type header for JSON body
     const headers = { 'Content-Type': 'application/json' };
-    return this._http.post(`${NAV_URL}/addBookingSlots`, slot, { 
+    return this._http.post(`${NAV_URL}/addBookingSlots`, slot, {
       headers: headers,
-      responseType: 'text'  // This prevents JSON parsing error on plain text response
+      responseType: 'text'
     });
   }
 
-  public addPrescriptions(prescription : Prescription) : Observable<any>
-  {
-    return this._http.post<any>(`${NAV_URL}/addPrescription`,prescription)
+  public addPrescriptions(prescription: Prescription): Observable<any> {
+    return this._http.post<any>(`${NAV_URL}/addPrescription`, prescription);
   }
 
-  public getProfileDetails(loggedUser : string) : Observable<any>
-  {
-    return this._http.get(`${NAV_URL}/doctorProfileDetails/`+loggedUser);
+  // FIXED: Single Doctor typed, logs, 404 handling
+  public getProfileDetails(loggedUser: string): Observable<Doctor> {
+    console.log('Service: Fetching profile for email:', loggedUser);
+    return this._http.get<Doctor>(`${NAV_URL}/doctorProfileDetails/` + loggedUser).pipe(
+      tap(data => console.log('Service: Raw single Doctor received:', data)),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Service: Error fetching profile:', error);
+        if (error.status === 404) {
+          console.warn('Service: No profile in DB for:', loggedUser);
+          return of(new Doctor());
+        }
+        return throwError(() => error);
+      })
+    );
   }
-  
+
   public updateDoctorProfile(doctor: Doctor): Observable<Doctor> {
-  return this._http.put<Doctor>(`${NAV_URL}/updatedoctor`, doctor);
-}
+    return this._http.put<Doctor>(`${NAV_URL}/updatedoctor`, doctor);
+  }
 
   getDoctorById(id: number): Observable<Doctor> {
     return this._http.get<Doctor>(`${NAV_URL}/doctors/${id}`);
@@ -165,13 +160,12 @@ getPatientList(): Observable<any> {
     return this._http.get<any[]>(`${NAV_URL}/appointments`);
   }
 
- addPrescriptionFromRemote(prescription: Prescription): Observable<any> {
-  const headers = { 'Content-Type': 'application/json' };
-  return this._http.post<any>(`${NAV_URL}/addPrescription`, prescription, { headers });
-}
+  addPrescriptionFromRemote(prescription: Prescription): Observable<any> {
+    const headers = { 'Content-Type': 'application/json' };
+    return this._http.post<any>(`${NAV_URL}/addPrescription`, prescription, { headers });
+  }
 
-// Naya method - Sirf approved doctors load karo
-getApprovedDoctors(): Observable<Doctor[]> {
-  return this._http.get<Doctor[]>(`${NAV_URL}/doctors/approved`); // Backend endpoint call
-}
+  getApprovedDoctors(): Observable<Doctor[]> {
+    return this._http.get<Doctor[]>(`${NAV_URL}/doctors/approved`);
+  }
 }

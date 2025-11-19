@@ -2,7 +2,7 @@
   <!-- Header -->
   <header class="top-nav">
     <a [routerLink]="['/']" class="home-link">Home</a>
-    <div class="user-info">User: {{name}}</div>
+    <div class="user-info">{{name}}</div>
     <button (click)="logout()" class="logout-btn">Logout</button>
   </header>
 
@@ -43,14 +43,7 @@
 
   <!-- Main Content -->
   <main class="main-content">
-    <div class="userdashboard-hero">
-      <div class="userdashboard-avatar">
-        <img *ngIf="gender === 'male' || gender === 'Male'" src="assets/img/maleuser.png" alt="User" />
-        <img *ngIf="gender === 'female' || gender === 'Female'" src="assets/img/femaleuser.png" alt="User" />
-      </div>
-      <h1 class="userdashboard-title">Hello, {{name}}!</h1>
-      <p class="userdashboard-subtitle">Book appointments, view your prescriptions, and take charge of your health journey.</p>
-    </div>
+    
 
     <!-- Stats Grid -->
     <div class="stats-grid">

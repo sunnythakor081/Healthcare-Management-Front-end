@@ -147,45 +147,45 @@ featuredDoctors = [
   },
   // New additions
   {
-    id: 5,
-    name: 'Dr. Lisa Patel',
-    specialty: 'Dermatologist',
-    image: 'https://images.pexels.com/photos/5215465/pexels-photo-5215465.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop',  // Female doctor in clinic
-    rating: 4.8,
-    experience: '11+ Years',
-    patients: '9,500+',
-    bio: 'Renowned dermatologist treating skin conditions, acne, and cosmetic concerns with cutting-edge laser therapies.'
-  },
-  {
-    id: 6,
-    name: 'Dr. Robert Kim',
-    specialty: 'General Surgeon',
-    image: 'https://images.pexels.com/photos/8460158/pexels-photo-8460158.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"',  // Female eye doctor
-    rating: 4.7,
-    experience: '18+ Years',
-    patients: '15,000+',
-    bio: 'Experienced general surgeon handling complex procedures, from appendectomies to advanced laparoscopic operations.'
-  },
-  {
-    id: 7,
-    name: 'Dr. Anna Kowalski',
-    specialty: 'Ophthalmologist',
-    image: 'https://images.pexels.com/photos/8460158/pexels-photo-8460158.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"',  // Female eye doctor
-    rating: 4.7,
-    experience: '9+ Years',
-    patients: '6,000+',
-    bio: 'Ophthalmologist focused on vision correction, glaucoma treatment, and comprehensive eye health for all ages.'
-  },
-  {
-    id: 8,
-    name: 'Dr. David Singh',
-    specialty: 'Psychiatrist',
-    image: 'https://images.pexels.com/photos/5452268/pexels-photo-5452268.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop',  // Male doctor in thoughtful pose
-    rating: 4.8,
-    experience: '13+ Years',
-    patients: '11,000+',
-    bio: 'Compassionate psychiatrist addressing mental health issues, anxiety, and depression through therapy and medication management.'
-  }
+  id: 5,
+  name: 'Dr. Lisa Patel',
+  specialty: 'Dermatologist',
+  image: 'https://images.pexels.com/photos/32160039/pexels-photo-32160039.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop',  // Female doctor in clinic
+  rating: 4.8,
+  experience: '11+ Years',
+  patients: '9,500+',
+  bio: 'Renowned dermatologist treating skin conditions, acne, and cosmetic concerns with cutting-edge laser therapies.'
+},
+{
+  id: 6,
+  name: 'Dr. Robert Kim',
+  specialty: 'General Surgeon',
+  image: 'https://images.pexels.com/photos/7583375/pexels-photo-7583375.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop',  // Male surgeons in operating room
+  rating: 4.7,
+  experience: '18+ Years',
+  patients: '15,000+',
+  bio: 'Experienced general surgeon handling complex procedures, from appendectomies to advanced laparoscopic operations.'
+},
+{
+  id: 7,
+  name: 'Dr. Anna Kowalski',
+  specialty: 'Ophthalmologist',
+  image: 'https://images.pexels.com/photos/5766074/pexels-photo-5766074.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop',  // Female ophthalmologist examining eye
+  rating: 4.7,
+  experience: '9+ Years',
+  patients: '6,000+',
+  bio: 'Ophthalmologist focused on vision correction, glaucoma treatment, and comprehensive eye health for all ages.'
+},
+{
+  id: 8,
+  name: 'Dr. David Singh',
+  specialty: 'Psychiatrist',
+  image: 'https://images.pexels.com/photos/7579189/pexels-photo-7579189.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop',  // Male psychiatrist in therapy session
+  rating: 4.8,
+  experience: '13+ Years',
+  patients: '11,000+',
+  bio: 'Compassionate psychiatrist addressing mental health issues, anxiety, and depression through therapy and medication management.'
+}
 ];
   
   // Testimonials data

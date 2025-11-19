@@ -8,6 +8,8 @@ export class User
     age: string = '';
     address: string = '';
     password: string = '';
+    confirmPassword: string = '';
+    termsAccepted: boolean = false;
     role?: string = 'user';
     status?: string = 'active';
     dateOfBirth?: string;

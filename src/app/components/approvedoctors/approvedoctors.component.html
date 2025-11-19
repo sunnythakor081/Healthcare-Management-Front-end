@@ -1,65 +1,166 @@
 <app-header></app-header>
 
-<div class="panel panel-primary">
-    <div class="panel-heading">
-      <h2 style="text-align: center; font-family: 'Oswald', sans-serif;color: green; margin-top: 3%; margin-bottom: 3%;"> Approve Doctors Here <small>(after proper verification)</small> </h2>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Professional Header Section -->
+    <div class="text-center mb-12 animate-fade-in">
+      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+        <i class="fas fa-user-check mr-3"></i>Doctor Approval Dashboard
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Review and approve qualified healthcare professionals after thorough verification. Ensure only authorized doctors join your network.
+      </p>
     </div>
-    <div class="panel-body">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Identity</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Gender</th>
-            <th>Experience</th>
-            <th>Specialization</th>
-            <th>Worked at</th>
-            <th>Mobile</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let doctor of doctors">
-            <td>
-              <img *ngIf="doctor.gender === 'Male' || doctor.gender === 'male'" class="bloodimg" src="assets/img/maledoctor.png" width="80" height="80">
-              <img *ngIf="doctor.gender === 'Female' || doctor.gender === 'female'" class="bloodimg" src="assets/img/femaledoctor.png" width="80" height="80">
-            </td>
-            <td>{{doctor.doctorname}}</td>
-            <td>{{doctor.email}}</td>
-            <td>{{doctor.gender}}</td>
-            <td style="color: maroon; font-size: 25px;">{{doctor.experience}} years</td>
-            <td style="color: maroon; font-size: 25px;">{{doctor.specialization}}</td>
-            <td style="color: navy;">{{doctor.previoushospital}} hospital</td>
-            <td>{{doctor.mobile}}</td>
-            <td>
-              <div *ngIf="loggedUser === 'admin@gmail.com'">
-                <div *ngIf="doctor.status === 'false'">
-                  <button (click)="acceptRequest(doctor.email)" class="accepted btn-effect" style="margin-bottom: 5px;">Accept</button><br>
-                  <button (click)="rejectRequest(doctor.email)" class="rejected btn-effect">Reject</button>
+
+    <!-- Approval Card -->
+    <div class="glass-card rounded-3xl overflow-hidden shadow-xl">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-green-600 to-emerald-600 px-8 py-6 text-white">
+        <h2 class="text-2xl font-bold flex items-center justify-center">
+          <i class="fas fa-stethoscope mr-3"></i>
+          Pending Doctor Verifications
+        </h2>
+        <p class="text-center text-green-100 mt-2 opacity-90">Approve or reject after proper document verification</p>
+      </div>
+
+      <!-- Table Container -->
+      <div class="overflow-x-auto">
+        <table class="w-full table-auto bg-white divide-y divide-gray-200">
+          <thead class="bg-gradient-to-r from-green-500 to-emerald-500">
+            <tr>
+              <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Identity</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Name</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Email</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Gender</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Experience</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Specialization</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Previous Hospital</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Mobile</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let doctor of doctors" class="hover:bg-gray-50 transition-colors">
+              <!-- Identity -->
+              <td class="px-6 py-4 whitespace-nowrap">
+                <img 
+                  *ngIf="doctor.gender === 'Male' || doctor.gender === 'male'" 
+                  class="w-16 h-16 rounded-full object-cover border-2 border-green-300 shadow-md" 
+                  src="assets/img/maledoctor.png" 
+                  alt="Male Doctor" />
+                <img 
+                  *ngIf="doctor.gender === 'Female' || doctor.gender === 'female'" 
+                  class="w-16 h-16 rounded-full object-cover border-2 border-green-300 shadow-md" 
+                  src="assets/img/femaledoctor.png" 
+                  alt="Female Doctor" />
+              </td>
+
+              <!-- Name -->
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                {{doctor.doctorname}}
+              </td>
+
+              <!-- Email -->
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{doctor.email}}
+              </td>
+
+              <!-- Gender -->
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                  {{doctor.gender}}
+                </span>
+              </td>
+
+              <!-- Experience -->
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-green-600">
+                {{doctor.experience}} years
+              </td>
+
+              <!-- Specialization -->
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-purple-600">
+                {{doctor.specialization}}
+              </td>
+
+              <!-- Previous Hospital -->
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{doctor.previoushospital}} Hospital
+              </td>
+
+              <!-- Mobile -->
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{doctor.mobile}}
+              </td>
+
+              <!-- Status/Actions -->
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div *ngIf="loggedUser === 'admin@gmail.com'">
+                  <div *ngIf="doctor.status === 'false'" class="space-y-2">
+                    <button 
+                      (click)="acceptRequest(doctor.email)" 
+                      class="btn-effect accepted inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                      <i class="fas fa-check mr-2"></i>Accept
+                    </button>
+                    <button 
+                      (click)="rejectRequest(doctor.email)" 
+                      class="btn-effect rejected inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                      <i class="fas fa-times mr-2"></i>Reject
+                    </button>
+                  </div>
+                  <span 
+                    *ngIf="doctor.status === 'accept'" 
+                    class="accepted inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg">
+                    <i class="fas fa-check mr-2"></i>Accepted
+                  </span>
+                  <span 
+                    *ngIf="doctor.status === 'reject'" 
+                    class="rejected inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg">
+                    <i class="fas fa-times mr-2"></i>Rejected
+                  </span>
+                  <span 
+                    *ngIf="doctor.status === 'processing'" 
+                    class="pending inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>Processing...
+                  </span>
                 </div>
-                <div *ngIf="doctor.status === 'accept'">
-                  <div class="accepted">Accepted</div>
+                <div *ngIf="(currRole === 'doctor' || currRole === 'DOCTOR') && doctor.email === loggedUser">
+                  <span 
+                    *ngIf="doctor.status === 'accept'" 
+                    class="accepted inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg">
+                    <i class="fas fa-check mr-2"></i>Accepted
+                  </span>
+                  <span 
+                    *ngIf="doctor.status === 'false'" 
+                    class="pending inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg">
+                    <i class="fas fa-clock mr-2"></i>Pending
+                  </span>
+                  <span 
+                    *ngIf="doctor.status === 'reject'" 
+                    class="rejected inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg">
+                    <i class="fas fa-times mr-2"></i>Rejected
+                  </span>
+                  <span 
+                    *ngIf="doctor.status === 'processing'" 
+                    class="pending inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>Processing...
+                  </span>
                 </div>
-                <div *ngIf="doctor.status === 'reject'">
-                  <div class="rejected">Rejected</div>
-                </div>
-                <div *ngIf="doctor.status === 'processing'">
-                  <div class="pending">Processing...</div>
-                </div>
-              </div>
-              <div *ngIf="(currRole === 'doctor' || currRole === 'DOCTOR') && doctor.email === loggedUser">
-                <div *ngIf="doctor.status === 'accept'" class="accepted">Accepted</div>
-                <div *ngIf="doctor.status === 'false'" class="pending">Pending</div>
-                <div *ngIf="doctor.status === 'reject'" class="rejected">Rejected</div>
-                <div *ngIf="doctor.status === 'processing'" class="pending">Processing...</div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- No Doctors Message -->
+    <div *ngIf="!doctors || doctors.length === 0" class="text-center py-16">
+      <div class="glass-card rounded-3xl p-12 max-w-md mx-auto shadow-xl">
+        <i class="fas fa-users-slash text-6xl text-gray-300 mb-6"></i>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">No Doctors Pending Approval</h3>
+        <p class="text-gray-600 mb-6">All verifications are up to date. Check back later for new requests.</p>
+      </div>
     </div>
   </div>
+</div>
 
-<br><br><br><br><br><br><br><br>
 <app-footer></app-footer>

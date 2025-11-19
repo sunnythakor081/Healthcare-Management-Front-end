@@ -1,396 +1,315 @@
-/*
- * New Modern CSS for Healthcare Registration Page
- * Aesthetic: Clean, Professional, Medical Mint/Teal
- */
+/* Import Google Fonts for Professional Typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* --- Root Variables and Base Setup --- */
-:root {
-  --primary-color: #00796b; /* Main Teal */
-  --primary-dark: #004d40; /* Darker Teal for headings */
-  --primary-light: #e6f7f5; /* Very light mint background */
-  --error-color: #e53935; /* Red for errors */
-  --text-primary: #333;
-  --text-secondary: #555;
-  --bg-main: #f4f7f6; /* Body background */
-  --bg-card: #ffffff; /* Card background */
-  --bg-input: #f8f8f8;
-  --border-color: #d1d5db;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-  --shadow-strong: 0 8px 24px rgba(0, 121, 107, 0.15);
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* Global Typography - Professional Sans-Serif */
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    sans-serif;
-  background-color: var(--bg-main);
-  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
-  min-height: 100vh;
-  padding: 2rem;
+  color: #374151;
 }
 
-/* --- Main Container & Layout --- */
-.container.register {
-  max-width: 1200px;
-  margin: 2rem auto;
-}
-
-/* This is the main card */
-.container.register > .row {
-  display: flex;
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-strong);
-  overflow: hidden;
-  min-height: 80vh;
-}
-
-/* --- Left "Hero" Panel --- */
-.register-left {
-  background: var(--primary-light);
-  color: var(--primary-dark);
-  padding: 3rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  /* Use flex-basis to work with Bootstrap's col-md-3 */
-  flex-basis: 30%;
-  flex-grow: 0;
-}
-
-.register-left img {
-  max-width: 150px !important; /* Overriding inline style */
-  height: 150px !important;
-  object-fit: contain;
-  border-radius: 50%;
-  background: var(--bg-card);
-  padding: 1rem;
-  box-shadow: var(--shadow-soft);
-  margin-bottom: 1.5rem;
-}
-
-.register-left h3 {
-  color: var(--primary-dark);
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.register-left p {
-  color: var(--primary-color);
-  font-size: 1rem;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.loginbtn {
-  background: transparent;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  padding: 0.75rem 2rem;
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: var(--transition);
-  text-decoration: none;
-}
-
-.loginbtn:hover {
-  background: var(--primary-color);
-  color: var(--bg-card);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-strong);
-}
-
-/* --- Right "Form" Panel --- */
-.register-right {
-  padding: 3rem 3.5rem;
-  overflow-y: auto;
-  /* Use flex-basis to work with Bootstrap's col-md-9 */
-  flex-basis: 70%;
-  flex-grow: 1;
-}
-
-/* --- Modern Tab Switcher --- */
-.nav-tabs {
-  border-bottom: none;
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.nav-tabs .nav-item {
-  flex: 1;
-  margin: 0;
-}
-
-.nav-tabs .nav-link {
-  border: 2px solid var(--border-color);
-  background: var(--bg-main);
-  color: var(--text-secondary);
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 0.8rem 1rem;
-  transition: var(--transition);
-  cursor: pointer;
-}
-
-.nav-tabs .nav-link:hover:not(.active) {
-  background: var(--bg-card);
-  border-color: var(--primary-color);
-  color: var(--primary-color);
-}
-
-.nav-tabs .nav-link.active,
-.nav-tabs .nav-link.active:hover {
-  background: var(--primary-color);
-  color: var(--bg-card);
-  border-color: var(--primary-color);
-  box-shadow: 0 4px 12px rgba(0, 121, 107, 0.3);
-  transform: translateY(-2px);
-}
-
-/* --- Form Elements Styling --- */
-.tab-pane {
-  animation: fadeIn 0.5s ease;
-}
-
+/* Custom Animations - Smooth and Subtle for Professional Feel */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+  from { 
+    opacity: 0; 
+    transform: translateY(30px); 
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
   }
 }
 
-.register-heading {
-  text-align: center;
-  color: var(--primary-dark);
-  font-weight: 700;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+@keyframes slideIn {
+  from { 
+    opacity: 0; 
+    transform: translateX(30px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(0); 
+  }
 }
 
-/* Main error message from backend ({{msg}}) */
-small.text-danger:has(b) {
-  display: block;
-  text-align: center;
-  font-size: 0.9rem;
-  margin-bottom: 1.5rem;
+@keyframes pulseGentle {
+  0%, 100% { 
+    transform: scale(1); 
+    box-shadow: 0 4px 20px rgba(20, 184, 166, 0.2);
+  }
+  50% { 
+    transform: scale(1.02); 
+    box-shadow: 0 4px 25px rgba(20, 184, 166, 0.3);
+  }
 }
 
-.form-group {
-  margin-bottom: 1.25rem;
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.8s ease-out forwards;
+}
+
+.animate-pulse-gentle {
+  animation: pulseGentle 3s infinite ease-in-out;
+}
+
+/* Enhanced Glassmorphism - Clean, Modern Professional Look */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.12),
+    0 4px 15px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Professional Gradient Buttons - Subtle Shine */
+.btn-gradient {
+  background: linear-gradient(135deg, #1453b8 0%, #0658d4 50%, #0e78e9 100%);
+  border: none;
   position: relative;
+  overflow: hidden;
 }
 
-.form-control,
-select.form-control {
+.btn-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
   width: 100%;
-  padding: 0.9rem 1rem;
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
-  font-size: 1rem;
-  transition: var(--transition);
-  background: var(--bg-input);
-  color: var(--text-primary);
-  min-height: 50px;
-  -webkit-appearance: none; /* Fix for iOS select styling */
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
 }
 
-select.form-control {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 16px 12px;
+.btn-gradient:hover::before {
+  left: 100%;
 }
 
-.form-control:focus,
-select.form-control:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  background: var(--bg-card);
-  box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.1);
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #1453b8 0%, #0658d4 50%, #0e78e9 100%);
+  transform: translateY(-1px);
 }
 
-.form-control::placeholder {
-  color: var(--text-secondary);
-  opacity: 0.8;
-}
-
-/* --- Validation & Error Styling --- */
-.form-control.is-invalid {
-  border-color: var(--error-color);
-  background: #fff8f8;
-}
-.form-control.is-invalid:focus {
-  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
-}
-
-/* Field-level error messages */
-.form-group small.text-danger {
-  color: var(--error-color) !important;
-  font-size: 0.8rem !important;
-  font-weight: 600 !important;
-  margin-top: 0.35rem !important;
-  margin-bottom: 0 !important;
-  display: block !important;
-  padding-left: 0.25rem;
-}
-
-/* Hides the helper text when not needed */
-.text-danger.d-none {
-  display: none !important;
-}
-
-/* Password hint text */
-.password-hint {
-  color: var(--text-secondary) !important;
-  font-size: 0.75rem !important;
-  margin-top: 0.35rem;
-  display: block;
-  font-style: italic;
-}
-
-/* --- Checkbox & Register Button --- */
-.checkbox {
+/* Flex Center Utility */
+.flex-center {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  margin: 1.5rem 0 !important; /* Override user's negative/left margin */
-  padding: 0 !important;
 }
 
-.checkbox-input {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--primary-color);
-}
-
-.checkbox small {
-  color: var(--text-secondary) !important;
-  font-size: 0.9rem;
-}
-
-.btnRegister {
-  width: 100%;
-  padding: 0.9rem 2rem;
-  background: var(--primary-color);
-  color: var(--bg-card);
+/* Tab Navigation - Professional Underline Animation */
+.tab-enhanced {
+  position: relative;
+  color: #6b7280;
+  background: transparent;
   border: none;
-  border-radius: var(--radius-md);
-  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.tab-enhanced::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1453b8 0%, #0658d4 50%);
+  border-radius: 2px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-50%);
+}
+
+
+.tab-enhanced:hover::after {
+  width: 90%;
+}
+
+.tab-enhanced.active {
+  color: #0f3c76;
   font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: var(--shadow-strong);
+  background: rgba(20, 184, 166, 0.1);
 }
 
-.btnRegister:hover:not(:disabled) {
-  background: var(--primary-dark);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 77, 64, 0.25);
+.tab-enhanced.active::after {
+  width: 100%;
 }
 
-.btnRegister:disabled {
-  background: #b0bec5;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-  opacity: 0.7;
+/* Form Inputs - Clean, Professional with Micro-Interactions */
+.form-input-enhanced {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-color: #d1d5db;
 }
 
-/* --- Responsive Adjustments --- */
-@media (max-width: 992px) {
-  /* Stack left/right panels */
-  .container.register > .row {
-    flex-direction: column;
+.form-input-enhanced:focus {
+  border-color: #146cb8;
+  box-shadow: 
+    0 0 0 3px rgba(20, 184, 166, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.form-input-enhanced.shadow-md {
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
+}
+
+/* Error and Success Messages - Subtle Gradients for Professionalism */
+.error-msg {
+  background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+  border-left-color: #ef4444;
+  color: #dc2626;
+}
+
+.success-msg {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dceffc 100%);
+  border-left-color: #1086b9;
+  color: #056396;
+}
+
+/* Checkbox - Modern Toggle Style */
+.checkbox-enhanced {
+  accent-color: #1474b8;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.checkbox-enhanced:checked {
+  background: linear-gradient(135deg, #1453b8 0%, #0658d4 50%);
+  border-color: #1461b8;
+  transform: scale(1.02);
+}
+
+/* Label Links - Underline on Hover for Professional Navigation */
+.label-link {
+  text-decoration: none;
+  position: relative;
+  color: #0d5094;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.label-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #0d4c94;
+  transition: width 0.3s ease;
+}
+
+.label-link:hover::after {
+  width: 100%;
+}
+
+.label-link:hover {
+  color: #062e5f;
+}
+
+/* Loading Spinner - Elegant Rotation */
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Active Tab Background - Subtle Professional Highlight */
+.active {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);
+  color: #0f3376;
+  border-bottom: 2px solid #1463b8;
+}
+
+/* Responsive Design - Mobile-First Professional Layout */
+@media (max-width: 1024px) {
+  .lg\:col-span-1,
+  .lg\:col-span-4 {
+    grid-column: span 1 / span 1;
   }
-  .register-left {
-    flex-basis: auto;
-  }
-  .register-right {
-    flex-basis: auto;
-    padding: 2.5rem 2rem;
+  
+  .lg\:grid-cols-5 {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  body {
-    padding: 1rem;
+  .grid-cols-1.md\:grid-cols-2 {
+    grid-template-columns: 1fr;
   }
-  .container.register {
-    margin: 1rem auto;
+  
+  .p-8.lg\:p-12 {
+    padding: 1.5rem;
   }
-  .register-right {
-    padding: 2rem 1.5rem;
+  
+  .text-5xl {
+    font-size: 2.5rem;
   }
-  /* Stack form columns */
-  .register-form .row {
-    flex-direction: column;
-  }
-  .register-form .col-md-6 {
-    width: 100%;
-  }
-  .register-heading {
-    font-size: 1.75rem;
-  }
-  .nav-tabs {
-    gap: 0.5rem;
-  }
-  .nav-tabs .nav-link {
-    font-size: 0.8rem;
-    padding: 0.7rem 0.5rem;
+  
+  .text-4xl {
+    font-size: 2rem;
   }
 }
 
-@media (max-width: 480px) {
-  body {
-    padding: 0.5rem;
-  }
-  .container.register {
-    margin: 0.5rem auto;
-  }
-  .register-left {
-    padding: 2rem 1.5rem;
-  }
-  .register-right {
-    padding: 1.5rem 1rem;
-  }
-  .register-heading {
-    font-size: 1.5rem;
-  }
-  .form-control,
-  select.form-control {
-    padding: 0.8rem 1rem;
-    font-size: 0.9rem;
-  }
-  .btnRegister {
-    font-size: 1rem;
-    padding: 0.8rem 1.5rem;
-  }
-  .checkbox small {
-    font-size: 0.8rem;
-  }
+/* Select Dropdown - Custom Arrow for Professional Consistency */
+.form-input-enhanced select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.25em 1.25em;
+  padding-right: 2.75rem;
+  cursor: pointer;
+}
+
+.form-input-enhanced select:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2314b8a6' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+
+/* Icon Styling - Consistent Professional Weights */
+.fas {
+  font-weight: 900;
+}
+
+/* Form Labels - Enhanced Hierarchy */
+label {
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+
+/* Small Text Elements - Refined Spacing */
+small {
+  line-height: 1.4;
+}
+
+/* Overall Page Polish - Reduce Harsh Shadows, Add Subtle Borders */
+.rounded-xl {
+  border-radius: 1rem;
+}
+
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+
+/* Ensure Smooth Scrolling for Professional UX */
+html {
+  scroll-behavior: smooth;
 }

@@ -36,4 +36,12 @@ export class AppointmentsComponent implements OnInit {
     this.slots = this._service.getSlotDetails(this.loggedUser);
   }
 
+  getStatusText(status: string): string {
+    if (status === 'accept') return 'Accepted';
+    if (status === 'reject') return 'Rejected';
+    if (status === 'false') return 'Pending';
+    if (status === 'processing') return 'Processing';
+    return status;
+  }
+
 }
