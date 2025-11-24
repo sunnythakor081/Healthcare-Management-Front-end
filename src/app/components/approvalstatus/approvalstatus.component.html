@@ -152,7 +152,7 @@
                 <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Date</th>
                 <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Problem</th>
                 <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Approval</th>
-                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Admission</th>
+                <!-- <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">Admission</th> -->
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -200,7 +200,7 @@
                   </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <span 
+                  <!-- <span 
                     [ngClass]="{
                       'bg-green-100 text-green-800': patient.admissionstatus === 'accept',
                       'bg-yellow-100 text-yellow-800': patient.admissionstatus === 'false',
@@ -211,7 +211,7 @@
                     <i *ngIf="patient.admissionstatus === 'false'" class="fas fa-clock mr-1"></i>
                     <i *ngIf="patient.admissionstatus === 'reject'" class="fas fa-times mr-1"></i>
                     {{ patient.admissionstatus === 'accept' ? 'Admitted' : patient.admissionstatus === 'false' ? 'Pending' : 'Not Admitted' }}
-                  </span>
+                  </span> -->
                 </td>
               </tr>
             </tbody>

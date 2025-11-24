@@ -1,785 +1,524 @@
+<app-header></app-header>
+
 <div class="min-h-screen bg-gradient-to-br from-cyan-50 via-teal-50 to-blue-50 py-8 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-7xl mx-auto">
-    <!-- Enhanced Header with Subtle Animation -->
-    <div class="text-center mb-12 animate-fade-in">
-      <h1 class="text-5xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-4">
-        Healthcare Portal
-      </h1>
-      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-        Join our trusted healthcare ecosystem for seamless patient care and professional networking.
-      </p>
+  <div class="max-w-4xl mx-auto">
+    <!-- Tab Navigation -->
+    <div class="flex justify-center gap-4 mb-8">
+      <button
+        (click)="selectTab('patient')"
+        [ngClass]="activeTab === 'patient' ? 'bg-teal-600 text-white' : 'bg-white text-teal-600 border-2 border-teal-300'"
+        class="px-8 py-3 rounded-lg font-semibold transition-all duration-300"
+      >
+        <i class="fas fa-user-check mr-2"></i> Patient Registration
+      </button>
+      <button
+        (click)="selectTab('doctor')"
+        [ngClass]="activeTab === 'doctor' ? 'bg-teal-600 text-white' : 'bg-white text-teal-600 border-2 border-teal-300'"
+        class="px-8 py-3 rounded-lg font-semibold transition-all duration-300"
+      >
+        <i class="fas fa-stethoscope mr-2"></i> Doctor Registration
+      </button>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
-      <!-- Enhanced Left Sidebar with Glassmorphism Effect -->
-      <div class="lg:col-span-1">
-        <div class="glass-card rounded-3xl p-8 sticky top-8">
-          <div class="text-center mb-8">
-            <div class="w-28 h-28 mx-auto bg-gradient-to-br from-teal-500 to-cyan-500 rounded-full flex items-center justify-center mb-6 shadow-lg ring-2 ring-teal-200/50 animate-pulse-gentle">
-              <i class="fas fa-heartbeat text-white text-3xl"></i>
-            </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">MediCare Hub</h3>
-            <p class="text-teal-600 font-semibold">Your Health Partner</p>
-          </div>
+    <!-- Success / Error Alert -->
+    <div *ngIf="msg && msgType === 'success'" class="success-msg p-5 border-l-4 rounded-xl shadow-md mb-8 max-w-2xl mx-auto">
+      <div class="flex items-center">
+        <i class="fas fa-check-circle text-green-500 mr-3 text-xl"></i>
+        <p class="text-green-700 font-bold">{{ msg }}</p>
+      </div>
+    </div>
+    <div *ngIf="msg && msgType === 'error'" class="error-msg p-5 border-l-4 rounded-xl shadow-md mb-8 max-w-2xl mx-auto">
+      <div class="flex items-center">
+        <i class="fas fa-exclamation-triangle text-red-500 mr-3 text-xl"></i>
+        <p class="text-red-700 font-bold">{{ msg }}</p>
+      </div>
+    </div>
 
-          <!-- New Home Section -->
-          <div class="border-t border-gray-200 pt-6 mb-6">
-            <h4 class="font-bold text-gray-900 mb-4 text-lg">Explore Our Portal</h4>
-            <p class="text-sm text-gray-600 mb-6 leading-relaxed">
-              Discover services, find providers, and learn more about our healthcare solutions.
-            </p>
-            <button 
-              [routerLink]="['/']" 
-              class="w-full btn-gradient text-white font-bold py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex-center space-x-2"
-            >
-              <i class="fas fa-home"></i>
-              <span>Go to Home</span>
-            </button>
-          </div>
-
-          <div class="border-t border-gray-200 pt-6">
-            <h4 class="font-bold text-gray-900 mb-4 text-lg">Existing Member?</h4>
-            <p class="text-sm text-gray-600 mb-6 leading-relaxed">
-              Access your personalized dashboard for appointments, records, and more.
-            </p>
-            <button 
-              [routerLink]="['/login']" 
-              class="w-full btn-gradient text-white font-bold py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex-center space-x-2"
-            >
-              <i class="fas fa-sign-in-alt"></i>
-              <span>Sign In Securely</span>
-            </button>
-          </div>
-
-          <div class="mt-8 pt-6 border-t border-gray-200">
-            <div class="text-xs text-gray-500 space-y-3">
-              <p class="flex items-center"><i class="fas fa-shield-alt text-teal-500 mr-2"></i>End-to-End Encryption</p>
-              <p class="flex items-center"><i class="fas fa-clock text-teal-500 mr-2"></i>Instant Support</p>
-              <p class="flex items-center"><i class="fas fa-calendar-check text-teal-500 mr-2"></i>Quick Bookings</p>
-            </div>
-          </div>
-        </div>
+    <!-- PATIENT REGISTRATION FORM -->
+    <div *ngIf="activeTab === 'patient'" class="animate-slide-in">
+      <!-- Hero Section -->
+      <div class="text-center mb-12 animate-fade-in">
+        <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-4">
+          <i class="fas fa-user-injured mr-3"></i>Patient Registration
+        </h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+          Join our healthcare network and book appointments with verified doctors.
+        </p>
       </div>
 
-      <!-- Enhanced Right Form Area with Card Design -->
-      <div class="lg:col-span-4">
-        <div class="glass-card rounded-3xl overflow-hidden">
-          <!-- Improved Tab Navigation with Gradient Underline -->
-          <div class="flex border-b border-gray-200/50 bg-gray-50/50">
-            <button
-              (click)="selectTab('patient')"
-              [class.active]="activeTab === 'patient'"
-              class="flex-1 py-5 px-8 text-center font-bold transition-all duration-300 relative overflow-hidden group focus:outline-none focus:ring-2 focus:ring-teal-500 tab-enhanced"
-            >
-              <i class="fas fa-user-injured mr-2"></i>Patient
-            </button>
-            <button
-              (click)="selectTab('doctor')"
-              [class.active]="activeTab === 'doctor'"
-              class="flex-1 py-5 px-8 text-center font-bold transition-all duration-300 relative overflow-hidden group focus:outline-none focus:ring-2 focus:ring-teal-500 tab-enhanced"
-            >
-              <i class="fas fa-user-md mr-2"></i>Doctor
-            </button>
-          </div>
-
-          <!-- Form Content with Improved Spacing -->
-          <div class="p-8 lg:p-12">
-            <!-- Patient Registration Form -->
-            <div *ngIf="activeTab === 'patient'" class="animate-slide-in">
-              <div class="mb-8">
-                <h2 class="text-4xl font-bold text-gray-900 mb-3 bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-                  New Patient Profile
-                </h2>
-                <p class="text-gray-600 text-lg">Complete your details for personalized care access.</p>
-              </div>
-
-              <form #userform="ngForm" (ngSubmit)="registerUser()" class="space-y-8">
-                <!-- Global Error Message with Better Styling -->
-                <div 
-                  *ngIf="msg && msgType === 'error'" 
-                  class="error-msg p-5 border-l-4 rounded-xl shadow-md"
-                >
-                  <div class="flex items-center">
-                    <i class="fas fa-exclamation-triangle text-red-500 mr-3 text-xl"></i>
-                    <p class="text-red-700 font-bold">{{msg}}</p>
-                  </div>
-                </div>
-                <div 
-                  *ngIf="msg && msgType === 'success'" 
-                  class="success-msg p-5 border-l-4 rounded-xl shadow-md"
-                >
-                  <div class="flex items-center">
-                    <i class="fas fa-check-circle text-green-500 mr-3 text-xl"></i>
-                    <p class="text-green-700 font-bold">{{msg}}</p>
-                  </div>
-                </div>
-
-                <!-- Improved Grid Layouts with Better Gaps -->
-                <!-- Row 1: Name and Gender -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <!-- Full Name -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-user text-teal-600 mr-2"></i>Full Name <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
-                      [class.border-red-500]="user.username === null || user.username === ''"
-                      [class.shadow-md]="user.username && user.username !== ''"
-                      placeholder="e.g., John Doe"
-                      name="username"
-                      [(ngModel)]="user.username"
-                      required
-                      #username="ngModel"
-                    />
-                    <small 
-                      *ngIf="(user.username === null || user.username === '') && username.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Full name is required
-                    </small>
-                  </div>
-
-                  <!-- Gender -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-venus-mars text-teal-600 mr-2"></i>Gender <span class="text-red-500">*</span>
-                    </label>
-                    <select
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 appearance-none bg-white"
-                      [class.border-red-500]="(user.gender === null || user.gender === '') && usergender.touched"
-                      [class.shadow-md]="user.gender && user.gender !== ''"
-                      name="usergender"
-                      [(ngModel)]="user.gender"
-                      required
-                      #usergender="ngModel"
-                    >
-                      <option value="" disabled>Select Gender</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Transgender">Transgender</option>
-                      <option value="Other">Other</option>
-                    </select>
-                    <small 
-                      *ngIf="(user.gender === null || user.gender === '') && usergender.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Gender selection is required
-                    </small>
-                  </div>
-                </div>
-
-                <!-- Row 2: DOB and Email -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <!-- DOB -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-birthday-cake text-teal-600 mr-2"></i>Date of Birth <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="date"
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
-                      [class.border-red-500]="(user.age === null || user.age === undefined || user.age === '') && userage.touched"
-                      [class.shadow-md]="user.age && user.age !== ''"
-                      name="userage"
-                      [(ngModel)]="user.age"
-                      required
-                      #userage="ngModel"
-                    />
-                    <small 
-                      *ngIf="(user.age === null || user.age === undefined || user.age === '') && userage.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Date of birth is required
-                    </small>
-                  </div>
-
-                  <!-- Email -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-envelope text-teal-600 mr-2"></i>Email Address <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
-                      [class.border-red-500]="(user.email === null || user.email === '') && useremail.touched"
-                      [class.shadow-md]="user.email && user.email !== ''"
-                      placeholder="your.email@healthcare.com"
-                      name="useremail"
-                      [(ngModel)]="user.email"
-                      required
-                      pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
-                      #useremail="ngModel"
-                    />
-                    <small 
-                      *ngIf="(user.email === null || user.email === '') && useremail.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Email is required
-                    </small>
-                    <small 
-                      *ngIf="user.email && useremail.errors?.['pattern'] && useremail.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Enter a valid email address
-                    </small>
-                  </div>
-                </div>
-
-                <!-- Row 3: Mobile and Address -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <!-- Mobile -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-mobile-alt text-teal-600 mr-2"></i>Mobile Number <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      maxlength="10"
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
-                      [class.border-red-500]="(user.mobile === null || user.mobile === '') && usermobile.touched"
-                      [class.shadow-md]="user.mobile && user.mobile !== ''"
-                      placeholder="e.g., 9876543210"
-                      name="usermobile"
-                      [(ngModel)]="user.mobile"
-                      required
-                      pattern="[0-9]{10}"
-                      #usermobile="ngModel"
-                    />
-                    <small 
-                      *ngIf="(user.mobile === null || user.mobile === '') && usermobile.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>10-digit mobile is required
-                    </small>
-                    <small 
-                      *ngIf="user.mobile && user.mobile.length !== 10 && usermobile.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Enter valid 10-digit number
-                    </small>
-                  </div>
-
-                  <!-- Address -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-map-marker-alt text-teal-600 mr-2"></i>Residential Address <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
-                      [class.border-red-500]="(user.address === null || user.address === '') && useraddress.touched"
-                      [class.shadow-md]="user.address && user.address !== ''"
-                      placeholder="e.g., 123 Health Street, City"
-                      name="useraddress"
-                      [(ngModel)]="user.address"
-                      required
-                      #useraddress="ngModel"
-                    />
-                    <small 
-                      *ngIf="(user.address === null || user.address === '') && useraddress.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Address is required
-                    </small>
-                  </div>
-                </div>
-
-                <!-- Row 4: Password and Confirm -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <!-- Password -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-lock text-teal-600 mr-2"></i>Secure Password <span class="text-red-500">*</span>
-                    </label>
-                    <div class="relative">
-                      <input
-                        [type]="userPasswordVisible ? 'text' : 'password'"
-                        class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 pr-12"
-                        [class.border-red-500]="(user.password === null || user.password === '') && userpassword.touched"
-                        [class.shadow-md]="user.password && user.password !== ''"
-                        placeholder="At least 8 characters"
-                        name="pwd"
-                        [(ngModel)]="user.password"
-                        required
-                        minlength="8"
-                        #userpassword="ngModel"
-                      />
-                      <button
-                        type="button"
-                        (click)="togglePasswordVisibility('userPassword')"
-                        class="absolute right-4 top-4 text-gray-500 hover:text-teal-600 transition-colors duration-300"
-                      >
-                        <i [class]="userPasswordVisible ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                      </button>
-                    </div>
-                    <small 
-                      *ngIf="(user.password === null || user.password === '') && userpassword.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Password is required
-                    </small>
-                    <small 
-                      *ngIf="user.password && userpassword.errors?.['minlength'] && userpassword.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Password must be at least 8 characters
-                    </small>
-                    <small class="block text-gray-500 text-xs italic flex items-center">
-                      <i class="fas fa-info-circle mr-1 text-teal-500"></i>Include uppercase, number, special char
-                    </small>
-                  </div>
-
-                  <!-- Confirm Password -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-lock-open text-teal-600 mr-2"></i>Confirm Password <span class="text-red-500">*</span>
-                    </label>
-                    <div class="relative">
-                      <input
-                        [type]="userConfirmPasswordVisible ? 'text' : 'password'"
-                        class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 pr-12"
-                        [class.border-red-500]="user.confirmPassword !== user.password && userconfirmPassword.touched"
-                        [class.shadow-md]="user.confirmPassword === user.password && user.confirmPassword !== ''"
-                        [class.border-green-500]="user.confirmPassword === user.password && user.confirmPassword !== ''"
-                        placeholder="Match the password above"
-                        name="ConfirmPassword"
-                        [(ngModel)]="user.confirmPassword"
-                        required
-                        #userconfirmPassword="ngModel"
-                      />
-                      <button
-                        type="button"
-                        (click)="togglePasswordVisibility('userConfirmPassword')"
-                        class="absolute right-4 top-4 text-gray-500 hover:text-teal-600 transition-colors duration-300"
-                      >
-                        <i [class]="userConfirmPasswordVisible ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                      </button>
-                    </div>
-                    <small 
-                      *ngIf="user.confirmPassword !== user.password && user.confirmPassword && userconfirmPassword.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Passwords must match
-                    </small>
-                    <small 
-                      *ngIf="user.confirmPassword === user.password && user.confirmPassword !== ''"
-                      class="block text-green-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-check-circle mr-1"></i>Passwords match!
-                    </small>
-                  </div>
-                </div>
-
-                <!-- Enhanced Terms Checkbox -->
-                <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-6 rounded-2xl border-2 border-teal-200/50 space-y-3">
-                  <div class="flex items-start gap-3">
-                    <input
-                      type="checkbox"
-                      id="termsCheck"
-                      required
-                      #termsCheck="ngModel"
-                      name="terms"
-                      [(ngModel)]="user.termsAccepted"
-                      class="checkbox-enhanced mt-1 w-5 h-5 rounded border-2 border-gray-300 focus:ring-teal-500 focus:ring-2 cursor-pointer transition-all duration-300"
-                    />
-                    <label for="termsCheck" class="text-sm text-gray-700 cursor-pointer leading-relaxed flex-1">
-                      I agree to the <a href="#" class="label-link text-teal-600 font-bold">Terms of Service</a> and 
-                      <a href="#" class="label-link text-teal-600 font-bold ml-1">Privacy Policy</a>. Your data is protected.
-                    </label>
-                  </div>
-                </div>
-
-                <!-- Enhanced Submit Button -->
-                <button
-                  type="submit"
-                  [disabled]="!userform.valid || !user.termsAccepted"
-                  class="w-full btn-gradient text-white font-bold py-5 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl disabled:shadow-none disabled:transform-none flex-center space-x-2"
-                >
-                  <i class="fas fa-user-plus"></i>
-                  <span>Create Patient Account</span>
-                  <i class="fas fa-arrow-right"></i>
-                  <!-- <div *ngIf="!userform.valid || !user.termsAccepted" class="loading-spinner ml-2"></div> -->
-                </button>
-              </form>
+      <!-- Patient Form Card -->
+      <div class="glass-card rounded-3xl overflow-hidden shadow-2xl">
+        <form #userform="ngForm" (ngSubmit)="registerUser()" class="p-8 lg:p-12 space-y-8">
+          <!-- Row 1: Username and Email -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Username -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-700 flex items-center">
+                <i class="fas fa-user text-teal-600 mr-2"></i>Username <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+                placeholder="Enter your username"
+                name="username"
+                [(ngModel)]="user.username"
+                required
+                #username="ngModel"
+                [class.border-red-500]="username.invalid && username.touched"
+              />
+              <small 
+                *ngIf="username.invalid && username.touched"
+                class="block text-red-500 text-xs font-bold flex items-center"
+              >
+                <i class="fas fa-times-circle mr-1"></i>Username is required
+              </small>
             </div>
 
-            <!-- Doctor Registration Form (Mirrored Structure for Consistency) -->
-            <div *ngIf="activeTab === 'doctor'" class="animate-slide-in">
-              <div class="mb-8">
-                <h2 class="text-4xl font-bold text-gray-900 mb-3 bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-                  Professional Doctor Profile
-                </h2>
-                <p class="text-gray-600 text-lg">Join our network as a verified healthcare expert.</p>
-              </div>
-
-              <form #doctorform="ngForm" (ngSubmit)="registerDoctor()" class="space-y-8">
-                <!-- Global Error Message -->
-                <div 
-                  *ngIf="msg && msgType === 'error'" 
-                  class="error-msg p-5 border-l-4 rounded-xl shadow-md"
-                >
-                  <div class="flex items-center">
-                    <i class="fas fa-exclamation-triangle text-red-500 mr-3 text-xl"></i>
-                    <p class="text-red-700 font-bold">{{msg}}</p>
-                  </div>
-                </div>
-                <div 
-                  *ngIf="msg && msgType === 'success'" 
-                  class="success-msg p-5 border-l-4 rounded-xl shadow-md"
-                >
-                  <div class="flex items-center">
-                    <i class="fas fa-check-circle text-green-500 mr-3 text-xl"></i>
-                    <p class="text-green-700 font-bold">{{msg}}</p>
-                  </div>
-                </div>
-
-                <!-- Row 1: Name and License -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <!-- Doctor Name -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-user-md text-teal-600 mr-2"></i>Full Name <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
-                      [class.border-red-500]="doctor.doctorname === null || doctor.doctorname === ''"
-                      [class.shadow-md]="doctor.doctorname && doctor.doctorname !== ''"
-                      placeholder="e.g., Dr. Jane Smith"
-                      name="doctorname"
-                      [(ngModel)]="doctor.doctorname"
-                      required
-                      #doctorname="ngModel"
-                    />
-                    <small 
-                      *ngIf="(doctor.doctorname === null || doctor.doctorname === '') && doctorname.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Full name is required
-                    </small>
-                  </div>
-
-                  <!-- License Number -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-certificate text-teal-600 mr-2"></i>License Number <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
-                      [class.border-red-500]="doctor.license === null || doctor.license === ''"
-                      [class.shadow-md]="doctor.license && doctor.license !== ''"
-                      placeholder="e.g., MCI-123456"
-                      name="doctorlicense"
-                      [(ngModel)]="doctor.license"
-                      required
-                      #doctorlicense="ngModel"
-                    />
-                    <small 
-                      *ngIf="(doctor.license === null || doctor.license === '') && doctorlicense.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>License number is required
-                    </small>
-                  </div>
-                </div>
-
-                <!-- Row 2: Email and Gender -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <!-- Email -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-envelope text-teal-600 mr-2"></i>Email Address <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
-                      [class.border-red-500]="doctor.email === null || doctor.email === ''"
-                      [class.shadow-md]="doctor.email && doctor.email !== ''"
-                      placeholder="doctor@clinic.com"
-                      name="doctoremail"
-                      [(ngModel)]="doctor.email"
-                      required
-                      pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
-                      #doctoremail="ngModel"
-                    />
-                    <small 
-                      *ngIf="(doctor.email === null || doctor.email === '') && doctoremail.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Email is required
-                    </small>
-                    <small 
-                      *ngIf="doctor.email && doctoremail.errors?.['pattern'] && doctoremail.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Enter a valid email
-                    </small>
-                  </div>
-
-                  <!-- Gender -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-venus-mars text-teal-600 mr-2"></i>Gender <span class="text-red-500">*</span>
-                    </label>
-                    <select
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 appearance-none bg-white"
-                      [class.border-red-500]="(doctor.gender === null || doctor.gender === '') && doctorgender.touched"
-                      [class.shadow-md]="doctor.gender && doctor.gender !== ''"
-                      name="doctorgender"
-                      [(ngModel)]="doctor.gender"
-                      required
-                      #doctorgender="ngModel"
-                    >
-                      <option value="" disabled>Select Gender</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                    </select>
-                    <small 
-                      *ngIf="(doctor.gender === null || doctor.gender === '') && doctorgender.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Gender is required
-                    </small>
-                  </div>
-                </div>
-
-                <!-- Row 3: Specialty and Mobile -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <!-- Specialty -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-stethoscope text-teal-600 mr-2"></i>Specialty <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
-                      [class.border-red-500]="doctor.specialization === null || doctor.specialization === ''"
-                      [class.shadow-md]="doctor.specialization && doctor.specialization !== ''"
-                      placeholder="e.g., Cardiology, Pediatrics"
-                      name="specialty"
-                      [(ngModel)]="doctor.specialization"
-                      required
-                      #specialty="ngModel"
-                    />
-                    <small 
-                      *ngIf="(doctor.specialization === null || doctor.specialization === '') && specialty.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Specialty is required
-                    </small>
-                  </div>
-
-                  <!-- Mobile -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-mobile-alt text-teal-600 mr-2"></i>Mobile Number <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      maxlength="10"
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
-                      [class.border-red-500]="(doctor.mobile === null || doctor.mobile === '') && doctormobile.touched"
-                      [class.shadow-md]="doctor.mobile && doctor.mobile !== ''"
-                      placeholder="e.g., 9876543210"
-                      name="doctormobile"
-                      [(ngModel)]="doctor.mobile"
-                      required
-                      pattern="[0-9]{10}"
-                      #doctormobile="ngModel"
-                    />
-                    <small 
-                      *ngIf="(doctor.mobile === null || doctor.mobile === '') && doctormobile.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Mobile number is required
-                    </small>
-                    <small 
-                      *ngIf="doctor.mobile && doctor.mobile.length !== 10 && doctormobile.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Enter valid 10-digit number
-                    </small>
-                  </div>
-                </div>
-
-                <!-- Row 4: Experience and Address -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <!-- Experience -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-briefcase-medical text-teal-600 mr-2"></i>Years of Experience <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      max="60"
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
-                      [class.border-red-500]="(doctor.experience === null || doctor.experience === '' || doctor.experience === undefined) && experience.touched"
-                      [class.shadow-md]="doctor.experience !== null && doctor.experience !== '' && doctor.experience !== undefined"
-                      placeholder="e.g., 5"
-                      name="experience"
-                      [(ngModel)]="doctor.experience"
-                      required
-                      #experience="ngModel"
-                    />
-                    <small 
-                      *ngIf="(doctor.experience === null || doctor.experience === '' || doctor.experience === undefined) && experience.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Experience years are required
-                    </small>
-                  </div>
-
-                  <!-- Address -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-clinic-medical text-teal-600 mr-2"></i>Clinic Address <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
-                      [class.border-red-500]="(doctor.address === null || doctor.address === '') && doctoraddress.touched"
-                      [class.shadow-md]="doctor.address && doctor.address !== ''"
-                      placeholder="e.g., Wellness Clinic, City"
-                      name="doctoraddress"
-                      [(ngModel)]="doctor.address"
-                      required
-                      #doctoraddress="ngModel"
-                    />
-                    <small 
-                      *ngIf="(doctor.address === null || doctor.address === '') && doctoraddress.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Clinic address is required
-                    </small>
-                  </div>
-                </div>
-
-                <!-- Row 5: Password and Confirm -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <!-- Password -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-lock text-teal-600 mr-2"></i>Secure Password <span class="text-red-500">*</span>
-                    </label>
-                    <div class="relative">
-                      <input
-                        [type]="doctorPasswordVisible ? 'text' : 'password'"
-                        class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 pr-12"
-                        [class.border-red-500]="(doctor.password === null || doctor.password === '') && doctorpassword.touched"
-                        [class.shadow-md]="doctor.password && doctor.password !== ''"
-                        placeholder="At least 8 characters"
-                        name="docpwd"
-                        [(ngModel)]="doctor.password"
-                        required
-                        minlength="8"
-                        #doctorpassword="ngModel"
-                      />
-                      <button
-                        type="button"
-                        (click)="togglePasswordVisibility('doctorPassword')"
-                        class="absolute right-4 top-4 text-gray-500 hover:text-teal-600 transition-colors duration-300"
-                      >
-                        <i [class]="doctorPasswordVisible ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                      </button>
-                    </div>
-                    <small 
-                      *ngIf="(doctor.password === null || doctor.password === '') && doctorpassword.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Password is required
-                    </small>
-                    <small 
-                      *ngIf="doctor.password && doctorpassword.errors?.['minlength'] && doctorpassword.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Password must be at least 8 characters
-                    </small>
-                    <small class="block text-gray-500 text-xs italic flex items-center">
-                      <i class="fas fa-info-circle mr-1 text-teal-500"></i>Strong password recommended
-                    </small>
-                  </div>
-
-                  <!-- Confirm Password -->
-                  <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-700 flex items-center">
-                      <i class="fas fa-lock-open text-teal-600 mr-2"></i>Confirm Password <span class="text-red-500">*</span>
-                    </label>
-                    <div class="relative">
-                      <input
-                        [type]="doctorConfirmPasswordVisible ? 'text' : 'password'"
-                        class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 pr-12"
-                        [class.border-red-500]="doctor.confirmPassword !== doctor.password && doctorconfirmPassword.touched"
-                        [class.shadow-md]="doctor.confirmPassword === doctor.password && doctor.confirmPassword !== ''"
-                        [class.border-green-500]="doctor.confirmPassword === doctor.password && doctor.confirmPassword !== ''"
-                        placeholder="Match the password above"
-                        name="DocConfirmPassword"
-                        [(ngModel)]="doctor.confirmPassword"
-                        required
-                        #doctorconfirmPassword="ngModel"
-                      />
-                      <button
-                        type="button"
-                        (click)="togglePasswordVisibility('doctorConfirmPassword')"
-                        class="absolute right-4 top-4 text-gray-500 hover:text-teal-600 transition-colors duration-300"
-                      >
-                        <i [class]="doctorConfirmPasswordVisible ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                      </button>
-                    </div>
-                    <small 
-                      *ngIf="doctor.confirmPassword !== doctor.password && doctor.confirmPassword && doctorconfirmPassword.touched"
-                      class="block text-red-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-times-circle mr-1"></i>Passwords must match
-                    </small>
-                    <small 
-                      *ngIf="doctor.confirmPassword === doctor.password && doctor.confirmPassword !== ''"
-                      class="block text-green-500 text-xs font-bold flex items-center mt-1"
-                    >
-                      <i class="fas fa-check-circle mr-1"></i>Passwords match!
-                    </small>
-                  </div>
-                </div>
-
-                <!-- Enhanced Terms Checkbox -->
-                <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-6 rounded-2xl border-2 border-teal-200/50 space-y-3">
-                  <div class="flex items-start gap-3">
-                    <input
-                      type="checkbox"
-                      id="docTermsCheck"
-                      required
-                      #docTermsCheck="ngModel"
-                      name="docterms"
-                      [(ngModel)]="doctor.termsAccepted"
-                      class="checkbox-enhanced mt-1 w-5 h-5 rounded border-2 border-gray-300 focus:ring-teal-500 focus:ring-2 cursor-pointer transition-all duration-300"
-                    />
-                    <label for="docTermsCheck" class="text-sm text-gray-700 cursor-pointer leading-relaxed flex-1">
-                      I agree to the <a href="#" class="label-link text-teal-600 font-bold">Professional Terms</a> and 
-                      <a href="#" class="label-link text-teal-600 font-bold ml-1">HIPAA Compliance</a>.
-                    </label>
-                  </div>
-                </div>
-
-                <!-- Enhanced Submit Button -->
-                <button
-                  type="submit"
-                  [disabled]="!doctorform.valid || !doctor.termsAccepted"
-                  class="w-full btn-gradient text-white font-bold py-5 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl disabled:shadow-none disabled:transform-none flex-center space-x-2"
-                >
-                  <i class="fas fa-user-md"></i>
-                  <span>Register as Doctor</span>
-                  <i class="fas fa-arrow-right"></i>
-                  <!-- <div *ngIf="!doctorform.valid || !doctor.termsAccepted" class="loading-spinner ml-2"></div> -->
-                </button>
-              </form>
+            <!-- Email -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-700 flex items-center">
+                <i class="fas fa-envelope text-teal-600 mr-2"></i>Email Address <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+                placeholder="Enter your email"
+                name="useremail"
+                [(ngModel)]="user.email"
+                required
+                email
+                #useremail="ngModel"
+                [class.border-red-500]="useremail.invalid && useremail.touched"
+              />
+              <small 
+                *ngIf="useremail.invalid && useremail.touched"
+                class="block text-red-500 text-xs font-bold flex items-center"
+              >
+                <i class="fas fa-times-circle mr-1"></i>Valid email required
+              </small>
             </div>
           </div>
-        </div>
+
+          <!-- Row 2: Mobile and Gender -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Mobile -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-700 flex items-center">
+                <i class="fas fa-mobile-alt text-teal-600 mr-2"></i>Mobile Number <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="tel"
+                maxlength="10"
+                class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+                placeholder="Enter 10-digit mobile number"
+                name="usermobile"
+                [(ngModel)]="user.mobile"
+                required
+                pattern="[0-9]{10}"
+                #usermobile="ngModel"
+                [class.border-red-500]="usermobile.invalid && usermobile.touched"
+              />
+              <small 
+                *ngIf="usermobile.invalid && usermobile.touched"
+                class="block text-red-500 text-xs font-bold flex items-center"
+              >
+                <i class="fas fa-times-circle mr-1"></i>Required 10-digit number
+              </small>
+              <small class="block text-gray-500 text-xs italic flex items-center">
+                <i class="fas fa-info-circle mr-1 text-teal-500"></i>Enter valid 10-digit mobile
+              </small>
+            </div>
+
+            <!-- Gender -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-700 flex items-center">
+                <i class="fas fa-venus-mars text-teal-600 mr-2"></i>Gender <span class="text-red-500">*</span>
+              </label>
+              <select
+                class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 appearance-none bg-white"
+                name="usergender"
+                [(ngModel)]="user.gender"
+                required
+                #usergender="ngModel"
+              >
+                <option value="" disabled>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
+              <small 
+                *ngIf="usergender.invalid && usergender.touched"
+                class="block text-red-500 text-xs font-bold flex items-center"
+              >
+                <i class="fas fa-times-circle mr-1"></i>Gender selection required
+              </small>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-700 flex items-center">
+              <i class="fas fa-lock text-teal-600 mr-2"></i>Password <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+              placeholder="Enter a secure password"
+              name="userpassword"
+              [(ngModel)]="user.password"
+              required
+              minlength="6"
+              #userpassword="ngModel"
+              [class.border-red-500]="userpassword.invalid && userpassword.touched"
+            />
+            <small 
+              *ngIf="userpassword.invalid && userpassword.touched"
+              class="block text-red-500 text-xs font-bold flex items-center"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Password must be at least 6 characters
+            </small>
+          </div>
+
+          <!-- Terms Checkbox -->
+          <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-6 rounded-2xl border-2 border-teal-200/50">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                name="userterms"
+                [(ngModel)]="user.termsAccepted"
+                required
+                class="checkbox-enhanced mt-1 w-5 h-5"
+              />
+              <label class="text-sm text-gray-700 cursor-pointer leading-relaxed flex-1">
+                I agree to the terms and conditions <span class="text-red-500">*</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            [disabled]="userform.invalid"
+            class="w-full btn-gradient text-white font-bold py-5 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl disabled:shadow-none disabled:transform-none flex-center space-x-2"
+          >
+            <i class="fas fa-user-plus"></i>
+            <span>Create Patient Account</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- DOCTOR REGISTRATION FORM (Using adding doctor design) -->
+    <div *ngIf="activeTab === 'doctor'" class="animate-slide-in">
+      <!-- Hero Section -->
+      <div class="text-center mb-12 animate-fade-in">
+        <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-4">
+          <i class="fas fa-user-md mr-3"></i>Doctor Registration
+        </h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+          Register as a healthcare professional. Join our verified network of doctors.
+        </p>
+      </div>
+
+      <!-- Main Form Card -->
+      <div class="glass-card rounded-3xl overflow-hidden shadow-2xl">
+        <form #doctorForm="ngForm" (ngSubmit)="registerDoctor()" class="p-8 lg:p-12 space-y-8">
+          <!-- Row 1: Name and Email -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Doctor Name -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-700 flex items-center">
+                <i class="fas fa-user-md text-teal-600 mr-2"></i>Doctor Name <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+                placeholder="Enter doctor full name with initials"
+                name="doctorname"
+                [(ngModel)]="doctor.doctorname"
+                required
+                #doctorname="ngModel"
+                [class.border-red-500]="doctorname.invalid && doctorname.touched"
+              />
+              <small 
+                *ngIf="doctorname.invalid && doctorname.touched"
+                class="block text-red-500 text-xs font-bold flex items-center"
+              >
+                <i class="fas fa-times-circle mr-1"></i>Required field
+              </small>
+              <small class="block text-gray-500 text-xs italic flex items-center">
+                <i class="fas fa-info-circle mr-1 text-teal-500"></i>Enter full name with initials
+              </small>
+            </div>
+
+            <!-- Email -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-700 flex items-center">
+                <i class="fas fa-envelope text-teal-600 mr-2"></i>Email Address <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+                placeholder="doctor@hospital.com"
+                name="doctoremail"
+                [(ngModel)]="doctor.email"
+                required
+                pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+                #doctoremail="ngModel"
+                [class.border-red-500]="doctoremail.invalid && doctoremail.touched"
+              />
+              <div *ngIf="doctoremail.errors && doctoremail.invalid && doctoremail.touched">
+                <small *ngIf="doctoremail.errors['required']" class="block text-red-500 text-xs font-bold flex items-center">
+                  <i class="fas fa-times-circle mr-1"></i>Required field
+                </small>
+                <small *ngIf="doctoremail.errors['pattern']" class="block text-red-500 text-xs font-bold flex items-center">
+                  <i class="fas fa-times-circle mr-1"></i>Invalid email format
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Mobile and Gender -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Mobile -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-700 flex items-center">
+                <i class="fas fa-mobile-alt text-teal-600 mr-2"></i>Mobile Number <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="tel"
+                maxlength="10"
+                class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+                placeholder="Enter 10-digit mobile number"
+                name="doctormobile"
+                [(ngModel)]="doctor.mobile"
+                required
+                pattern="[0-9]{10}"
+                #doctormobile="ngModel"
+                [class.border-red-500]="doctormobile.invalid && doctormobile.touched"
+              />
+              <small 
+                *ngIf="doctormobile.invalid && doctormobile.touched"
+                class="block text-red-500 text-xs font-bold flex items-center"
+              >
+                <i class="fas fa-times-circle mr-1"></i>Required 10-digit number
+              </small>
+              <small class="block text-gray-500 text-xs italic flex items-center">
+                <i class="fas fa-info-circle mr-1 text-teal-500"></i>Enter valid 10-digit mobile
+              </small>
+            </div>
+
+            <!-- Gender -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-700 flex items-center">
+                <i class="fas fa-venus-mars text-teal-600 mr-2"></i>Gender <span class="text-red-500">*</span>
+              </label>
+              <select
+                class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 appearance-none bg-white"
+                name="doctorgender"
+                [(ngModel)]="doctor.gender"
+                required
+                #doctorgender="ngModel"
+              >
+                <option value="" disabled>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
+              <small 
+                *ngIf="doctorgender.invalid && doctorgender.touched"
+                class="block text-red-500 text-xs font-bold flex items-center"
+              >
+                <i class="fas fa-times-circle mr-1"></i>Gender selection required
+              </small>
+            </div>
+          </div>
+
+          <!-- Row 3: Experience and Specialization -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Experience -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-700 flex items-center">
+                <i class="fas fa-briefcase-medical text-teal-600 mr-2"></i>Experience (Years) <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                min="3"
+                class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+                placeholder="Minimum 3 years"
+                name="experience"
+                [(ngModel)]="doctor.experience"
+                required
+                #experience="ngModel"
+                [class.border-red-500]="experience.invalid && experience.touched"
+              />
+              <small 
+                *ngIf="experience.invalid && experience.touched"
+                class="block text-red-500 text-xs font-bold flex items-center"
+              >
+                <i class="fas fa-times-circle mr-1"></i>Required field (min 3 years)
+              </small>
+              <small class="block text-amber-700 text-xs font-bold flex items-center">
+                <i class="fas fa-exclamation-triangle mr-1"></i>Minimum 3 years experience required
+              </small>
+            </div>
+
+            <!-- Specialization -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-700 flex items-center">
+                <i class="fas fa-stethoscope text-teal-600 mr-2"></i>Specialization <span class="text-red-500">*</span>
+              </label>
+              <select
+                class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 appearance-none bg-white"
+                name="specialization"
+                [(ngModel)]="doctor.specialization"
+                required
+                #specialization="ngModel"
+                [class.border-red-500]="specialization.invalid && specialization.touched"
+              >
+                <option value="" disabled>Select Specialization</option>
+                <option value="General Physician">General Physician</option>
+                <option value="Cardiologist (Heart Specialist)">Cardiologist (Heart Specialist)</option>
+                <option value="Neurologist (Brain & Nervous System)">Neurologist (Brain & Nervous System)</option>
+                <option value="Orthopedic Surgeon (Bones & Joints)">Orthopedic Surgeon (Bones & Joints)</option>
+                <option value="Pediatrician (Child Specialist)">Pediatrician (Child Specialist)</option>
+                <option value="Dermatologist (Skin Specialist)">Dermatologist (Skin Specialist)</option>
+                <option value="Gynecologist / Obstetrician (Women's Health)">Gynecologist / Obstetrician (Women's Health)</option>
+                <option value="ENT Specialist (Ear, Nose, Throat)">ENT Specialist (Ear, Nose, Throat)</option>
+                <option value="Psychiatrist (Mental Health)">Psychiatrist (Mental Health)</option>
+                <option value="Ophthalmologist (Eye Specialist)">Ophthalmologist (Eye Specialist)</option>
+                <option value="Oncologist (Cancer Specialist)">Oncologist (Cancer Specialist)</option>
+                <option value="Pulmonologist (Lungs & Respiratory)">Pulmonologist (Lungs & Respiratory)</option>
+                <option value="Gastroenterologist (Digestive System)">Gastroenterologist (Digestive System)</option>
+                <option value="Urologist (Urinary & Male Reproductive)">Urologist (Urinary & Male Reproductive)</option>
+                <option value="Endocrinologist (Hormone Specialist)">Endocrinologist (Hormone Specialist)</option>
+                <option value="Nephrologist (Kidney Specialist)">Nephrologist (Kidney Specialist)</option>
+                <option value="Rheumatologist (Joint & Autoimmune Diseases)">Rheumatologist (Joint & Autoimmune Diseases)</option>
+                <option value="Anesthesiologist (Surgery Support)">Anesthesiologist (Surgery Support)</option>
+                <option value="Radiologist (Imaging & Scans)">Radiologist (Imaging & Scans)</option>
+                <option value="Dentist">Dentist</option>
+              </select>
+              <small 
+                *ngIf="specialization.invalid && specialization.touched"
+                class="block text-red-500 text-xs font-bold flex items-center"
+              >
+                <i class="fas fa-times-circle mr-1"></i>Required field
+              </small>
+              <small class="block text-gray-500 text-xs italic flex items-center">
+                <i class="fas fa-info-circle mr-1 text-teal-500"></i>Select from the dropdown
+              </small>
+            </div>
+          </div>
+
+          <!-- Row 4: Previous Hospital and Address -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Previous Hospital -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-700 flex items-center">
+                <i class="fas fa-hospital text-teal-600 mr-2"></i>Previous Hospital <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+                placeholder="Enter previous working hospital"
+                name="previoushospital"
+                [(ngModel)]="doctor.previoushospital"
+                required
+                #previoushospital="ngModel"
+                [class.border-red-500]="previoushospital.invalid && previoushospital.touched"
+              />
+              <small 
+                *ngIf="previoushospital.invalid && previoushospital.touched"
+                class="block text-red-500 text-xs font-bold flex items-center"
+              >
+                <i class="fas fa-times-circle mr-1"></i>Required field
+              </small>
+            </div>
+
+            <!-- Address -->
+            <div class="space-y-2">
+              <label class="block text-sm font-bold text-gray-700 flex items-center">
+                <i class="fas fa-map-marker-alt text-teal-600 mr-2"></i>Clinic Address <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500"
+                placeholder="Enter clinic address"
+                name="address"
+                [(ngModel)]="doctor.address"
+                required
+                #address="ngModel"
+                [class.border-red-500]="address.invalid && address.touched"
+              />
+              <small 
+                *ngIf="address.invalid && address.touched"
+                class="block text-red-500 text-xs font-bold flex items-center"
+              >
+                <i class="fas fa-times-circle mr-1"></i>Required field
+              </small>
+              <small class="block text-gray-500 text-xs italic flex items-center">
+                <i class="fas fa-info-circle mr-1 text-teal-500"></i>Mention proper address for reference
+              </small>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-700 flex items-center">
+              <i class="fas fa-lock text-teal-600 mr-2"></i>Temporary Password <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              class="form-input-enhanced w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 pr-12"
+              placeholder="Use '1234' as temporary password"
+              name="doctorpassword"
+              [(ngModel)]="doctor.password"
+              required
+              #doctorpassword="ngModel"
+              [class.border-red-500]="doctorpassword.invalid && doctorpassword.touched"
+            />
+            <small 
+              *ngIf="doctorpassword.invalid && doctorpassword.touched"
+              class="block text-red-500 text-xs font-bold flex items-center"
+            >
+              <i class="fas fa-times-circle mr-1"></i>Required field
+            </small>
+            <small class="block text-gray-500 text-xs italic flex items-center">
+              <i class="fas fa-info-circle mr-1 text-teal-500"></i>Use "1234" as temporary; instruct doctor to update later
+            </small>
+          </div>
+
+          <!-- Authorization Checkbox -->
+          <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-6 rounded-2xl border-2 border-teal-200/50 space-y-3">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                name="doctorterms"
+                [(ngModel)]="doctor.termsAccepted"
+                required
+                class="checkbox-enhanced mt-1 w-5 h-5 rounded border-2 border-gray-300 focus:ring-teal-500 focus:ring-2 cursor-pointer transition-all duration-300"
+              />
+              <label class="text-sm text-gray-700 cursor-pointer leading-relaxed flex-1">
+                Confirm this is an authorized doctor <a href="#" class="label-link text-amber-600 font-bold"> (Proxy additions violate T&C)</a>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            [disabled]="doctorForm.invalid"
+            class="w-full btn-gradient text-white font-bold py-5 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl disabled:shadow-none disabled:transform-none flex-center space-x-2"
+          >
+            <i class="fas fa-user-plus"></i>
+            <span>Register as Doctor</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </form>
       </div>
     </div>
   </div>
 </div>
+
+<app-footer></app-footer>

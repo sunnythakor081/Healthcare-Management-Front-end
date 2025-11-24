@@ -17,8 +17,34 @@
 
       <!-- Profile and Navigation Section -->
       <div class="flex items-center space-x-4">
-        <!-- Profile Dropdown -->
-        <div class="relative">
+        <!-- Registration Page: Show only Home and Login Buttons -->
+        <div *ngIf="isRegistrationPage" class="flex items-center space-x-2">
+          <a routerLink="/" 
+             class="px-4 py-2 text-white hover:bg-blue-700 rounded-lg transition-all duration-300 font-medium flex items-center gap-2">
+            <i class="fas fa-home"></i> Home
+          </a>
+          <a routerLink="/login" 
+             class="px-4 py-2 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-all duration-300 flex items-center gap-2">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+        </div>
+
+        <!-- Non-Registration Pages: Show Profile Dropdown or Home/Login -->
+        <div *ngIf="!isRegistrationPage">
+          <!-- Home and Login Buttons (When not logged in) -->
+          <div *ngIf="!loggedUser" class="flex items-center space-x-2">
+            <a routerLink="/" 
+               class="px-4 py-2 text-white hover:bg-blue-700 rounded-lg transition-all duration-300 font-medium flex items-center gap-2">
+              <i class="fas fa-home"></i> Home
+            </a>
+            <a routerLink="/login" 
+               class="px-4 py-2 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-all duration-300 flex items-center gap-2">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+          </div>
+
+          <!-- Profile Dropdown -->
+          <div *ngIf="loggedUser" class="relative">
           <button (click)="toggleDropdown()" 
                   class="flex items-center space-x-3 text-white hover:text-blue-100 focus:outline-none">
             <span class="hidden sm:block">{{loggedUser || 'Guest'}}</span>
@@ -160,6 +186,7 @@
               Logout
             </a>
           </div>
+        </div>
         </div>
 
         <div class="lg:hidden">

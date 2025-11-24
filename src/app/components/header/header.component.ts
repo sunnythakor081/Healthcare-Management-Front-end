@@ -15,6 +15,7 @@ export class HeaderComponent implements OnInit {
   currRole = '';
   isMobileMenuOpen = false;
   isDropdownOpen = false;
+  isRegistrationPage = false;
 
   constructor(private _router: Router) { }
 
@@ -24,6 +25,9 @@ export class HeaderComponent implements OnInit {
 
     this.currRole = JSON.stringify(sessionStorage.getItem('ROLE')|| '{}'); 
     this.currRole = this.currRole.replace(/"/g, '');
+
+    // Check if current route is registration page
+    this.isRegistrationPage = this._router.url.includes('/registration');
   }
 
   toggleMobileMenu(): void {

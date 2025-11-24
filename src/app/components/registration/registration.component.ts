@@ -6,6 +6,8 @@ import { DoctorService } from '../../services/doctor.service';
 import { RegistrationService } from '../../services/registration.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../footer/footer.component';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,7 +15,7 @@ import Swal from 'sweetalert2';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule]
+  imports: [CommonModule, FormsModule, RouterModule, HeaderComponent, FooterComponent]
 })
 export class RegistrationComponent implements OnInit {
 
