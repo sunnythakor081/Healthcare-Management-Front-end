@@ -8,65 +8,73 @@
 
   <!-- Sidebar -->
   <aside class="sidebar">
-  <nav class="nav-menu">
-    <a routerLink="/edituserprofile" routerLinkActive="active" class="nav-item">
-      <i class="fas fa-user-edit"></i>
-      <span>Edit Profile</span>
-    </a>
+    <nav class="nav-menu">
+      <a routerLink="/edituserprofile" routerLinkActive="active" class="nav-item">
+        <i class="fas fa-user-edit"></i>
+        <span>Edit Profile</span>
+      </a>
 
-    <a routerLink="/doctorlist" routerLinkActive="active" class="nav-item">
-      <i class="fas fa-user-md"></i>
-      <span>Doctors List</span>
-    </a>
-<a routerLink="/user-check-slots" routerLinkActive="active" class="nav-item">
-      <i class="fas fa-calendar-alt"></i>
-      <span>Check Slots</span>
-    </a>
+      <a routerLink="/doctorlist" routerLinkActive="active" class="nav-item">
+        <i class="fas fa-user-md"></i>
+        <span>Doctors List</span>
+      </a>
 
-    <a routerLink="/bookappointment" routerLinkActive="active" class="nav-item">
-      <i class="fas fa-calendar-plus"></i>
-      <span>Book Appointment</span>
-    </a>
+      <a routerLink="/user-check-slots" routerLinkActive="active" class="nav-item">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Check Slots</span>
+      </a>
 
-    <a routerLink="/approvalstatus" routerLinkActive="active" class="nav-item">
-      <i class="fas fa-check-circle"></i>
-      <span>Approval Status</span>
-    </a>
+      <a routerLink="/bookappointment" routerLinkActive="active" class="nav-item">
+        <i class="fas fa-calendar-plus"></i>
+        <span>Book Appointment</span>
+      </a>
 
-    <a routerLink="/prescriptionlist" routerLinkActive="active" class="nav-item">
-      <i class="fas fa-file-prescription"></i>
-      <span>Your Prescriptions</span>
-    </a>
-  </nav>
-</aside>
+      <a routerLink="/approvalstatus" routerLinkActive="active" class="nav-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Approval Status</span>
+      </a>
 
+      <a routerLink="/prescriptionlist" routerLinkActive="active" class="nav-item">
+        <i class="fas fa-file-prescription"></i>
+        <span>Your Prescriptions</span>
+      </a>
+    </nav>
+  </aside>
 
   <!-- Main Content -->
   <main class="main-content">
-    
+    <!-- Hero Section -->
+    <section class="userdashboard-hero">
+     
+      <h1 class="userdashboard-title">Welcome back, {{name}}!</h1>
+      <p class="userdashboard-subtitle">Manage your health and appointments with ease. Your wellness journey starts here.</p>
+    </section>
 
-    <!-- Stats Grid -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-users"></i></div>
-        <p class="stat-label">Total Users</p>
-        <p class="stat-value">{{ (users | async) || 0 }}</p>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-user-md"></i></div>
-        <p class="stat-label">Total Doctors</p>
-        <p class="stat-value">{{ (doctors | async) || 0 }}</p>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-hospital-user"></i></div>
-        <p class="stat-label">Total Patients</p>
-        <p class="stat-value">{{ (patients | async) || 0 }}</p>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-clock"></i></div>
-        <p class="stat-label">Total Slots</p>
-        <p class="stat-value">{{ (slots | async) || 0 }}</p>
-      </div>
-    </div>
+    <!-- Quick Actions -->
+    <section class="quick-actions">
+      <a routerLink="/bookappointment" class="action-card">
+        <i class="fas fa-calendar-plus action-icon"></i>
+        <h3 class="action-title">Book New Appointment</h3>
+        <p class="action-description">Schedule a consultation with your preferred doctor in just a few clicks.</p>
+      </a>
+
+      <a routerLink="/user-check-slots" class="action-card">
+        <i class="fas fa-calendar-check action-icon"></i>
+        <h3 class="action-title">View Available Slots</h3>
+        <p class="action-description">Check real-time availability and find the perfect time for your visit.</p>
+      </a>
+
+      <a routerLink="/approvalstatus" class="action-card">
+        <i class="fas fa-clipboard-check action-icon"></i>
+        <h3 class="action-title">Check Status</h3>
+        <p class="action-description">Track the approval and status of your recent requests and bookings.</p>
+      </a>
+
+      <a routerLink="/prescriptionlist" class="action-card">
+        <i class="fas fa-pills action-icon"></i>
+        <h3 class="action-title">View Prescriptions</h3>
+        <p class="action-description">Access your medical prescriptions and history anytime, anywhere.</p>
+      </a>
+    </section>
   </main>
 </div>
